@@ -27,7 +27,7 @@ Gra karciana Memory dla dzieci — Unity 6 z URP, docelowo na urządzenia mobiln
 | Przerwanie gry | ✅ | Przycisk ✕ → potwierdzenie → powrót do menu |
 | Menu startowe | ✅ | Ekran główny → Opcje/Graj → Arcade/Wyzwanie → ... |
 | Opcje | ✅ | Panel z wyborem języka i credits |
-| Lokalizacja | ✅ | System PL/EN (Piotruś/Joker) |
+| Lokalizacja | ✅ | Pełny system PL/EN — wszystkie przyciski, panele, komunikaty |
 | Typy kart | ✅ | Kolory (klasyczny) lub Księżniczki (obrazki PNG) |
 | Poziomy trudności | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
 | Nawigacja menu | ✅ | Przyciski cofania ← na każdym etapie |
@@ -214,18 +214,21 @@ Plik: `Assets/ScriptableObjects/GameConfig.asset`
 ## Historia zmian
 
 ### 2026-05-28 (wieczór)
-- Ekran startowy z przyciskami Graj / Opcje / ✕
+- Ekran startowy z przyciskami Graj / Opcje / Wyniki / ✕
 - Panel Opcje z wyborem języka i credits
+- Przycisk Tabela Wyników na ekranie startowym (PlayerPrefs, persystentny)
 - Tryb Wyzwanie (Challenge) — progresywny single-player vs AI
+- Wybór typu kart w trybie Wyzwanie (Kolory / Księżniczki)
 - System punktacji z mnożnikiem serii (streak x1-x5)
 - Kara za pomyłki (streak spada, odejmowanie punktów)
 - Leaderboard — top 10 wyników (PlayerPrefs)
-- Wybór typu kart w trybie Wyzwanie
 - Efekt cząsteczkowy (particle burst) przy odkryciu pary
 - Animacja floating popup z punktami (+100 x3!)
+- Pełna lokalizacja PL/EN wszystkich przycisków i paneli
 - Fix: wskaźnik tury niewidoczny (przesunięty pod TopBar, ciemne kolory)
 - Fix: Challenge mode — złą liczbę kart przy pierwszym uruchomieniu
 - Fix: TouchInputHandler nie rozpoznawał ChallengeMode
+- Fix: przyciski po angielsku wyświetlały polski tekst
 
 ### 2026-05-28
 - Stworzenie projektu Unity 6 z URP

@@ -482,17 +482,39 @@ namespace MagicPairs.Editor
             startPanelRect.offsetMax = Vector2.zero;
 
             var playBtn = CreateButton("PlayBtn", "Graj", startPanel.transform,
-                new Vector2(0.1f, 0.7f), new Vector2(0.9f, 0.9f));
+                new Vector2(0.1f, 0.75f), new Vector2(0.9f, 0.95f));
             playBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var optionsBtn = CreateButton("OptionsBtn", "Opcje", startPanel.transform,
-                new Vector2(0.1f, 0.45f), new Vector2(0.9f, 0.65f));
+                new Vector2(0.1f, 0.52f), new Vector2(0.9f, 0.7f));
             optionsBtn.GetComponent<Image>().color = new Color(0.3f, 0.5f, 0.8f, 1f);
 
+            var leaderBtn = CreateButton("LeaderboardBtn", "Wyniki", startPanel.transform,
+                new Vector2(0.1f, 0.29f), new Vector2(0.9f, 0.47f));
+            leaderBtn.GetComponent<Image>().color = new Color(0.8f, 0.6f, 0.1f, 1f);
+
             var quitBtn = CreateButton("QuitBtn", "✕", startPanel.transform,
-                new Vector2(0.35f, 0.15f), new Vector2(0.65f, 0.35f));
+                new Vector2(0.35f, 0.02f), new Vector2(0.65f, 0.22f));
             quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
             quitBtn.GetComponentInChildren<Text>().fontSize = 32;
+
+            // --- Start Leaderboard Panel ---
+            var startLeaderPanel = new GameObject("StartLeaderboardPanel");
+            startLeaderPanel.transform.SetParent(menuPanel.transform, false);
+            var slpRect = startLeaderPanel.AddComponent<RectTransform>();
+            slpRect.anchorMin = new Vector2(0.05f, 0.05f);
+            slpRect.anchorMax = new Vector2(0.95f, 0.95f);
+            slpRect.offsetMin = Vector2.zero;
+            slpRect.offsetMax = Vector2.zero;
+            var slpImg = startLeaderPanel.AddComponent<Image>();
+            slpImg.color = new Color(1f, 1f, 1f, 0.95f);
+
+            var startLeaderText = CreateUIText("StartLeaderText", "", startLeaderPanel.transform,
+                new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.95f), TextAnchor.UpperCenter, 22);
+
+            var startLeaderBackBtn = CreateButton("StartLeaderBackBtn", "←", startLeaderPanel.transform,
+                new Vector2(0.3f, 0.02f), new Vector2(0.7f, 0.12f));
+            startLeaderBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Options Panel ---
             var optionsPanel = new GameObject("OptionsPanel");
@@ -748,6 +770,11 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("playButton").objectReferenceValue = playBtn.GetComponent<Button>();
             mmSo.FindProperty("optionsButton").objectReferenceValue = optionsBtn.GetComponent<Button>();
             mmSo.FindProperty("quitButton").objectReferenceValue = quitBtn.GetComponent<Button>();
+            mmSo.FindProperty("leaderboardButton").objectReferenceValue = leaderBtn.GetComponent<Button>();
+            mmSo.FindProperty("leaderboardButtonText").objectReferenceValue = leaderBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("startLeaderboardPanel").objectReferenceValue = startLeaderPanel;
+            mmSo.FindProperty("startLeaderboardText").objectReferenceValue = startLeaderText;
+            mmSo.FindProperty("startLeaderboardBackButton").objectReferenceValue = startLeaderBackBtn.GetComponent<Button>();
             mmSo.FindProperty("creditsButton").objectReferenceValue = creditsBtn.GetComponent<Button>();
             mmSo.FindProperty("creditsPanel").objectReferenceValue = creditsPanel;
             mmSo.FindProperty("creditsBackButton").objectReferenceValue = creditsBackBtn.GetComponent<Button>();

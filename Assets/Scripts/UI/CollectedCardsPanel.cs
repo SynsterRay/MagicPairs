@@ -37,8 +37,16 @@ namespace MagicPairs.UI
 
         private void OnGameStarted()
         {
-            if (player1Button != null) player1Button.gameObject.SetActive(true);
-            if (player2Button != null) player2Button.gameObject.SetActive(true);
+            if (player1Button != null)
+            {
+                player1Button.gameObject.SetActive(true);
+                player1Button.GetComponentInChildren<Text>().text = Localization.Get("cards");
+            }
+            if (player2Button != null)
+            {
+                player2Button.gameObject.SetActive(true);
+                player2Button.GetComponentInChildren<Text>().text = Localization.Get("cards");
+            }
             Close();
         }
 
@@ -67,8 +75,12 @@ namespace MagicPairs.UI
 
             string name = playerIndex == 0 ? MainMenu.Player1Name : MainMenu.Player2Name;
             int pairCount = cards.Count / 2;
+            bool pl = Localization.CurrentLanguage == Language.Polish;
             if (titleText != null)
-                titleText.text = $"{name} - {pairCount} {(pairCount == 1 ? "para" : "par")}";
+                titleText.text = $"{name} - {pairCount} {(pl ? (pairCount == 1 ? "para" : "par") : (pairCount == 1 ? "pair" : "pairs"))}";
+
+            if (closeButton != null)
+                closeButton.GetComponentInChildren<Text>().text = pl ? "Zamknij" : "Close";
 
             // Clear old slots
             foreach (Transform child in contentContainer)

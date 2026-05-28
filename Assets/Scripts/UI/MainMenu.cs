@@ -22,10 +22,15 @@ namespace MagicPairs.UI
         [SerializeField] private Button playButton;
         [SerializeField] private Button optionsButton;
         [SerializeField] private Button quitButton;
+        [SerializeField] private Button leaderboardButton;
+        [SerializeField] private Text leaderboardButtonText;
         [SerializeField] private GameObject creditsPanel;
         [SerializeField] private Button creditsBackButton;
         [SerializeField] private Text playButtonText;
         [SerializeField] private Text optionsButtonText;
+        [SerializeField] private GameObject startLeaderboardPanel;
+        [SerializeField] private Text startLeaderboardText;
+        [SerializeField] private Button startLeaderboardBackButton;
 
         [Header("Options Panel")]
         [SerializeField] private Text optionsTitle;
@@ -104,6 +109,8 @@ namespace MagicPairs.UI
         {
             playButton?.onClick.AddListener(ShowGameTypePanel);
             optionsButton?.onClick.AddListener(ShowOptionsPanel);
+            leaderboardButton?.onClick.AddListener(ShowStartLeaderboard);
+            startLeaderboardBackButton?.onClick.AddListener(ShowStartPanel);
             quitButton?.onClick.AddListener(() => Application.Quit());
             creditsButton?.onClick.AddListener(ShowCredits);
             creditsBackButton?.onClick.AddListener(ShowOptionsPanel);
@@ -149,6 +156,7 @@ namespace MagicPairs.UI
             if (creditsPanel != null) creditsPanel.SetActive(false);
             if (challengeNamesPanel != null) challengeNamesPanel.SetActive(false);
             if (challengeThemePanel != null) challengeThemePanel.SetActive(false);
+            if (startLeaderboardPanel != null) startLeaderboardPanel.SetActive(false);
         }
 
         private void ShowStartPanel()
@@ -165,16 +173,45 @@ namespace MagicPairs.UI
                 playButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Graj" : "Play";
             if (optionsButtonText != null)
                 optionsButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Opcje" : "Options";
+            if (leaderboardButtonText != null)
+                leaderboardButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Wyniki" : "Scores";
+        }
+
+        private void ShowStartLeaderboard()
+        {
+            HideAllPanels();
+            if (startLeaderboardPanel != null) startLeaderboardPanel.SetActive(true);
+            if (startLeaderboardText == null) return;
+
+            var entries = Core.Leaderboard.Entries;
+            var sb = new System.Text.StringBuilder();
+            string header = Localization.CurrentLanguage == Language.Polish ? "TABELA WYNIKÓW" : "LEADERBOARD";
+            sb.AppendLine(header);
+            sb.AppendLine();
+            for (int i = 0; i < entries.Count; i++)
+            {
+                var e = entries[i];
+                sb.AppendLine($"{i + 1}. {e.playerName} — {e.score} (Lv.{e.level})");
+            }
+            if (entries.Count == 0)
+            {
+                string empty = Localization.CurrentLanguage == Language.Polish ? "Brak wyników" : "No scores yet";
+                sb.AppendLine(empty);
+            }
+            startLeaderboardText.text = sb.ToString();
         }
 
         private void ShowOptionsPanel()
         {
             HideAllPanels();
             if (optionsPanel != null) optionsPanel.SetActive(true);
+            bool pl = Localization.CurrentLanguage == Language.Polish;
             if (optionsTitle != null)
-                optionsTitle.text = Localization.CurrentLanguage == Language.Polish ? "Opcje" : "Options";
+                optionsTitle.text = pl ? "Opcje" : "Options";
             if (languageButtonText != null)
-                languageButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Język" : "Language";
+                languageButtonText.text = pl ? "Język" : "Language";
+            if (creditsButton != null)
+                creditsButton.GetComponentInChildren<Text>().text = pl ? "Autor" : "Credits";
         }
 
         private void ShowLanguagePanel()
@@ -224,6 +261,10 @@ namespace MagicPairs.UI
             if (challengeThemePanel != null) challengeThemePanel.SetActive(true);
             if (challengeThemeTitle != null)
                 challengeThemeTitle.text = Localization.Get("chooseTheme");
+            if (challengeColorsButton != null)
+                challengeColorsButton.GetComponentInChildren<Text>().text = Localization.Get("themeColors");
+            if (challengePrincessButton != null)
+                challengePrincessButton.GetComponentInChildren<Text>().text = Localization.Get("themePrincess");
         }
 
         private void SelectChallengeTheme(Core.CardTheme theme)
@@ -303,6 +344,10 @@ namespace MagicPairs.UI
             if (themePanel != null) themePanel.SetActive(true);
             if (themeTitle != null)
                 themeTitle.text = Localization.Get("chooseTheme");
+            if (colorsThemeButton != null)
+                colorsThemeButton.GetComponentInChildren<Text>().text = Localization.Get("themeColors");
+            if (princessThemeButton != null)
+                princessThemeButton.GetComponentInChildren<Text>().text = Localization.Get("themePrincess");
         }
 
         private void SelectTheme(Core.CardTheme theme)

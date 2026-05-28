@@ -53,6 +53,15 @@ namespace MagicPairs.UI
             if (scorePanel != null) scorePanel.SetActive(true);
             if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
             if (challengeOverPanel != null) challengeOverPanel.SetActive(false);
+
+            // Localize button texts
+            bool pl = Localization.CurrentLanguage == Language.Polish;
+            if (nextLevelButton != null)
+                nextLevelButton.GetComponentInChildren<Text>().text = pl ? "Dalej" : "Next";
+            if (challengeMenuButton != null)
+                challengeMenuButton.GetComponentInChildren<Text>().text = "Menu";
+            if (showLeaderboardButton != null)
+                showLeaderboardButton.GetComponentInChildren<Text>().text = pl ? "Wyniki" : "Scores";
         }
 
         private void HideAll()

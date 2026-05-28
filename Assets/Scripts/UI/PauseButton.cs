@@ -43,6 +43,17 @@ namespace MagicPairs.UI
         private void ShowConfirm()
         {
             if (confirmPanel != null) confirmPanel.SetActive(true);
+            bool pl = Localization.CurrentLanguage == Language.Polish;
+            var texts = confirmPanel.GetComponentsInChildren<Text>();
+            foreach (var t in texts)
+            {
+                if (t.gameObject.name == "ConfirmText")
+                    t.text = pl ? "Wróć do menu?" : "Back to menu?";
+            }
+            if (yesButton != null)
+                yesButton.GetComponentInChildren<Text>().text = pl ? "Tak" : "Yes";
+            if (noButton != null)
+                noButton.GetComponentInChildren<Text>().text = pl ? "Nie" : "No";
         }
 
         private void HideConfirm()
