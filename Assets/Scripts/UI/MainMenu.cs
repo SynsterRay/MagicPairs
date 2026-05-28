@@ -44,7 +44,6 @@ namespace MagicPairs.UI
         [SerializeField] private Button startButton;
         [SerializeField] private Text startButtonText;
         [SerializeField] private Button namesBackButton;
-        [SerializeField] private Text titleText;
 
         public static string Player1Name { get; private set; } = "Gracz 1";
         public static string Player2Name { get; private set; } = "Gracz 2";
@@ -78,7 +77,6 @@ namespace MagicPairs.UI
             if (modePanel != null) modePanel.SetActive(false);
             if (difficultyPanel != null) difficultyPanel.SetActive(false);
             if (namesPanel != null) namesPanel.SetActive(false);
-            if (titleText != null) titleText.text = "Magic Pairs";
             if (languageTitle != null) languageTitle.text = "Choose Language / Wybierz język";
         }
 

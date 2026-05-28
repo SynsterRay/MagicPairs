@@ -160,4 +160,8 @@ Plik: `Assets/ScriptableObjects/GameConfig.asset`
 - Lokalizacja PL/EN
 - PairCollector — zbieranie par pod nickiem gracza
 - Editor tool: SceneSetup (idempotentny)
+- Logo jednorożca w menu (zamiast tekstu)
+- Background gry z pliku background_game.png (50% opacity)
+- Białe tło paneli UI z ciemnym tekstem bold
+- Biały tekst wskaźnika tury (na tle gry)
 - GitHub repo: https://github.com/SynsterRay/MagicPairs

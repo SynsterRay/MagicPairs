@@ -33,11 +33,15 @@ Gra karciana Memory dla dzieci — Unity 6, mobile (Android/iOS).
 
 ## Funkcje
 
-- 🎮 Menu startowe z wyborem języka (PL/EN) i imion graczy
+- 🎮 Menu krokowe: język → tryb → trudność → imiona (z przyciskami cofania)
+- 🦄 Logo jednorożca w menu
+- 🖼️ Tło gry z grafiki (50% opacity)
 - 🃏 Animacja rozdawania kart z talii
 - 🔄 Animacja odkrywania (flip)
 - 🏆 System punktacji z wizualnym zbieraniem par
-- 🃏 Karta Piotruś — utrata kolejki
+- 🃏 Karta Piotruś/Joker — utrata kolejki
+- 🤖 Tryb Single Player (AI z pamięcią)
+- ⭐ 3 poziomy trudności (★/★★/★★★)
 - 🌍 Lokalizacja PL/EN
 - 🔌 Placeholder na multiplayer online
 

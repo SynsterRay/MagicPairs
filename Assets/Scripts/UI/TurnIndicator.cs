@@ -7,8 +7,8 @@ namespace MagicPairs.UI
     public class TurnIndicator : MonoBehaviour
     {
         [SerializeField] private Text turnText;
-        [SerializeField] private Color player1Color = new(0.2f, 0.6f, 1f);
-        [SerializeField] private Color player2Color = new(1f, 0.4f, 0.4f);
+        [SerializeField] private Color player1Color = Color.white;
+        [SerializeField] private Color player2Color = Color.white;
 
         private void OnEnable()
         {

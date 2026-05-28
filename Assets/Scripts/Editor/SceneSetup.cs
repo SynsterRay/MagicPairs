@@ -193,7 +193,7 @@ namespace MagicPairs.Editor
             var goPanel = new GameObject("GameOverPanel");
             goPanel.transform.SetParent(canvas.transform, false);
             var goPanelImg = goPanel.AddComponent<Image>();
-            goPanelImg.color = new Color(0f, 0f, 0f, 0.85f);
+            goPanelImg.color = new Color(1f, 1f, 1f, 0.95f);
             var goPanelRect = goPanel.GetComponent<RectTransform>();
             goPanelRect.anchorMin = new Vector2(0.1f, 0.3f);
             goPanelRect.anchorMax = new Vector2(0.9f, 0.7f);
@@ -218,28 +218,59 @@ namespace MagicPairs.Editor
             var menuPanel = new GameObject("MenuPanel");
             menuPanel.transform.SetParent(canvas.transform, false);
             var menuImg = menuPanel.AddComponent<Image>();
-            menuImg.color = new Color(0.08f, 0.08f, 0.15f, 0.95f);
+            menuImg.color = new Color(1f, 1f, 1f, 0.95f);
             var menuRect = menuPanel.GetComponent<RectTransform>();
             menuRect.anchorMin = Vector2.zero;
             menuRect.anchorMax = Vector2.one;
             menuRect.offsetMin = Vector2.zero;
             menuRect.offsetMax = Vector2.zero;
 
-            // Title
-            var title = CreateUIText("Title", "Magic Pairs", menuPanel.transform,
-                new Vector2(0.1f, 0.82f), new Vector2(0.9f, 0.95f), TextAnchor.MiddleCenter, 56);
+            // Title Logo
+            var logoSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Textures/logo_unicorn.png");
+            var titleObj = new GameObject("TitleLogo");
+            titleObj.transform.SetParent(menuPanel.transform, false);
+            var titleImg = titleObj.AddComponent<Image>();
+            titleImg.sprite = logoSprite;
+            titleImg.preserveAspect = true;
+            var titleRect = titleObj.GetComponent<RectTransform>();
+            titleRect.anchorMin = new Vector2(0.1f, 0.7f);
+            titleRect.anchorMax = new Vector2(0.9f, 0.98f);
+            titleRect.offsetMin = Vector2.zero;
+            titleRect.offsetMax = Vector2.zero;
+
+            // Game Background (behind cards, on separate canvas)
+            var bgSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Textures/background_game.png");
+            var bgCanvas = new GameObject("BackgroundCanvas");
+            var bgC = bgCanvas.AddComponent<Canvas>();
+            bgC.renderMode = RenderMode.ScreenSpaceCamera;
+            bgC.worldCamera = UnityEngine.Camera.main;
+            bgC.planeDistance = 15f;
+            bgC.sortingOrder = -1;
+            bgCanvas.AddComponent<UnityEngine.UI.CanvasScaler>();
+
+            var bgObj = new GameObject("GameBackground");
+            bgObj.transform.SetParent(bgCanvas.transform, false);
+            var bgImg = bgObj.AddComponent<Image>();
+            bgImg.sprite = bgSprite;
+            bgImg.preserveAspect = false;
+            bgImg.color = new Color(1f, 1f, 1f, 0.5f);
+            var bgRect = bgObj.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.offsetMin = Vector2.zero;
+            bgRect.offsetMax = Vector2.zero;
 
             // --- Language Panel ---
             var langPanel = new GameObject("LanguagePanel");
             langPanel.transform.SetParent(menuPanel.transform, false);
             var langPanelRect = langPanel.AddComponent<RectTransform>();
-            langPanelRect.anchorMin = new Vector2(0.1f, 0.2f);
-            langPanelRect.anchorMax = new Vector2(0.9f, 0.8f);
+            langPanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            langPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
             langPanelRect.offsetMin = Vector2.zero;
             langPanelRect.offsetMax = Vector2.zero;
 
             var langTitle = CreateUIText("LangTitle", "Choose Language / Wybierz język", langPanel.transform,
-                new Vector2(0f, 0.7f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 30);
+                new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 30);
 
             var plBtn = CreateButton("PolishBtn", "Polski", langPanel.transform,
                 new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
@@ -255,13 +286,13 @@ namespace MagicPairs.Editor
             var modePanel = new GameObject("ModePanel");
             modePanel.transform.SetParent(menuPanel.transform, false);
             var modePanelRect = modePanel.AddComponent<RectTransform>();
-            modePanelRect.anchorMin = new Vector2(0.1f, 0.2f);
-            modePanelRect.anchorMax = new Vector2(0.9f, 0.8f);
+            modePanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            modePanelRect.anchorMax = new Vector2(0.9f, 0.75f);
             modePanelRect.offsetMin = Vector2.zero;
             modePanelRect.offsetMax = Vector2.zero;
 
             var modeTitle = CreateUIText("ModeTitle", "Wybierz tryb", modePanel.transform,
-                new Vector2(0f, 0.7f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 30);
+                new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 30);
 
             var twoPlayersBtn = CreateButton("TwoPlayersBtn", "2 Graczy", modePanel.transform,
                 new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
@@ -277,13 +308,13 @@ namespace MagicPairs.Editor
             var diffPanel = new GameObject("DifficultyPanel");
             diffPanel.transform.SetParent(menuPanel.transform, false);
             var diffPanelRect = diffPanel.AddComponent<RectTransform>();
-            diffPanelRect.anchorMin = new Vector2(0.1f, 0.2f);
-            diffPanelRect.anchorMax = new Vector2(0.9f, 0.8f);
+            diffPanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            diffPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
             diffPanelRect.offsetMin = Vector2.zero;
             diffPanelRect.offsetMax = Vector2.zero;
 
             var diffTitle = CreateUIText("DiffTitle", "Wybierz poziom trudności", diffPanel.transform,
-                new Vector2(0f, 0.75f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 28);
 
             var easyBtn = CreateButton("EasyBtn", "★", diffPanel.transform,
                 new Vector2(0.05f, 0.3f), new Vector2(0.3f, 0.7f));
@@ -316,8 +347,8 @@ namespace MagicPairs.Editor
             var namesPanel = new GameObject("NamesPanel");
             namesPanel.transform.SetParent(menuPanel.transform, false);
             var namesPanelRect = namesPanel.AddComponent<RectTransform>();
-            namesPanelRect.anchorMin = new Vector2(0.1f, 0.1f);
-            namesPanelRect.anchorMax = new Vector2(0.9f, 0.8f);
+            namesPanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            namesPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
             namesPanelRect.offsetMin = Vector2.zero;
             namesPanelRect.offsetMax = Vector2.zero;
 
@@ -369,7 +400,6 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("player2Label").objectReferenceValue = p2Label;
             mmSo.FindProperty("startButton").objectReferenceValue = startBtn.GetComponent<Button>();
             mmSo.FindProperty("startButtonText").objectReferenceValue = startBtn.GetComponentInChildren<Text>();
-            mmSo.FindProperty("titleText").objectReferenceValue = title;
             mmSo.ApplyModifiedProperties();
         }
 
@@ -380,9 +410,10 @@ namespace MagicPairs.Editor
             go.transform.SetParent(parent, false);
             var txt = go.AddComponent<Text>();
             txt.text = text;
-            txt.fontSize = fontSize;
+            txt.fontSize = fontSize + 6;
+            txt.fontStyle = FontStyle.Bold;
             txt.alignment = alignment;
-            txt.color = Color.white;
+            txt.color = new Color(0.15f, 0.15f, 0.15f);
             txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = anchorMin;
@@ -410,7 +441,8 @@ namespace MagicPairs.Editor
             txtObj.transform.SetParent(btn.transform, false);
             var txt = txtObj.AddComponent<Text>();
             txt.text = label;
-            txt.fontSize = 28;
+            txt.fontSize = 34;
+            txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
             txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
