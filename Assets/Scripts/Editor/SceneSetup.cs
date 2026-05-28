@@ -192,7 +192,7 @@ namespace MagicPairs.Editor
 
             // Turn Indicator
             var turnText = CreateUIText("TurnIndicator", "Tura: Gracz 1", canvas.transform,
-                new Vector2(0.2f, 0.84f), new Vector2(0.8f, 0.9f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0.2f, 0.78f), new Vector2(0.8f, 0.85f), TextAnchor.MiddleCenter, 28);
 
             // Pause/Menu Button (top right corner)
             var pauseBtn = CreateButton("PauseBtn", "✕", canvas.transform,
