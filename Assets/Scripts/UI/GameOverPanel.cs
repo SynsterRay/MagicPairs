@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using MagicPairs.Core;
 
 namespace MagicPairs.UI
@@ -8,7 +7,7 @@ namespace MagicPairs.UI
     public class GameOverPanel : MonoBehaviour
     {
         [SerializeField] private GameObject panel;
-        [SerializeField] private TextMeshProUGUI resultText;
+        [SerializeField] private Text resultText;
         [SerializeField] private Button playAgainButton;
 
         private void OnEnable()

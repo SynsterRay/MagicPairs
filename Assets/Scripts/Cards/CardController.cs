@@ -13,18 +13,14 @@ namespace MagicPairs.Cards
         public event Action<CardController> OnFlipComplete;
 
         private CardAnimator _animator;
-        private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
-        private static readonly int ColorId = Shader.PropertyToID("_Color");
-        private MaterialPropertyBlock _propBlock;
-        private Renderer _renderer;
+        private Color _backColor;
 
         public void Initialize(CardData data, Color backColor)
         {
             Data = data;
+            _backColor = backColor;
             _animator = GetComponent<CardAnimator>();
-            _renderer = GetComponentInChildren<Renderer>();
-            _propBlock = new MaterialPropertyBlock();
-            SetColor(backColor);
+            _animator.SetColor(backColor);
             State = CardState.FaceDown;
         }
 
@@ -53,15 +49,6 @@ namespace MagicPairs.Cards
         public void SetMatched()
         {
             State = CardState.Matched;
-        }
-
-        private void SetColor(Color color)
-        {
-            if (_renderer == null) return;
-            _renderer.GetPropertyBlock(_propBlock);
-            _propBlock.SetColor(BaseColorId, color);
-            _propBlock.SetColor(ColorId, color);
-            _renderer.SetPropertyBlock(_propBlock);
         }
     }
 }

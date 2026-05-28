@@ -7,10 +7,10 @@ namespace MagicPairs.Cards
     public class CardAnimator : MonoBehaviour
     {
         private float _flipDuration = 0.3f;
+        private Renderer _renderer;
+        private MaterialPropertyBlock _propBlock;
         private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
         private static readonly int ColorId = Shader.PropertyToID("_Color");
-        private MaterialPropertyBlock _propBlock;
-        private Renderer _renderer;
 
         private void Awake()
         {
@@ -18,6 +18,15 @@ namespace MagicPairs.Cards
             _propBlock = new MaterialPropertyBlock();
             var config = Core.GameManager.Instance?.Config;
             if (config != null) _flipDuration = config.flipDuration;
+        }
+
+        public void SetColor(Color color)
+        {
+            if (_renderer == null) return;
+            _renderer.GetPropertyBlock(_propBlock);
+            _propBlock.SetColor(BaseColorId, color);
+            _propBlock.SetColor(ColorId, color);
+            _renderer.SetPropertyBlock(_propBlock);
         }
 
         public void PlayFlip(Color targetColor, Action onComplete)
@@ -28,34 +37,36 @@ namespace MagicPairs.Cards
         private IEnumerator FlipCoroutine(Color targetColor, Action onComplete)
         {
             float half = _flipDuration * 0.5f;
-            Quaternion startRot = transform.localRotation;
-            Quaternion midRot = startRot * Quaternion.Euler(0f, 90f, 0f);
 
-            // First half: rotate to 90 degrees (card edge)
+            // First half: scale X from 1 to 0 (card disappears edge-on)
             float t = 0f;
+            Vector3 scale = transform.localScale;
+            float originalScaleX = Mathf.Abs(scale.x);
             while (t < half)
             {
                 t += Time.deltaTime;
                 float ratio = Mathf.Clamp01(t / half);
-                transform.localRotation = Quaternion.Slerp(startRot, midRot, ratio);
+                scale.x = Mathf.Lerp(originalScaleX, 0f, ratio);
+                transform.localScale = scale;
                 yield return null;
             }
 
             // Swap color at midpoint
             SetColor(targetColor);
 
-            // Second half: rotate from 90 to 180 (face visible)
-            Quaternion endRot = startRot * Quaternion.Euler(0f, 180f, 0f);
+            // Second half: scale X from 0 back to original
             t = 0f;
             while (t < half)
             {
                 t += Time.deltaTime;
                 float ratio = Mathf.Clamp01(t / half);
-                transform.localRotation = Quaternion.Slerp(midRot, endRot, ratio);
+                scale.x = Mathf.Lerp(0f, originalScaleX, ratio);
+                transform.localScale = scale;
                 yield return null;
             }
 
-            transform.localRotation = endRot;
+            scale.x = originalScaleX;
+            transform.localScale = scale;
             onComplete?.Invoke();
         }
 
@@ -80,15 +91,6 @@ namespace MagicPairs.Cards
             }
             transform.position = toPos;
             onComplete?.Invoke();
-        }
-
-        private void SetColor(Color color)
-        {
-            if (_renderer == null) return;
-            _renderer.GetPropertyBlock(_propBlock);
-            _propBlock.SetColor(BaseColorId, color);
-            _propBlock.SetColor(ColorId, color);
-            _renderer.SetPropertyBlock(_propBlock);
         }
     }
 }

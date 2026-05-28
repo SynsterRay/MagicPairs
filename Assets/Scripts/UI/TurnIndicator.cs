@@ -1,12 +1,12 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 using MagicPairs.Core;
 
 namespace MagicPairs.UI
 {
     public class TurnIndicator : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI turnText;
+        [SerializeField] private Text turnText;
         [SerializeField] private Color player1Color = new(0.2f, 0.6f, 1f);
         [SerializeField] private Color player2Color = new(1f, 0.4f, 0.4f);
 

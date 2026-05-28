@@ -1,13 +1,13 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 using MagicPairs.Core;
 
 namespace MagicPairs.UI
 {
     public class ScoreDisplay : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI player1ScoreText;
-        [SerializeField] private TextMeshProUGUI player2ScoreText;
+        [SerializeField] private Text player1ScoreText;
+        [SerializeField] private Text player2ScoreText;
 
         private void OnEnable()
         {
