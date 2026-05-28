@@ -109,6 +109,8 @@ namespace MagicPairs.Editor
             var gm = new GameObject("GameManager");
             var manager = gm.AddComponent<Core.GameManager>();
             gm.AddComponent<GameFlow.LocalGameMode>();
+            var singleMode = gm.AddComponent<GameFlow.SinglePlayerMode>();
+            singleMode.enabled = false;
             gm.AddComponent<Players.ScoreTracker>();
             gm.AddComponent<Input.TouchInputHandler>();
 
@@ -225,39 +227,150 @@ namespace MagicPairs.Editor
 
             // Title
             var title = CreateUIText("Title", "Magic Pairs", menuPanel.transform,
-                new Vector2(0.1f, 0.75f), new Vector2(0.9f, 0.92f), TextAnchor.MiddleCenter, 56);
+                new Vector2(0.1f, 0.82f), new Vector2(0.9f, 0.95f), TextAnchor.MiddleCenter, 56);
 
-            // Player 1 label + input
-            var p1Label = CreateUIText("P1Label", "Imię Gracza 1", menuPanel.transform,
-                new Vector2(0.1f, 0.62f), new Vector2(0.9f, 0.68f), TextAnchor.MiddleLeft, 24);
-            var p1Input = CreateInputField("P1Input", "Gracz 1", menuPanel.transform,
-                new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.62f));
+            // --- Language Panel ---
+            var langPanel = new GameObject("LanguagePanel");
+            langPanel.transform.SetParent(menuPanel.transform, false);
+            var langPanelRect = langPanel.AddComponent<RectTransform>();
+            langPanelRect.anchorMin = new Vector2(0.1f, 0.2f);
+            langPanelRect.anchorMax = new Vector2(0.9f, 0.8f);
+            langPanelRect.offsetMin = Vector2.zero;
+            langPanelRect.offsetMax = Vector2.zero;
 
-            // Player 2 label + input
-            var p2Label = CreateUIText("P2Label", "Imię Gracza 2", menuPanel.transform,
-                new Vector2(0.1f, 0.45f), new Vector2(0.9f, 0.51f), TextAnchor.MiddleLeft, 24);
-            var p2Input = CreateInputField("P2Input", "Gracz 2", menuPanel.transform,
-                new Vector2(0.1f, 0.38f), new Vector2(0.9f, 0.45f));
+            var langTitle = CreateUIText("LangTitle", "Choose Language / Wybierz język", langPanel.transform,
+                new Vector2(0f, 0.7f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 30);
 
-            // Language button
-            var langBtn = CreateButton("LanguageBtn", "PL", menuPanel.transform,
-                new Vector2(0.35f, 0.25f), new Vector2(0.65f, 0.33f));
+            var plBtn = CreateButton("PolishBtn", "Polski", langPanel.transform,
+                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
+            var enBtn = CreateButton("EnglishBtn", "English", langPanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
 
-            // Start button
-            var startBtn = CreateButton("StartBtn", "Start", menuPanel.transform,
-                new Vector2(0.2f, 0.1f), new Vector2(0.8f, 0.2f));
+            var quitBtn = CreateButton("QuitBtn", "✕", langPanel.transform,
+                new Vector2(0.35f, -0.15f), new Vector2(0.65f, -0.02f));
+            quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
+            quitBtn.GetComponentInChildren<Text>().fontSize = 32;
+
+            // --- Mode Panel ---
+            var modePanel = new GameObject("ModePanel");
+            modePanel.transform.SetParent(menuPanel.transform, false);
+            var modePanelRect = modePanel.AddComponent<RectTransform>();
+            modePanelRect.anchorMin = new Vector2(0.1f, 0.2f);
+            modePanelRect.anchorMax = new Vector2(0.9f, 0.8f);
+            modePanelRect.offsetMin = Vector2.zero;
+            modePanelRect.offsetMax = Vector2.zero;
+
+            var modeTitle = CreateUIText("ModeTitle", "Wybierz tryb", modePanel.transform,
+                new Vector2(0f, 0.7f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 30);
+
+            var twoPlayersBtn = CreateButton("TwoPlayersBtn", "2 Graczy", modePanel.transform,
+                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
+            var singlePlayerBtn = CreateButton("SinglePlayerBtn", "1 Gracz (vs AI)", modePanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
+            singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
+
+            var modeBackBtn = CreateButton("ModeBackBtn", "←", modePanel.transform,
+                new Vector2(0f, 0.0f), new Vector2(0.15f, 0.1f));
+            modeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+            modeBackBtn.GetComponentInChildren<Text>().fontSize = 32;
+
+            // --- Difficulty Panel ---
+            var diffPanel = new GameObject("DifficultyPanel");
+            diffPanel.transform.SetParent(menuPanel.transform, false);
+            var diffPanelRect = diffPanel.AddComponent<RectTransform>();
+            diffPanelRect.anchorMin = new Vector2(0.1f, 0.2f);
+            diffPanelRect.anchorMax = new Vector2(0.9f, 0.8f);
+            diffPanelRect.offsetMin = Vector2.zero;
+            diffPanelRect.offsetMax = Vector2.zero;
+
+            var diffTitle = CreateUIText("DiffTitle", "Wybierz poziom trudności", diffPanel.transform,
+                new Vector2(0f, 0.75f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 28);
+
+            var easyBtn = CreateButton("EasyBtn", "★", diffPanel.transform,
+                new Vector2(0.05f, 0.3f), new Vector2(0.3f, 0.7f));
+            easyBtn.GetComponent<Image>().color = new Color(0.3f, 0.8f, 0.3f, 1f);
+            easyBtn.GetComponentInChildren<Text>().fontSize = 48;
+
+            var mediumBtn = CreateButton("MediumBtn", "★★", diffPanel.transform,
+                new Vector2(0.35f, 0.3f), new Vector2(0.65f, 0.7f));
+            mediumBtn.GetComponent<Image>().color = new Color(0.9f, 0.7f, 0.1f, 1f);
+            mediumBtn.GetComponentInChildren<Text>().fontSize = 40;
+
+            var hardBtn = CreateButton("HardBtn", "★★★", diffPanel.transform,
+                new Vector2(0.7f, 0.3f), new Vector2(0.95f, 0.7f));
+            hardBtn.GetComponent<Image>().color = new Color(0.9f, 0.2f, 0.2f, 1f);
+            hardBtn.GetComponentInChildren<Text>().fontSize = 32;
+
+            // Labels under stars
+            CreateUIText("EasyLabel", "3x4", diffPanel.transform,
+                new Vector2(0.05f, 0.15f), new Vector2(0.3f, 0.3f), TextAnchor.MiddleCenter, 20);
+            CreateUIText("MediumLabel", "4x5", diffPanel.transform,
+                new Vector2(0.35f, 0.15f), new Vector2(0.65f, 0.3f), TextAnchor.MiddleCenter, 20);
+            CreateUIText("HardLabel", "5x6", diffPanel.transform,
+                new Vector2(0.7f, 0.15f), new Vector2(0.95f, 0.3f), TextAnchor.MiddleCenter, 20);
+
+            var diffBackBtn = CreateButton("DiffBackBtn", "←", diffPanel.transform,
+                new Vector2(0f, 0.0f), new Vector2(0.15f, 0.1f));
+            diffBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+            diffBackBtn.GetComponentInChildren<Text>().fontSize = 32;
+
+            // --- Names Panel ---
+            var namesPanel = new GameObject("NamesPanel");
+            namesPanel.transform.SetParent(menuPanel.transform, false);
+            var namesPanelRect = namesPanel.AddComponent<RectTransform>();
+            namesPanelRect.anchorMin = new Vector2(0.1f, 0.1f);
+            namesPanelRect.anchorMax = new Vector2(0.9f, 0.8f);
+            namesPanelRect.offsetMin = Vector2.zero;
+            namesPanelRect.offsetMax = Vector2.zero;
+
+            var p1Label = CreateUIText("P1Label", "Imię Gracza 1", namesPanel.transform,
+                new Vector2(0f, 0.75f), new Vector2(1f, 0.85f), TextAnchor.MiddleLeft, 24);
+            var p1Input = CreateInputField("P1Input", "Gracz 1", namesPanel.transform,
+                new Vector2(0f, 0.6f), new Vector2(1f, 0.74f));
+
+            var p2Label = CreateUIText("P2Label", "Imię Gracza 2", namesPanel.transform,
+                new Vector2(0f, 0.45f), new Vector2(1f, 0.55f), TextAnchor.MiddleLeft, 24);
+            var p2Input = CreateInputField("P2Input", "Gracz 2", namesPanel.transform,
+                new Vector2(0f, 0.3f), new Vector2(1f, 0.44f));
+
+            var startBtn = CreateButton("StartBtn", "Start", namesPanel.transform,
+                new Vector2(0.1f, 0.02f), new Vector2(0.9f, 0.2f));
             startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
+            var namesBackBtn = CreateButton("NamesBackBtn", "←", namesPanel.transform,
+                new Vector2(0f, 0.87f), new Vector2(0.15f, 0.99f));
+            namesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+            namesBackBtn.GetComponentInChildren<Text>().fontSize = 32;
+
+            // Wire MainMenu
             var mainMenu = canvas.AddComponent<UI.MainMenu>();
             var mmSo = new SerializedObject(mainMenu);
             mmSo.FindProperty("menuPanel").objectReferenceValue = menuPanel;
+            mmSo.FindProperty("languagePanel").objectReferenceValue = langPanel;
+            mmSo.FindProperty("modePanel").objectReferenceValue = modePanel;
+            mmSo.FindProperty("difficultyPanel").objectReferenceValue = diffPanel;
+            mmSo.FindProperty("namesPanel").objectReferenceValue = namesPanel;
+            mmSo.FindProperty("languageTitle").objectReferenceValue = langTitle;
+            mmSo.FindProperty("polishButton").objectReferenceValue = plBtn.GetComponent<Button>();
+            mmSo.FindProperty("englishButton").objectReferenceValue = enBtn.GetComponent<Button>();
+            mmSo.FindProperty("quitButton").objectReferenceValue = quitBtn.GetComponent<Button>();
+            mmSo.FindProperty("modeTitle").objectReferenceValue = modeTitle;
+            mmSo.FindProperty("twoPlayersButton").objectReferenceValue = twoPlayersBtn.GetComponent<Button>();
+            mmSo.FindProperty("singlePlayerButton").objectReferenceValue = singlePlayerBtn.GetComponent<Button>();
+            mmSo.FindProperty("twoPlayersText").objectReferenceValue = twoPlayersBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("singlePlayerText").objectReferenceValue = singlePlayerBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("difficultyTitle").objectReferenceValue = diffTitle;
+            mmSo.FindProperty("easyButton").objectReferenceValue = easyBtn.GetComponent<Button>();
+            mmSo.FindProperty("mediumButton").objectReferenceValue = mediumBtn.GetComponent<Button>();
+            mmSo.FindProperty("hardButton").objectReferenceValue = hardBtn.GetComponent<Button>();
+            mmSo.FindProperty("difficultyBackButton").objectReferenceValue = diffBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("modeBackButton").objectReferenceValue = modeBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("namesBackButton").objectReferenceValue = namesBackBtn.GetComponent<Button>();
             mmSo.FindProperty("player1Input").objectReferenceValue = p1Input.GetComponent<InputField>();
             mmSo.FindProperty("player2Input").objectReferenceValue = p2Input.GetComponent<InputField>();
-            mmSo.FindProperty("startButton").objectReferenceValue = startBtn.GetComponent<Button>();
-            mmSo.FindProperty("languageButton").objectReferenceValue = langBtn.GetComponent<Button>();
-            mmSo.FindProperty("languageButtonText").objectReferenceValue = langBtn.GetComponentInChildren<Text>();
             mmSo.FindProperty("player1Label").objectReferenceValue = p1Label;
             mmSo.FindProperty("player2Label").objectReferenceValue = p2Label;
+            mmSo.FindProperty("startButton").objectReferenceValue = startBtn.GetComponent<Button>();
             mmSo.FindProperty("startButtonText").objectReferenceValue = startBtn.GetComponentInChildren<Text>();
             mmSo.FindProperty("titleText").objectReferenceValue = title;
             mmSo.ApplyModifiedProperties();

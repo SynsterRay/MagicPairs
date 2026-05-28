@@ -8,30 +8,34 @@ namespace MagicPairs.Input
     public class TouchInputHandler : MonoBehaviour
     {
         private UnityEngine.Camera _cam;
-        private IGameMode _gameMode;
 
         private void Start()
         {
             _cam = UnityEngine.Camera.main;
-            _gameMode = GetComponent<IGameMode>() ?? GetComponentInParent<IGameMode>();
-            if (_gameMode == null)
-                _gameMode = FindAnyObjectByType<LocalGameMode>();
+        }
+
+        private IGameMode GetActiveMode()
+        {
+            // Find whichever mode is currently enabled
+            var local = GetComponent<LocalGameMode>();
+            if (local != null && local.enabled) return local;
+            var single = GetComponent<SinglePlayerMode>();
+            if (single != null && single.enabled) return single;
+            return local;
         }
 
         private void Update()
         {
-            if (_gameMode == null || _cam == null) return;
+            if (_cam == null) return;
 
             bool tapped = false;
             Vector2 screenPos = Vector2.zero;
 
-            // Touch
             if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
             {
                 tapped = true;
                 screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
             }
-            // Mouse fallback (editor/desktop)
             else if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
             {
                 tapped = true;
@@ -45,7 +49,7 @@ namespace MagicPairs.Input
             {
                 var card = hit.collider.GetComponent<CardController>();
                 if (card != null)
-                    _gameMode.OnCardSelected(card);
+                    GetActiveMode()?.OnCardSelected(card);
             }
         }
     }

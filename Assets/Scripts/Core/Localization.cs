@@ -13,8 +13,9 @@ namespace MagicPairs.Core
             // index 0 = Polish, 1 = English
             { "player1", new[] { "Gracz 1", "Player 1" } },
             { "player2", new[] { "Gracz 2", "Player 2" } },
+            { "computer", new[] { "Komputer", "Computer" } },
             { "turn", new[] { "Tura: {0}", "Turn: {0}" } },
-            { "piotrus", new[] { "Piotruś! {0} traci kolejkę!", "Old Maid! {0} loses a turn!" } },
+            { "piotrus", new[] { "Piotruś! {0} traci kolejkę!", "Joker! {0} loses a turn!" } },
             { "wins", new[] { "Wygrywa {0}!", "{0} wins!" } },
             { "draw", new[] { "Remis!", "Draw!" } },
             { "playAgain", new[] { "Zagraj ponownie", "Play Again" } },
@@ -23,6 +24,8 @@ namespace MagicPairs.Core
             { "player1Name", new[] { "Imię Gracza 1", "Player 1 Name" } },
             { "player2Name", new[] { "Imię Gracza 2", "Player 2 Name" } },
             { "score", new[] { "{0}: {1}", "{0}: {1}" } },
+            { "mode1P", new[] { "1 Gracz (vs AI)", "1 Player (vs AI)" } },
+            { "mode2P", new[] { "2 Graczy", "2 Players" } },
         };
 
         public static string Get(string key)
