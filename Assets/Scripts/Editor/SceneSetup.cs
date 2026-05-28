@@ -113,6 +113,7 @@ namespace MagicPairs.Editor
             singleMode.enabled = false;
             var challengeMode = gm.AddComponent<GameFlow.ChallengeMode>();
             challengeMode.enabled = false;
+            gm.AddComponent<Cards.MatchEffect>();
             gm.AddComponent<Players.ScoreTracker>();
             gm.AddComponent<Input.TouchInputHandler>();
 
@@ -421,6 +422,9 @@ namespace MagicPairs.Editor
             cuSo.FindProperty("leaderboardBackButton").objectReferenceValue = leaderBackBtn.GetComponent<Button>();
             cuSo.FindProperty("showLeaderboardButton").objectReferenceValue = chLeaderBtn.GetComponent<Button>();
             cuSo.ApplyModifiedProperties();
+
+            // Score Popup (floating +points animation)
+            canvas.AddComponent<UI.ScorePopup>();
 
             // Main Menu Panel
             var menuPanel = new GameObject("MenuPanel");
