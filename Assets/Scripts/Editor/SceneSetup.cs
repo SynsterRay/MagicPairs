@@ -180,9 +180,9 @@ namespace MagicPairs.Editor
             scoreRect.offsetMax = Vector2.zero;
 
             var p1Score = CreateUIText("Player1Score", "Gracz 1: 0", scorePanel.transform,
-                new Vector2(0f, 0f), new Vector2(0.5f, 1f), TextAnchor.MiddleCenter, 32);
+                new Vector2(0.15f, 0f), new Vector2(0.5f, 1f), TextAnchor.MiddleCenter, 32);
             var p2Score = CreateUIText("Player2Score", "Gracz 2: 0", scorePanel.transform,
-                new Vector2(0.5f, 0f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 32);
+                new Vector2(0.5f, 0f), new Vector2(0.85f, 1f), TextAnchor.MiddleCenter, 32);
 
             var scoreDisplay = canvas.AddComponent<UI.ScoreDisplay>();
             var sdSo = new SerializedObject(scoreDisplay);
