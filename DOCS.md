@@ -38,8 +38,15 @@ Gra karciana Memory dla dzieci — Unity 6 z URP, docelowo na urządzenia mobiln
 - [ ] Animacje cząsteczkowe przy znalezieniu pary
 - [ ] Save/Load wyników (leaderboard)
 - [ ] Safe Area dla notchy (mobile)
-- [ ] Różne motywy graficzne kart
+- [ ] Więcej motywów kart
 - [ ] Więcej kolorów w palecie (dla Hard potrzeba 14, jest 8)
+
+## Releases
+
+| Wersja | Data | Opis |
+|--------|------|------|
+| v1.0 | 2026-05-28 | Pierwsza wersja APK |
+| v1.1 | 2026-05-28 | Fix: kamera auto-scale, karty nie zasłaniane przez UI, Piotruś widoczny |
 
 ## Architektura
 
