@@ -20,6 +20,9 @@ namespace MagicPairs.UI
         [SerializeField] private Button polishButton;
         [SerializeField] private Button englishButton;
         [SerializeField] private Button quitButton;
+        [SerializeField] private Button creditsButton;
+        [SerializeField] private GameObject creditsPanel;
+        [SerializeField] private Button creditsBackButton;
 
         [Header("Mode Panel")]
         [SerializeField] private Text modeTitle;
@@ -64,6 +67,8 @@ namespace MagicPairs.UI
             polishButton?.onClick.AddListener(() => SelectLanguage(Language.Polish));
             englishButton?.onClick.AddListener(() => SelectLanguage(Language.English));
             quitButton?.onClick.AddListener(() => Application.Quit());
+            creditsButton?.onClick.AddListener(ShowCredits);
+            creditsBackButton?.onClick.AddListener(ShowLanguagePanel);
             twoPlayersButton?.onClick.AddListener(() => SelectMode(false));
             singlePlayerButton?.onClick.AddListener(() => SelectMode(true));
             easyButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Easy));
@@ -89,12 +94,19 @@ namespace MagicPairs.UI
             if (themePanel != null) themePanel.SetActive(false);
             if (namesPanel != null) namesPanel.SetActive(false);
             if (languageTitle != null) languageTitle.text = "Choose Language / Wybierz język";
+            if (creditsPanel != null) creditsPanel.SetActive(false);
         }
 
         private void SelectLanguage(Language lang)
         {
             Localization.CurrentLanguage = lang;
             ShowModePanel();
+        }
+
+        private void ShowCredits()
+        {
+            if (languagePanel != null) languagePanel.SetActive(false);
+            if (creditsPanel != null) creditsPanel.SetActive(true);
         }
 
         private void ShowModePanel()

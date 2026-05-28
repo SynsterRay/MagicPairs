@@ -171,5 +171,9 @@ Plik: `Assets/ScriptableObjects/GameConfig.asset`
 - Białe tło paneli UI z ciemnym tekstem bold
 - Biały tekst wskaźnika tury (na tle gry)
 - Typy kart: Kolory (klasyczny) i Księżniczki (14 obrazków PNG + joker)
+- Back card: dedykowany rewers karty w trybie Księżniczki (back_card.png)
 - Karty powiększone (1.0×1.4) dla lepszej widoczności
+- Biały pasek górny z wynikami graczy, background poniżej
+- Panel autora/credits w menu głównym
+- Przygotowanie pod Android (ikona aplikacji)
 - GitHub repo: https://github.com/SynsterRay/MagicPairs

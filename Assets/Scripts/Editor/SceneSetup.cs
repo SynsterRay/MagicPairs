@@ -160,11 +160,21 @@ namespace MagicPairs.Editor
             scaler.matchWidthOrHeight = 1f;
             canvas.AddComponent<GraphicRaycaster>();
 
-            // Score Display
+            // Score Display - top (on white bar)
+            var topBar = new GameObject("TopBar");
+            topBar.transform.SetParent(canvas.transform, false);
+            var topBarImg = topBar.AddComponent<Image>();
+            topBarImg.color = Color.white;
+            var topBarRect = topBar.GetComponent<RectTransform>();
+            topBarRect.anchorMin = new Vector2(0f, 0.85f);
+            topBarRect.anchorMax = new Vector2(1f, 0.93f);
+            topBarRect.offsetMin = Vector2.zero;
+            topBarRect.offsetMax = Vector2.zero;
+
             var scorePanel = new GameObject("ScorePanel");
-            scorePanel.transform.SetParent(canvas.transform, false);
+            scorePanel.transform.SetParent(topBar.transform, false);
             var scoreRect = scorePanel.AddComponent<RectTransform>();
-            scoreRect.anchorMin = new Vector2(0f, 0.92f);
+            scoreRect.anchorMin = new Vector2(0f, 0f);
             scoreRect.anchorMax = new Vector2(1f, 1f);
             scoreRect.offsetMin = Vector2.zero;
             scoreRect.offsetMax = Vector2.zero;
@@ -182,7 +192,7 @@ namespace MagicPairs.Editor
 
             // Turn Indicator
             var turnText = CreateUIText("TurnIndicator", "Tura: Gracz 1", canvas.transform,
-                new Vector2(0.2f, 0.87f), new Vector2(0.8f, 0.92f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0.2f, 0.84f), new Vector2(0.8f, 0.9f), TextAnchor.MiddleCenter, 28);
 
             // Pause/Menu Button (top right corner)
             var pauseBtn = CreateButton("PauseBtn", "✕", canvas.transform,
@@ -262,13 +272,13 @@ namespace MagicPairs.Editor
 
             // Buttons to view collected cards (below score panel, left and right)
             var p1CollBtn = CreateButton("P1CollBtn", "Karty", canvas.transform,
-                new Vector2(0.0f, 0.78f), new Vector2(0.15f, 0.85f));
+                new Vector2(0.0f, 0.85f), new Vector2(0.15f, 0.93f));
             p1CollBtn.GetComponent<Image>().color = new Color(0.3f, 0.6f, 0.9f, 1f);
             p1CollBtn.GetComponentInChildren<Text>().fontSize = 18;
             p1CollBtn.SetActive(false);
 
             var p2CollBtn = CreateButton("P2CollBtn", "Karty", canvas.transform,
-                new Vector2(0.85f, 0.78f), new Vector2(1.0f, 0.85f));
+                new Vector2(0.85f, 0.85f), new Vector2(1.0f, 0.93f));
             p2CollBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.4f, 1f);
             p2CollBtn.GetComponentInChildren<Text>().fontSize = 18;
             p2CollBtn.SetActive(false);
@@ -356,7 +366,7 @@ namespace MagicPairs.Editor
             bgImg.color = new Color(1f, 1f, 1f, 0.5f);
             var bgRect = bgObj.GetComponent<RectTransform>();
             bgRect.anchorMin = Vector2.zero;
-            bgRect.anchorMax = Vector2.one;
+            bgRect.anchorMax = new Vector2(1f, 0.85f);
             bgRect.offsetMin = Vector2.zero;
             bgRect.offsetMax = Vector2.zero;
 
@@ -364,8 +374,8 @@ namespace MagicPairs.Editor
             var langPanel = new GameObject("LanguagePanel");
             langPanel.transform.SetParent(menuPanel.transform, false);
             var langPanelRect = langPanel.AddComponent<RectTransform>();
-            langPanelRect.anchorMin = new Vector2(0.1f, 0.15f);
-            langPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            langPanelRect.anchorMin = new Vector2(0.1f, 0.25f);
+            langPanelRect.anchorMax = new Vector2(0.9f, 0.78f);
             langPanelRect.offsetMin = Vector2.zero;
             langPanelRect.offsetMax = Vector2.zero;
 
@@ -382,12 +392,35 @@ namespace MagicPairs.Editor
             quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
             quitBtn.GetComponentInChildren<Text>().fontSize = 32;
 
+            var creditsBtn = CreateButton("CreditsBtn", "Autor", langPanel.transform,
+                new Vector2(0.35f, -0.32f), new Vector2(0.65f, -0.19f));
+            creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
+
+            // --- Credits Panel ---
+            var creditsPanel = new GameObject("CreditsPanel");
+            creditsPanel.transform.SetParent(menuPanel.transform, false);
+            var creditsPanelRect = creditsPanel.AddComponent<RectTransform>();
+            creditsPanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            creditsPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            creditsPanelRect.offsetMin = Vector2.zero;
+            creditsPanelRect.offsetMax = Vector2.zero;
+            creditsPanel.SetActive(false);
+
+            CreateUIText("CreditsTitle", "Credits", creditsPanel.transform,
+                new Vector2(0f, 0.7f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 32);
+            CreateUIText("CreditsAuthor", "Created by\nMateusz Bajak", creditsPanel.transform,
+                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.65f), TextAnchor.MiddleCenter, 28);
+
+            var creditsBackBtn = CreateButton("CreditsBackBtn", "← Cofnij", creditsPanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+            creditsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
             // --- Mode Panel ---
             var modePanel = new GameObject("ModePanel");
             modePanel.transform.SetParent(menuPanel.transform, false);
             var modePanelRect = modePanel.AddComponent<RectTransform>();
-            modePanelRect.anchorMin = new Vector2(0.1f, 0.15f);
-            modePanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            modePanelRect.anchorMin = new Vector2(0.1f, 0.25f);
+            modePanelRect.anchorMax = new Vector2(0.9f, 0.78f);
             modePanelRect.offsetMin = Vector2.zero;
             modePanelRect.offsetMax = Vector2.zero;
 
@@ -504,6 +537,9 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("polishButton").objectReferenceValue = plBtn.GetComponent<Button>();
             mmSo.FindProperty("englishButton").objectReferenceValue = enBtn.GetComponent<Button>();
             mmSo.FindProperty("quitButton").objectReferenceValue = quitBtn.GetComponent<Button>();
+            mmSo.FindProperty("creditsButton").objectReferenceValue = creditsBtn.GetComponent<Button>();
+            mmSo.FindProperty("creditsPanel").objectReferenceValue = creditsPanel;
+            mmSo.FindProperty("creditsBackButton").objectReferenceValue = creditsBackBtn.GetComponent<Button>();
             mmSo.FindProperty("modeTitle").objectReferenceValue = modeTitle;
             mmSo.FindProperty("twoPlayersButton").objectReferenceValue = twoPlayersBtn.GetComponent<Button>();
             mmSo.FindProperty("singlePlayerButton").objectReferenceValue = singlePlayerBtn.GetComponent<Button>();
