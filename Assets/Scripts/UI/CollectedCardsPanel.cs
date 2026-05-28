@@ -75,12 +75,13 @@ namespace MagicPairs.UI
 
             string name = playerIndex == 0 ? MainMenu.Player1Name : MainMenu.Player2Name;
             int pairCount = cards.Count / 2;
-            bool pl = Localization.CurrentLanguage == Language.Polish;
             if (titleText != null)
-                titleText.text = $"{name} - {pairCount} {(pl ? (pairCount == 1 ? "para" : "par") : (pairCount == 1 ? "pair" : "pairs"))}";
+                titleText.text = pairCount == 1
+                    ? Localization.Get("pair", name, pairCount)
+                    : Localization.Get("pairs", name, pairCount);
 
             if (closeButton != null)
-                closeButton.GetComponentInChildren<Text>().text = pl ? "Zamknij" : "Close";
+                closeButton.GetComponentInChildren<Text>().text = Localization.Get("close");
 
             // Clear old slots
             foreach (Transform child in contentContainer)

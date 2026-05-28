@@ -54,14 +54,12 @@ namespace MagicPairs.UI
             if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
             if (challengeOverPanel != null) challengeOverPanel.SetActive(false);
 
-            // Localize button texts
-            bool pl = Localization.CurrentLanguage == Language.Polish;
             if (nextLevelButton != null)
-                nextLevelButton.GetComponentInChildren<Text>().text = pl ? "Dalej" : "Next";
+                nextLevelButton.GetComponentInChildren<Text>().text = Localization.Get("next");
             if (challengeMenuButton != null)
                 challengeMenuButton.GetComponentInChildren<Text>().text = "Menu";
             if (showLeaderboardButton != null)
-                showLeaderboardButton.GetComponentInChildren<Text>().text = pl ? "Wyniki" : "Scores";
+                showLeaderboardButton.GetComponentInChildren<Text>().text = Localization.Get("scores");
         }
 
         private void HideAll()
@@ -87,21 +85,14 @@ namespace MagicPairs.UI
                                    streak < 0 ? new Color(0.8f, 0.2f, 0.2f) : Color.white;
             }
             if (levelText != null)
-            {
-                string lvl = Localization.CurrentLanguage == Language.Polish ? "Poziom" : "Level";
-                levelText.text = $"{lvl} {level}";
-            }
+                levelText.text = $"{Localization.Get("level")} {level}";
         }
 
         private void ShowLevelComplete(int level)
         {
             if (levelCompletePanel != null) levelCompletePanel.SetActive(true);
             if (levelCompleteText != null)
-            {
-                string msg = Localization.CurrentLanguage == Language.Polish
-                    ? $"Poziom {level} ukończony!" : $"Level {level} complete!";
-                levelCompleteText.text = msg;
-            }
+                levelCompleteText.text = Localization.Get("levelComplete", level);
         }
 
         private void ShowChallengeOver(int finalScore)
@@ -113,11 +104,7 @@ namespace MagicPairs.UI
 
             if (challengeOverPanel != null) challengeOverPanel.SetActive(true);
             if (finalScoreText != null)
-            {
-                string msg = Localization.CurrentLanguage == Language.Polish
-                    ? $"Koniec! Wynik: {finalScore}" : $"Game Over! Score: {finalScore}";
-                finalScoreText.text = msg;
-            }
+                finalScoreText.text = Localization.Get("challengeOver", finalScore);
         }
 
         private void OnNextLevel()
@@ -141,8 +128,7 @@ namespace MagicPairs.UI
 
             var entries = Leaderboard.Entries;
             var sb = new System.Text.StringBuilder();
-            string header = Localization.CurrentLanguage == Language.Polish ? "TABELA WYNIKÓW" : "LEADERBOARD";
-            sb.AppendLine(header);
+            sb.AppendLine(Localization.Get("leaderboard").ToUpper());
             sb.AppendLine();
             for (int i = 0; i < entries.Count; i++)
             {
@@ -150,10 +136,7 @@ namespace MagicPairs.UI
                 sb.AppendLine($"{i + 1}. {e.playerName} — {e.score} (Lv.{e.level})");
             }
             if (entries.Count == 0)
-            {
-                string empty = Localization.CurrentLanguage == Language.Polish ? "Brak wyników" : "No scores yet";
-                sb.AppendLine(empty);
-            }
+                sb.AppendLine(Localization.Get("noScores"));
             leaderboardText.text = sb.ToString();
         }
     }

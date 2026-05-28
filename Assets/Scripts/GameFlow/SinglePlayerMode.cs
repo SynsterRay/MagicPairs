@@ -22,6 +22,8 @@ namespace MagicPairs.GameFlow
 
         // AI memory: remembers cards it has seen
         private Dictionary<int, List<CardController>> _aiMemory = new();
+        private CardGrid _grid;
+        private List<CardController> _availableCache = new();
 
         private void OnEnable()
         {
@@ -38,6 +40,7 @@ namespace MagicPairs.GameFlow
         public void StartGame()
         {
             _config = GameManager.Instance.Config;
+            _grid = FindAnyObjectByType<CardGrid>();
             _totalPairs = _config.PairCount;
             _pairsFound = 0;
             _scores[0] = 0;
@@ -70,11 +73,10 @@ namespace MagicPairs.GameFlow
         {
             yield return new WaitForSeconds(aiThinkDelay);
 
-            var grid = GetComponentInParent<CardGrid>() ?? FindAnyObjectByType<CardGrid>();
-            if (grid == null) yield break;
+            if (_grid == null) yield break;
 
             // Pick first card
-            var firstCard = AIPickCard(grid, null);
+            var firstCard = AIPickCard(null);
             if (firstCard == null) yield break;
 
             firstCard.Flip();
@@ -119,8 +121,7 @@ namespace MagicPairs.GameFlow
         {
             yield return new WaitForSeconds(aiThinkDelay * 0.7f);
 
-            var grid = GetComponentInParent<CardGrid>() ?? FindAnyObjectByType<CardGrid>();
-            if (grid == null) yield break;
+            if (_grid == null) yield break;
 
             CardController secondCard = null;
 
@@ -140,7 +141,7 @@ namespace MagicPairs.GameFlow
 
             // If no memory match, pick random
             if (secondCard == null)
-                secondCard = AIPickCard(grid, firstCard);
+                secondCard = AIPickCard(firstCard);
 
             if (secondCard == null) yield break;
 
@@ -148,37 +149,36 @@ namespace MagicPairs.GameFlow
             secondCard.OnFlipComplete += OnCardFlipped;
         }
 
-        private CardController AIPickCard(CardGrid grid, CardController exclude)
+        private CardController AIPickCard(CardController exclude)
         {
-            var available = new List<CardController>();
-            foreach (var card in grid.Cards)
+            _availableCache.Clear();
+            foreach (var card in _grid.Cards)
             {
                 if (card != null && card.CanFlip && card != exclude)
-                    available.Add(card);
+                    _availableCache.Add(card);
             }
 
-            if (available.Count == 0) return null;
+            if (_availableCache.Count == 0) return null;
 
             // Check memory for a known pair
             if (Random.value < aiMemoryChance)
             {
                 foreach (var kvp in _aiMemory)
                 {
-                    if (kvp.Value.Count >= 2)
+                    CardController first = null, second = null;
+                    foreach (var c in kvp.Value)
                     {
-                        var validPair = new List<CardController>();
-                        foreach (var c in kvp.Value)
+                        if (c != null && c.CanFlip && c != exclude)
                         {
-                            if (c != null && c.CanFlip && c != exclude)
-                                validPair.Add(c);
+                            if (first == null) first = c;
+                            else { second = c; break; }
                         }
-                        if (validPair.Count >= 2)
-                            return validPair[0];
                     }
+                    if (second != null) return first;
                 }
             }
 
-            return available[Random.Range(0, available.Count)];
+            return _availableCache[Random.Range(0, _availableCache.Count)];
         }
 
         private void RememberCard(CardController card)

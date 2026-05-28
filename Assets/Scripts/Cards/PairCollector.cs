@@ -17,17 +17,17 @@ namespace MagicPairs.Cards
 
         private void OnEnable()
         {
-            GameEvents.OnGameStarted += Reset;
+            GameEvents.OnGameStarted += ResetCollections;
             GameEvents.OnPairMatched += OnPairMatched;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnGameStarted -= Reset;
+            GameEvents.OnGameStarted -= ResetCollections;
             GameEvents.OnPairMatched -= OnPairMatched;
         }
 
-        private void Reset()
+        private void ResetCollections()
         {
             _player1Cards.Clear();
             _player2Cards.Clear();

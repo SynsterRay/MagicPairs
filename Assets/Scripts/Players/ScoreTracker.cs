@@ -23,8 +23,8 @@ namespace MagicPairs.Players
         {
             Players = new[]
             {
-                new PlayerData(0, "Gracz 1"),
-                new PlayerData(1, "Gracz 2")
+                new PlayerData(0, UI.MainMenu.Player1Name),
+                new PlayerData(1, UI.MainMenu.Player2Name)
             };
         }
 

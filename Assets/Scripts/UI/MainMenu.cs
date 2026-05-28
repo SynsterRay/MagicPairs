@@ -169,12 +169,9 @@ namespace MagicPairs.UI
 
         private void UpdateStartPanelTexts()
         {
-            if (playButtonText != null)
-                playButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Graj" : "Play";
-            if (optionsButtonText != null)
-                optionsButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Opcje" : "Options";
-            if (leaderboardButtonText != null)
-                leaderboardButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Wyniki" : "Scores";
+            if (playButtonText != null) playButtonText.text = Localization.Get("play");
+            if (optionsButtonText != null) optionsButtonText.text = Localization.Get("options");
+            if (leaderboardButtonText != null) leaderboardButtonText.text = Localization.Get("scores");
         }
 
         private void ShowStartLeaderboard()
@@ -185,8 +182,7 @@ namespace MagicPairs.UI
 
             var entries = Core.Leaderboard.Entries;
             var sb = new System.Text.StringBuilder();
-            string header = Localization.CurrentLanguage == Language.Polish ? "TABELA WYNIKÓW" : "LEADERBOARD";
-            sb.AppendLine(header);
+            sb.AppendLine(Localization.Get("leaderboard").ToUpper());
             sb.AppendLine();
             for (int i = 0; i < entries.Count; i++)
             {
@@ -194,10 +190,7 @@ namespace MagicPairs.UI
                 sb.AppendLine($"{i + 1}. {e.playerName} — {e.score} (Lv.{e.level})");
             }
             if (entries.Count == 0)
-            {
-                string empty = Localization.CurrentLanguage == Language.Polish ? "Brak wyników" : "No scores yet";
-                sb.AppendLine(empty);
-            }
+                sb.AppendLine(Localization.Get("noScores"));
             startLeaderboardText.text = sb.ToString();
         }
 
@@ -205,13 +198,10 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (optionsPanel != null) optionsPanel.SetActive(true);
-            bool pl = Localization.CurrentLanguage == Language.Polish;
-            if (optionsTitle != null)
-                optionsTitle.text = pl ? "Opcje" : "Options";
-            if (languageButtonText != null)
-                languageButtonText.text = pl ? "Język" : "Language";
+            if (optionsTitle != null) optionsTitle.text = Localization.Get("options");
+            if (languageButtonText != null) languageButtonText.text = Localization.Get("languageOption");
             if (creditsButton != null)
-                creditsButton.GetComponentInChildren<Text>().text = pl ? "Autor" : "Credits";
+                creditsButton.GetComponentInChildren<Text>().text = Localization.Get("credits");
         }
 
         private void ShowLanguagePanel()
@@ -237,10 +227,9 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (gameTypePanel != null) gameTypePanel.SetActive(true);
-            bool pl = Localization.CurrentLanguage == Language.Polish;
-            if (gameTypeTitle != null) gameTypeTitle.text = pl ? "Wybierz tryb gry" : "Choose game type";
-            if (arcadeButtonText != null) arcadeButtonText.text = "Arcade";
-            if (challengeButtonText != null) challengeButtonText.text = pl ? "Wyzwanie" : "Challenge";
+            if (gameTypeTitle != null) gameTypeTitle.text = Localization.Get("chooseGameType");
+            if (arcadeButtonText != null) arcadeButtonText.text = Localization.Get("arcade");
+            if (challengeButtonText != null) challengeButtonText.text = Localization.Get("challenge");
         }
 
         private void SelectArcade()
@@ -278,8 +267,7 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (challengeNamesPanel != null) challengeNamesPanel.SetActive(true);
-            bool pl = Localization.CurrentLanguage == Language.Polish;
-            if (challengeNameLabel != null) challengeNameLabel.text = pl ? "Twoje imię" : "Your name";
+            if (challengeNameLabel != null) challengeNameLabel.text = Localization.Get("yourName");
             if (challengeStartText != null) challengeStartText.text = Localization.Get("start");
         }
 
@@ -310,8 +298,7 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (modePanel != null) modePanel.SetActive(true);
-            if (modeTitle != null) modeTitle.text = Localization.CurrentLanguage == Language.Polish
-                ? "Wybierz tryb" : "Choose mode";
+            if (modeTitle != null) modeTitle.text = Localization.Get("chooseMode");
             if (twoPlayersText != null) twoPlayersText.text = Localization.Get("mode2P");
             if (singlePlayerText != null) singlePlayerText.text = Localization.Get("mode1P");
         }
@@ -326,9 +313,7 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (difficultyPanel != null) difficultyPanel.SetActive(true);
-            if (difficultyTitle != null)
-                difficultyTitle.text = Localization.CurrentLanguage == Language.Polish
-                    ? "Wybierz poziom trudności" : "Choose difficulty";
+            if (difficultyTitle != null) difficultyTitle.text = Localization.Get("chooseDifficulty");
         }
 
         private void SelectDifficulty(Difficulty diff)

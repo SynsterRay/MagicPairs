@@ -16,6 +16,11 @@ namespace MagicPairs.Core
             Instance = this;
         }
 
+        private void OnDestroy()
+        {
+            if (Instance == this) GameEvents.ClearAll();
+        }
+
         public void StartGame()
         {
             GameEvents.FireGameStarted();

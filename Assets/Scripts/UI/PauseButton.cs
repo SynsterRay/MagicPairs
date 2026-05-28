@@ -18,12 +18,15 @@ namespace MagicPairs.UI
             noButton?.onClick.AddListener(HideConfirm);
             if (confirmPanel != null) confirmPanel.SetActive(false);
             if (pauseButton != null) pauseButton.gameObject.SetActive(false);
+        }
 
+        private void OnEnable()
+        {
             GameEvents.OnGameStarted += OnGameStarted;
             GameEvents.OnGameOver += OnGameOver;
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             GameEvents.OnGameStarted -= OnGameStarted;
             GameEvents.OnGameOver -= OnGameOver;
@@ -43,17 +46,16 @@ namespace MagicPairs.UI
         private void ShowConfirm()
         {
             if (confirmPanel != null) confirmPanel.SetActive(true);
-            bool pl = Localization.CurrentLanguage == Language.Polish;
             var texts = confirmPanel.GetComponentsInChildren<Text>();
             foreach (var t in texts)
             {
                 if (t.gameObject.name == "ConfirmText")
-                    t.text = pl ? "Wróć do menu?" : "Back to menu?";
+                    t.text = Localization.Get("backToMenu");
             }
             if (yesButton != null)
-                yesButton.GetComponentInChildren<Text>().text = pl ? "Tak" : "Yes";
+                yesButton.GetComponentInChildren<Text>().text = Localization.Get("yes");
             if (noButton != null)
-                noButton.GetComponentInChildren<Text>().text = pl ? "Nie" : "No";
+                noButton.GetComponentInChildren<Text>().text = Localization.Get("no");
         }
 
         private void HideConfirm()
