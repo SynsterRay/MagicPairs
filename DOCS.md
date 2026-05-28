@@ -10,16 +10,20 @@ Gra karciana Memory dla dzieci — Unity 6 z URP, docelowo na urządzenia mobiln
 
 | System | Status | Opis |
 |--------|--------|------|
-| Siatka kart | ✅ | Dynamiczny grid 4×4 z kolorowymi kartami |
+| Siatka kart | ✅ | Dynamiczny grid (3×4 / 4×5 / 5×6) z kolorowymi kartami |
 | Flip animation | ✅ | Animacja odkrywania karty (scale X) |
 | Deal animation | ✅ | Karty "lecą" z talii na swoje pozycje |
 | Mechanika par | ✅ | Odkrycie dwóch kart tego samego koloru = para |
-| Karta Piotruś | ✅ | Specjalna czarna karta — utrata kolejki |
+| Karta Piotruś/Joker | ✅ | Specjalna czarna karta — utrata kolejki |
 | System tur | ✅ | Hot-seat dla 2 graczy, zmiana po błędzie |
+| Single Player (AI) | ✅ | Gracz vs komputer z pamięcią (~60% skuteczności) |
 | Punktacja | ✅ | Zliczanie par per gracz |
 | Zbieranie par | ✅ | Animacja przesuwania znalezionych par pod nick gracza |
-| Menu startowe | ✅ | Wybór języka (PL/EN), wprowadzenie imion graczy |
-| Lokalizacja | ✅ | System PL/EN dla wszystkich tekstów UI |
+| Menu startowe | ✅ | Krokowe: język → tryb → trudność → imiona → start |
+| Lokalizacja | ✅ | System PL/EN (Piotruś/Joker) |
+| Poziomy trudności | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
+| Nawigacja menu | ✅ | Przyciski cofania ← na każdym etapie |
+| Przycisk wyjścia | ✅ | ✕ na ekranie startowym |
 | Game Over | ✅ | Panel z wynikiem i przyciskiem "Zagraj ponownie" |
 | Editor Setup | ✅ | Idempotentny SceneSetup (jedno kliknięcie) |
 | Touch Input | ✅ | Obsługa dotyku i myszy |
@@ -27,12 +31,12 @@ Gra karciana Memory dla dzieci — Unity 6 z URP, docelowo na urządzenia mobiln
 ### Niezaimplementowane
 
 - [ ] Multiplayer online (placeholder `OnlineGameMode` istnieje)
-- [ ] Wybór trudności (Easy 3×4, Medium 4×5, Hard 5×6)
 - [ ] Efekty dźwiękowe (SFX)
 - [ ] Animacje cząsteczkowe przy znalezieniu pary
 - [ ] Save/Load wyników (leaderboard)
 - [ ] Safe Area dla notchy (mobile)
 - [ ] Różne motywy graficzne kart
+- [ ] Więcej kolorów w palecie (dla Hard potrzeba 14, jest 8)
 
 ## Architektura
 
@@ -41,7 +45,7 @@ Gra karciana Memory dla dzieci — Unity 6 z URP, docelowo na urządzenia mobiln
 ```
 MagicPairs.Core       — GameManager, GameEvents, GameConfig, Localization
 MagicPairs.Cards      — CardController, CardAnimator, CardGrid, CardData, PairCollector
-MagicPairs.GameFlow   — IGameMode, LocalGameMode, OnlineGameMode (placeholder)
+MagicPairs.GameFlow   — IGameMode, LocalGameMode, SinglePlayerMode, OnlineGameMode (placeholder)
 MagicPairs.Players    — PlayerData, ScoreTracker
 MagicPairs.UI         — MainMenu, ScoreDisplay, TurnIndicator, GameOverPanel
 MagicPairs.Input      — TouchInputHandler
@@ -54,57 +58,70 @@ MagicPairs.Editor     — SceneSetup
 |---------|--------|--------------------------|
 | Event Bus | `GameEvents` — statyczne eventy C# | Zamiast pollingu w Update() |
 | MaterialPropertyBlock | Kolory kart | Zamiast `.material.color` (leak) |
-| Interface (IGameMode) | Separacja trybu gry | Łatwe dodanie online w przyszłości |
+| Interface (IGameMode) | Separacja trybu gry | Local / SinglePlayer / Online |
 | ScriptableObject | `GameConfig` | Konfiguracja bez zmian w kodzie |
 | Idempotentny Setup | SceneSetup sprawdza istniejące obiekty | Unikanie duplikatów |
 
-### Kluczowe decyzje
+### Flow menu
 
-1. **Brak TMPro** — Unity 6 ma problemy z paczką TextMeshPro w nowych projektach. Użyto `UnityEngine.UI.Text`.
-2. **Brak asmdef** — usunięto assembly definitions, bo powodowały problemy z referencjami pakietów.
-3. **Unlit shader** — karty używają URP/Unlit zamiast Lit, żeby kolor był zawsze widoczny bez oświetlenia.
-4. **Scale flip** — animacja flipu przez skalowanie X (1→0→1) zamiast rotacji Y, bo Quad ma backface culling.
+```
+1. Wybierz język (Polski / English)
+2. Wybierz tryb (2 Graczy / 1 Gracz vs AI)
+3. Wybierz trudność (★ / ★★ / ★★★)
+4. Wpisz imiona → Start
+← przyciski cofania na każdym etapie
+✕ wyjście z gry na ekranie startowym
+```
 
 ### Flow gry
 
 ```
-MainMenu (imiona, język) → Start
+MainMenu → Start
   → GameManager.StartGame() → GameEvents.OnGameStarted
     → CardGrid.BuildGrid() — spawn kart z animacją deal
-    → LocalGameMode.StartGame() — reset tur i punktów
-    → TurnManager ustawia Gracz 1
+    → LocalGameMode/SinglePlayerMode.StartGame() — reset tur i punktów
   → Gracz klika kartę → TouchInputHandler → IGameMode.OnCardSelected()
     → Flip animation → sprawdzenie:
-      - Piotruś → utrata kolejki
+      - Piotruś/Joker → utrata kolejki
       - Pierwsza karta → czekaj na drugą
       - Druga karta:
         - Match → PairCollector animuje karty pod nick gracza, +1 punkt
         - Mismatch → flip back, zmiana tury
+  → W trybie AI: komputer automatycznie wybiera karty z pamięcią
   → Wszystkie pary znalezione → GameOver (winner)
     → "Zagraj ponownie" → restart
 ```
+
+### AI (SinglePlayerMode)
+
+- Gracz 0 = człowiek, Gracz 1 = komputer
+- AI pamięta odkryte karty (`Dictionary<colorIndex, List<CardController>>`)
+- `aiMemoryChance = 0.6f` — 60% szans na użycie pamięci
+- `aiThinkDelay = 1.0s` — opóźnienie przed ruchem (naturalność)
+- Po znalezieniu pary AI dostaje kolejną turę
 
 ## Jak uruchomić
 
 1. Otwórz projekt w Unity 6
 2. Zainstaluj pakiet **Input System** (Package Manager → Unity Registry)
-3. Włącz nowy Input System: Edit → Project Settings → Player → Active Input Handling → **Both** lub **Input System Package**
+3. Włącz nowy Input System: Edit → Project Settings → Player → Active Input Handling → **Both**
 4. Otwórz `Assets/Scenes/MainScene`
 5. Jeśli scena pusta: **MagicPairs → Setup Scene**
 6. Play
 
 ## Jak przebudować scenę od zera
 
-1. File → New Scene → Save As `Assets/Scenes/MainScene`
+1. Ctrl+A w Hierarchy → Delete
 2. **MagicPairs → Setup Scene**
-3. Gotowe (idempotentne — można uruchomić wielokrotnie)
+3. Ctrl+S
+4. Gotowe (idempotentne)
 
 ## Sterowanie
 
 | Akcja | Input |
 |-------|-------|
 | Odkryj kartę | Dotknij / LPM |
-| Menu startowe | Automatycznie przy starcie |
+| Nawigacja menu | Przyciski na ekranie |
 
 ## Konfiguracja (GameConfig ScriptableObject)
 
@@ -112,10 +129,10 @@ Plik: `Assets/ScriptableObjects/GameConfig.asset`
 
 | Parametr | Domyślna | Opis |
 |----------|----------|------|
-| gridRows | 4 | Liczba wierszy |
-| gridCols | 4 | Liczba kolumn |
+| gridRows | 4 | Zmieniane przez wybór trudności |
+| gridCols | 4 | Zmieniane przez wybór trudności |
 | colorPalette | 8 kolorów | Kolory par |
-| piotrusColor | czarny | Kolor karty Piotruś |
+| piotrusColor | czarny | Kolor karty Piotruś/Joker |
 | cardBackColor | ciemny fiolet | Kolor rewersu |
 | flipDuration | 0.3s | Czas animacji flipu |
 | mismatchDelay | 1.0s | Czas pokazania błędnej pary |
@@ -126,10 +143,13 @@ Plik: `Assets/ScriptableObjects/GameConfig.asset`
 ### 2026-05-28
 - Stworzenie projektu Unity 6 z URP
 - Implementacja pełnej mechaniki Memory
-- Karta Piotruś (utrata kolejki)
+- Karta Piotruś/Joker (utrata kolejki)
 - System tur dla 2 graczy (hot-seat)
+- Tryb Single Player (AI z pamięcią)
 - Animacje: deal, flip (scale X), collect
-- Menu startowe z wyborem języka i imion
+- Menu krokowe: język → tryb → trudność → imiona
+- Przyciski cofania ← i wyjścia ✕
+- 3 poziomy trudności (★/★★/★★★)
 - Lokalizacja PL/EN
 - PairCollector — zbieranie par pod nickiem gracza
 - Editor tool: SceneSetup (idempotentny)
