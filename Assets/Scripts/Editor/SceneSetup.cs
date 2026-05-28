@@ -599,6 +599,28 @@ namespace MagicPairs.Editor
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             challengeNamesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
+            // --- Challenge Theme Panel ---
+            var challengeThemePanel = new GameObject("ChallengeThemePanel");
+            challengeThemePanel.transform.SetParent(menuPanel.transform, false);
+            var challengeThemePanelRect = challengeThemePanel.AddComponent<RectTransform>();
+            challengeThemePanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            challengeThemePanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            challengeThemePanelRect.offsetMin = Vector2.zero;
+            challengeThemePanelRect.offsetMax = Vector2.zero;
+
+            var challengeThemeTitle = CreateUIText("ChallengeThemeTitle", "Wybierz typ kart", challengeThemePanel.transform,
+                new Vector2(0f, 0.78f), new Vector2(1f, 0.98f), TextAnchor.MiddleCenter, 28);
+
+            var chColorsBtn = CreateButton("ChColorsBtn", "🎨 Kolory", challengeThemePanel.transform,
+                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
+            var chPrincessBtn = CreateButton("ChPrincessBtn", "👸 Księżniczki", challengeThemePanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
+            chPrincessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
+
+            var challengeThemeBackBtn = CreateButton("ChallengeThemeBackBtn", "←", challengeThemePanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+            challengeThemeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
             // --- Mode Panel ---
             var modePanel = new GameObject("ModePanel");
             modePanel.transform.SetParent(menuPanel.transform, false);
@@ -748,6 +770,11 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("challengeStartButton").objectReferenceValue = challengeStartBtn.GetComponent<Button>();
             mmSo.FindProperty("challengeStartText").objectReferenceValue = challengeStartBtn.GetComponentInChildren<Text>();
             mmSo.FindProperty("challengeNamesBackButton").objectReferenceValue = challengeNamesBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("challengeThemePanel").objectReferenceValue = challengeThemePanel;
+            mmSo.FindProperty("challengeThemeTitle").objectReferenceValue = challengeThemeTitle;
+            mmSo.FindProperty("challengeColorsButton").objectReferenceValue = chColorsBtn.GetComponent<Button>();
+            mmSo.FindProperty("challengePrincessButton").objectReferenceValue = chPrincessBtn.GetComponent<Button>();
+            mmSo.FindProperty("challengeThemeBackButton").objectReferenceValue = challengeThemeBackBtn.GetComponent<Button>();
             mmSo.FindProperty("modeTitle").objectReferenceValue = modeTitle;
             mmSo.FindProperty("twoPlayersButton").objectReferenceValue = twoPlayersBtn.GetComponent<Button>();
             mmSo.FindProperty("singlePlayerButton").objectReferenceValue = singlePlayerBtn.GetComponent<Button>();

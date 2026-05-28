@@ -49,6 +49,11 @@ namespace MagicPairs.UI
         [SerializeField] private Button challengeStartButton;
         [SerializeField] private Text challengeStartText;
         [SerializeField] private Button challengeNamesBackButton;
+        [SerializeField] private GameObject challengeThemePanel;
+        [SerializeField] private Text challengeThemeTitle;
+        [SerializeField] private Button challengeColorsButton;
+        [SerializeField] private Button challengePrincessButton;
+        [SerializeField] private Button challengeThemeBackButton;
 
         [Header("Language Panel")]
         [SerializeField] private Text languageTitle;
@@ -123,7 +128,10 @@ namespace MagicPairs.UI
             themeBackButton?.onClick.AddListener(ShowDifficultyPanel);
             namesBackButton?.onClick.AddListener(ShowThemePanel);
             challengeStartButton?.onClick.AddListener(OnChallengeStart);
-            challengeNamesBackButton?.onClick.AddListener(ShowGameTypePanel);
+            challengeNamesBackButton?.onClick.AddListener(ShowChallengeThemePanel);
+            challengeColorsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Colors));
+            challengePrincessButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Princess));
+            challengeThemeBackButton?.onClick.AddListener(ShowGameTypePanel);
 
             ShowStartPanel();
         }
@@ -140,6 +148,7 @@ namespace MagicPairs.UI
             if (namesPanel != null) namesPanel.SetActive(false);
             if (creditsPanel != null) creditsPanel.SetActive(false);
             if (challengeNamesPanel != null) challengeNamesPanel.SetActive(false);
+            if (challengeThemePanel != null) challengeThemePanel.SetActive(false);
         }
 
         private void ShowStartPanel()
@@ -206,6 +215,21 @@ namespace MagicPairs.UI
         private void SelectChallenge()
         {
             IsChallengeMode = true;
+            ShowChallengeThemePanel();
+        }
+
+        private void ShowChallengeThemePanel()
+        {
+            HideAllPanels();
+            if (challengeThemePanel != null) challengeThemePanel.SetActive(true);
+            if (challengeThemeTitle != null)
+                challengeThemeTitle.text = Localization.Get("chooseTheme");
+        }
+
+        private void SelectChallengeTheme(Core.CardTheme theme)
+        {
+            var config = GameManager.Instance.Config;
+            if (config != null) config.theme = theme;
             ShowChallengeNamesPanel();
         }
 
@@ -224,9 +248,6 @@ namespace MagicPairs.UI
             Player1Name = string.IsNullOrWhiteSpace(challengeNameInput?.text)
                 ? Localization.Get("player1") : challengeNameInput.text;
             Player2Name = Localization.Get("computer");
-
-            var config = GameManager.Instance.Config;
-            if (config != null) config.theme = Core.CardTheme.Colors;
 
             var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
             var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
