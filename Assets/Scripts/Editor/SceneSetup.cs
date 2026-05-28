@@ -411,7 +411,7 @@ namespace MagicPairs.Editor
             CreateUIText("CreditsAuthor", "Created by\nMateusz Bajak", creditsPanel.transform,
                 new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.65f), TextAnchor.MiddleCenter, 28);
 
-            var creditsBackBtn = CreateButton("CreditsBackBtn", "← Cofnij", creditsPanel.transform,
+            var creditsBackBtn = CreateButton("CreditsBackBtn", "←", creditsPanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             creditsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
@@ -433,7 +433,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
             singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
 
-            var modeBackBtn = CreateButton("ModeBackBtn", "← Cofnij", modePanel.transform,
+            var modeBackBtn = CreateButton("ModeBackBtn", "←", modePanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             modeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
@@ -472,7 +472,7 @@ namespace MagicPairs.Editor
             CreateUIText("HardLabel", "5x6", diffPanel.transform,
                 new Vector2(0.7f, 0.15f), new Vector2(0.95f, 0.3f), TextAnchor.MiddleCenter, 20);
 
-            var diffBackBtn = CreateButton("DiffBackBtn", "← Cofnij", diffPanel.transform,
+            var diffBackBtn = CreateButton("DiffBackBtn", "←", diffPanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             diffBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
@@ -494,7 +494,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
             princessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
 
-            var themeBackBtn = CreateButton("ThemeBackBtn", "← Cofnij", themePanel.transform,
+            var themeBackBtn = CreateButton("ThemeBackBtn", "←", themePanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             themeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
@@ -521,7 +521,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.02f), new Vector2(0.9f, 0.2f));
             startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
-            var namesBackBtn = CreateButton("NamesBackBtn", "← Cofnij", namesPanel.transform,
+            var namesBackBtn = CreateButton("NamesBackBtn", "←", namesPanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             namesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
