@@ -30,6 +30,8 @@ namespace MagicPairs.Cards
             go.transform.position = position + Vector3.back * 0.5f;
 
             var ps = go.AddComponent<ParticleSystem>();
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
             var main = ps.main;
             main.duration = 0.6f;
             main.startLifetime = 0.8f;
@@ -39,7 +41,7 @@ namespace MagicPairs.Cards
             main.gravityModifier = 1.5f;
             main.maxParticles = 30;
             main.loop = false;
-            main.playOnAwake = true;
+            main.playOnAwake = false;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
 
             var emission = ps.emission;
@@ -58,7 +60,6 @@ namespace MagicPairs.Cards
             renderer.material = new Material(Shader.Find("Particles/Standard Unlit")
                 ?? Shader.Find("Universal Render Pipeline/Particles/Unlit")
                 ?? Shader.Find("Sprites/Default"));
-            renderer.material.color = Color.white;
 
             ps.Play();
             Destroy(go, 1.5f);
