@@ -97,7 +97,6 @@ namespace MagicPairs.Cards
             if (cards.Count == 0)
             {
                 var textures = Resources.LoadAll<Texture2D>("PrincessCards");
-                Debug.Log($"[CardGrid] Loaded {textures.Length} textures from PrincessCards");
                 foreach (var tex in textures)
                 {
                     if (tex.name.Contains("joker")) continue;
@@ -110,7 +109,6 @@ namespace MagicPairs.Cards
                 }
             }
 
-            Debug.Log($"[CardGrid] Princess sprites found: {cards.Count}");
             return cards.ToArray();
         }
 

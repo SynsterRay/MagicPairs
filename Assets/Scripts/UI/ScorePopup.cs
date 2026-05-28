@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using MagicPairs.Core;
 using MagicPairs.GameFlow;
 
 namespace MagicPairs.UI
@@ -13,8 +14,24 @@ namespace MagicPairs.UI
         private int _lastStreak;
 
         private void Awake() => _canvas = GetComponent<Canvas>();
-        private void OnEnable() => ChallengeMode.OnChallengeScoreChanged += OnScoreChanged;
-        private void OnDisable() => ChallengeMode.OnChallengeScoreChanged -= OnScoreChanged;
+
+        private void OnEnable()
+        {
+            ChallengeMode.OnChallengeScoreChanged += OnScoreChanged;
+            GameEvents.OnGameStarted += ResetLastScore;
+        }
+
+        private void OnDisable()
+        {
+            ChallengeMode.OnChallengeScoreChanged -= OnScoreChanged;
+            GameEvents.OnGameStarted -= ResetLastScore;
+        }
+
+        private void ResetLastScore()
+        {
+            _lastScore = 0;
+            _lastStreak = 0;
+        }
 
         private void OnScoreChanged(int score, int streak, int level)
         {

@@ -66,7 +66,10 @@ namespace MagicPairs.GameFlow
 
         public void StartGame()
         {
-            // Called externally to pre-apply config before FireGameStarted
+            // Reset state before applying config (called before FireGameStarted)
+            _currentLevel = 1;
+            _score = 0;
+            _streak = 0;
             ApplyLevelConfig();
         }
 
@@ -87,13 +90,16 @@ namespace MagicPairs.GameFlow
         private void ApplyLevelConfig()
         {
             _config = GameManager.Instance.Config;
-            // Cards per level: start at 5 (2 pairs + piotrus), add 2 each level (one more pair)
-            // Max: 5x6=30 → 29 cards (14 pairs) for princess, 17 (8 pairs) for colors
             int maxPairs = _config.theme == CardTheme.Princess ? 14 : 8;
-            int pairs = Mathf.Min(2 + (_currentLevel - 1), maxPairs);
-            int totalCards = pairs * 2 + 1; // +1 for piotrus
+            int levelsPerCycle = maxPairs - 1; // levels before cycling back (2 pairs to max)
 
-            // Find best grid fit
+            // Determine which cycle (iteration) and position within cycle
+            int cycle = (_currentLevel - 1) / levelsPerCycle;
+            int posInCycle = (_currentLevel - 1) % levelsPerCycle;
+
+            int pairs = 2 + posInCycle; // 2 pairs at start of each cycle, grows to maxPairs
+            int totalCards = pairs * 2 + 1;
+
             GetGridSize(totalCards, out int rows, out int cols);
             _config.gridRows = rows;
             _config.gridCols = cols;
@@ -101,9 +107,9 @@ namespace MagicPairs.GameFlow
             _totalPairs = pairs;
             _pairsFound = 0;
 
-            // AI difficulty scales with level after max cards reached
-            int levelsAfterMax = Mathf.Max(0, _currentLevel - 1 - (maxPairs - 2));
-            _currentAiMemory = Mathf.Min(0.95f, baseAiMemory + levelsAfterMax * 0.05f);
+            // AI scales: +4% per cycle, smooth progression
+            // Cycle 0: 30%, Cycle 1: 34%, Cycle 2: 38%... max 90%
+            _currentAiMemory = Mathf.Min(0.90f, baseAiMemory + cycle * 0.04f);
         }
 
         private void GetGridSize(int totalCards, out int rows, out int cols)
@@ -137,6 +143,14 @@ namespace MagicPairs.GameFlow
             {
                 _waitingForResult = true;
                 _streak = 0;
+
+                // Piotrus penalty: 50 base + 25 per level, can't go below 0
+                if (CurrentPlayerIndex == 0)
+                {
+                    int penalty = 50 + 25 * _currentLevel;
+                    _score = Mathf.Max(0, _score - penalty);
+                }
+
                 GameEvents.FirePiotrusFlipped(CurrentPlayerIndex);
                 OnChallengeScoreChanged?.Invoke(_score, _streak, _currentLevel);
                 StartCoroutine(HandlePiotrus(card));
