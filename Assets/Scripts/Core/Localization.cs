@@ -29,6 +29,9 @@ namespace MagicPairs.Core
             { "themeColors", new[] { "Kolory", "Colors" } },
             { "themePrincess", new[] { "Księżniczki", "Princesses" } },
             { "chooseTheme", new[] { "Wybierz typ kart", "Choose card type" } },
+            { "play", new[] { "Graj", "Play" } },
+            { "options", new[] { "Opcje", "Options" } },
+            { "languageOption", new[] { "Język", "Language" } },
         };
 
         public static string Get(string key)

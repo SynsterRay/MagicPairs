@@ -10,19 +10,34 @@ namespace MagicPairs.UI
     {
         [Header("Panels")]
         [SerializeField] private GameObject menuPanel;
+        [SerializeField] private GameObject startPanel;
+        [SerializeField] private GameObject optionsPanel;
         [SerializeField] private GameObject languagePanel;
         [SerializeField] private GameObject modePanel;
         [SerializeField] private GameObject difficultyPanel;
         [SerializeField] private GameObject namesPanel;
 
+        [Header("Start Panel")]
+        [SerializeField] private Button playButton;
+        [SerializeField] private Button optionsButton;
+        [SerializeField] private Button quitButton;
+        [SerializeField] private GameObject creditsPanel;
+        [SerializeField] private Button creditsBackButton;
+        [SerializeField] private Text playButtonText;
+        [SerializeField] private Text optionsButtonText;
+
+        [Header("Options Panel")]
+        [SerializeField] private Text optionsTitle;
+        [SerializeField] private Button languageButton;
+        [SerializeField] private Text languageButtonText;
+        [SerializeField] private Button creditsButton;
+        [SerializeField] private Button optionsBackButton;
+
         [Header("Language Panel")]
         [SerializeField] private Text languageTitle;
         [SerializeField] private Button polishButton;
         [SerializeField] private Button englishButton;
-        [SerializeField] private Button quitButton;
-        [SerializeField] private Button creditsButton;
-        [SerializeField] private GameObject creditsPanel;
-        [SerializeField] private Button creditsBackButton;
+        [SerializeField] private Button languageBackButton;
 
         [Header("Mode Panel")]
         [SerializeField] private Text modeTitle;
@@ -64,11 +79,16 @@ namespace MagicPairs.UI
 
         private void Start()
         {
-            polishButton?.onClick.AddListener(() => SelectLanguage(Language.Polish));
-            englishButton?.onClick.AddListener(() => SelectLanguage(Language.English));
+            playButton?.onClick.AddListener(ShowModePanel);
+            optionsButton?.onClick.AddListener(ShowOptionsPanel);
             quitButton?.onClick.AddListener(() => Application.Quit());
             creditsButton?.onClick.AddListener(ShowCredits);
-            creditsBackButton?.onClick.AddListener(ShowLanguagePanel);
+            creditsBackButton?.onClick.AddListener(ShowOptionsPanel);
+            optionsBackButton?.onClick.AddListener(ShowStartPanel);
+            languageButton?.onClick.AddListener(ShowLanguagePanel);
+            languageBackButton?.onClick.AddListener(ShowOptionsPanel);
+            polishButton?.onClick.AddListener(() => SelectLanguage(Language.Polish));
+            englishButton?.onClick.AddListener(() => SelectLanguage(Language.English));
             twoPlayersButton?.onClick.AddListener(() => SelectMode(false));
             singlePlayerButton?.onClick.AddListener(() => SelectMode(true));
             easyButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Easy));
@@ -77,45 +97,75 @@ namespace MagicPairs.UI
             colorsThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Colors));
             princessThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Princess));
             startButton?.onClick.AddListener(OnStart);
-            modeBackButton?.onClick.AddListener(ShowLanguagePanel);
+            modeBackButton?.onClick.AddListener(ShowStartPanel);
             difficultyBackButton?.onClick.AddListener(ShowModePanel);
             themeBackButton?.onClick.AddListener(ShowDifficultyPanel);
             namesBackButton?.onClick.AddListener(ShowThemePanel);
 
-            ShowLanguagePanel();
+            ShowStartPanel();
         }
 
-        private void ShowLanguagePanel()
+        private void HideAllPanels()
         {
-            if (menuPanel != null) menuPanel.SetActive(true);
-            if (languagePanel != null) languagePanel.SetActive(true);
+            if (startPanel != null) startPanel.SetActive(false);
+            if (optionsPanel != null) optionsPanel.SetActive(false);
+            if (languagePanel != null) languagePanel.SetActive(false);
             if (modePanel != null) modePanel.SetActive(false);
             if (difficultyPanel != null) difficultyPanel.SetActive(false);
             if (themePanel != null) themePanel.SetActive(false);
             if (namesPanel != null) namesPanel.SetActive(false);
-            if (languageTitle != null) languageTitle.text = "Choose Language / Wybierz język";
             if (creditsPanel != null) creditsPanel.SetActive(false);
+        }
+
+        private void ShowStartPanel()
+        {
+            if (menuPanel != null) menuPanel.SetActive(true);
+            HideAllPanels();
+            if (startPanel != null) startPanel.SetActive(true);
+            UpdateStartPanelTexts();
+        }
+
+        private void UpdateStartPanelTexts()
+        {
+            if (playButtonText != null)
+                playButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Graj" : "Play";
+            if (optionsButtonText != null)
+                optionsButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Opcje" : "Options";
+        }
+
+        private void ShowOptionsPanel()
+        {
+            HideAllPanels();
+            if (optionsPanel != null) optionsPanel.SetActive(true);
+            if (optionsTitle != null)
+                optionsTitle.text = Localization.CurrentLanguage == Language.Polish ? "Opcje" : "Options";
+            if (languageButtonText != null)
+                languageButtonText.text = Localization.CurrentLanguage == Language.Polish ? "Język" : "Language";
+        }
+
+        private void ShowLanguagePanel()
+        {
+            HideAllPanels();
+            if (languagePanel != null) languagePanel.SetActive(true);
+            if (languageTitle != null) languageTitle.text = "Choose Language / Wybierz język";
         }
 
         private void SelectLanguage(Language lang)
         {
             Localization.CurrentLanguage = lang;
-            ShowModePanel();
+            ShowOptionsPanel();
         }
 
         private void ShowCredits()
         {
-            if (languagePanel != null) languagePanel.SetActive(false);
+            HideAllPanels();
             if (creditsPanel != null) creditsPanel.SetActive(true);
         }
 
         private void ShowModePanel()
         {
-            if (languagePanel != null) languagePanel.SetActive(false);
+            HideAllPanels();
             if (modePanel != null) modePanel.SetActive(true);
-            if (difficultyPanel != null) difficultyPanel.SetActive(false);
-            if (themePanel != null) themePanel.SetActive(false);
-            if (namesPanel != null) namesPanel.SetActive(false);
             if (modeTitle != null) modeTitle.text = Localization.CurrentLanguage == Language.Polish
                 ? "Wybierz tryb" : "Choose mode";
             if (twoPlayersText != null) twoPlayersText.text = Localization.Get("mode2P");
@@ -130,10 +180,8 @@ namespace MagicPairs.UI
 
         private void ShowDifficultyPanel()
         {
-            if (modePanel != null) modePanel.SetActive(false);
+            HideAllPanels();
             if (difficultyPanel != null) difficultyPanel.SetActive(true);
-            if (themePanel != null) themePanel.SetActive(false);
-            if (namesPanel != null) namesPanel.SetActive(false);
             if (difficultyTitle != null)
                 difficultyTitle.text = Localization.CurrentLanguage == Language.Polish
                     ? "Wybierz poziom trudności" : "Choose difficulty";
@@ -148,9 +196,8 @@ namespace MagicPairs.UI
 
         private void ShowThemePanel()
         {
-            if (difficultyPanel != null) difficultyPanel.SetActive(false);
+            HideAllPanels();
             if (themePanel != null) themePanel.SetActive(true);
-            if (namesPanel != null) namesPanel.SetActive(false);
             if (themeTitle != null)
                 themeTitle.text = Localization.Get("chooseTheme");
         }
@@ -185,8 +232,7 @@ namespace MagicPairs.UI
 
         private void ShowNamesPanel()
         {
-            if (difficultyPanel != null) difficultyPanel.SetActive(false);
-            if (themePanel != null) themePanel.SetActive(false);
+            HideAllPanels();
             if (namesPanel != null) namesPanel.SetActive(true);
 
             if (player1Label != null) player1Label.text = Localization.Get("player1Name");
@@ -229,7 +275,7 @@ namespace MagicPairs.UI
 
         public void ReturnToMenu()
         {
-            ShowLanguagePanel();
+            ShowStartPanel();
         }
     }
 }

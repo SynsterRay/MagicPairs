@@ -370,6 +370,51 @@ namespace MagicPairs.Editor
             bgRect.offsetMin = Vector2.zero;
             bgRect.offsetMax = Vector2.zero;
 
+            // --- Start Panel (main screen) ---
+            var startPanel = new GameObject("StartPanel");
+            startPanel.transform.SetParent(menuPanel.transform, false);
+            var startPanelRect = startPanel.AddComponent<RectTransform>();
+            startPanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            startPanelRect.anchorMax = new Vector2(0.9f, 0.7f);
+            startPanelRect.offsetMin = Vector2.zero;
+            startPanelRect.offsetMax = Vector2.zero;
+
+            var playBtn = CreateButton("PlayBtn", "Graj", startPanel.transform,
+                new Vector2(0.1f, 0.7f), new Vector2(0.9f, 0.9f));
+            playBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
+
+            var optionsBtn = CreateButton("OptionsBtn", "Opcje", startPanel.transform,
+                new Vector2(0.1f, 0.45f), new Vector2(0.9f, 0.65f));
+            optionsBtn.GetComponent<Image>().color = new Color(0.3f, 0.5f, 0.8f, 1f);
+
+            var quitBtn = CreateButton("QuitBtn", "✕", startPanel.transform,
+                new Vector2(0.35f, 0.15f), new Vector2(0.65f, 0.35f));
+            quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
+            quitBtn.GetComponentInChildren<Text>().fontSize = 32;
+
+            // --- Options Panel ---
+            var optionsPanel = new GameObject("OptionsPanel");
+            optionsPanel.transform.SetParent(menuPanel.transform, false);
+            var optionsPanelRect = optionsPanel.AddComponent<RectTransform>();
+            optionsPanelRect.anchorMin = new Vector2(0.1f, 0.25f);
+            optionsPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            optionsPanelRect.offsetMin = Vector2.zero;
+            optionsPanelRect.offsetMax = Vector2.zero;
+
+            var optionsTitle = CreateUIText("OptionsTitle", "Opcje", optionsPanel.transform,
+                new Vector2(0f, 0.7f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 30);
+
+            var langBtn = CreateButton("LanguageBtn", "Język", optionsPanel.transform,
+                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.6f));
+
+            var creditsBtn = CreateButton("CreditsBtn", "Autor", optionsPanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
+            creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
+
+            var optionsBackBtn = CreateButton("OptionsBackBtn", "←", optionsPanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+            optionsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
             // --- Language Panel ---
             var langPanel = new GameObject("LanguagePanel");
             langPanel.transform.SetParent(menuPanel.transform, false);
@@ -387,14 +432,9 @@ namespace MagicPairs.Editor
             var enBtn = CreateButton("EnglishBtn", "English", langPanel.transform,
                 new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
 
-            var quitBtn = CreateButton("QuitBtn", "✕", langPanel.transform,
-                new Vector2(0.35f, -0.15f), new Vector2(0.65f, -0.02f));
-            quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
-            quitBtn.GetComponentInChildren<Text>().fontSize = 32;
-
-            var creditsBtn = CreateButton("CreditsBtn", "Autor", langPanel.transform,
-                new Vector2(0.35f, -0.32f), new Vector2(0.65f, -0.19f));
-            creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
+            var langBackBtn = CreateButton("LangBackBtn", "←", langPanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+            langBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Credits Panel ---
             var creditsPanel = new GameObject("CreditsPanel");
@@ -529,17 +569,28 @@ namespace MagicPairs.Editor
             var mainMenu = canvas.AddComponent<UI.MainMenu>();
             var mmSo = new SerializedObject(mainMenu);
             mmSo.FindProperty("menuPanel").objectReferenceValue = menuPanel;
+            mmSo.FindProperty("startPanel").objectReferenceValue = startPanel;
+            mmSo.FindProperty("optionsPanel").objectReferenceValue = optionsPanel;
             mmSo.FindProperty("languagePanel").objectReferenceValue = langPanel;
             mmSo.FindProperty("modePanel").objectReferenceValue = modePanel;
             mmSo.FindProperty("difficultyPanel").objectReferenceValue = diffPanel;
             mmSo.FindProperty("namesPanel").objectReferenceValue = namesPanel;
-            mmSo.FindProperty("languageTitle").objectReferenceValue = langTitle;
-            mmSo.FindProperty("polishButton").objectReferenceValue = plBtn.GetComponent<Button>();
-            mmSo.FindProperty("englishButton").objectReferenceValue = enBtn.GetComponent<Button>();
+            mmSo.FindProperty("playButton").objectReferenceValue = playBtn.GetComponent<Button>();
+            mmSo.FindProperty("optionsButton").objectReferenceValue = optionsBtn.GetComponent<Button>();
             mmSo.FindProperty("quitButton").objectReferenceValue = quitBtn.GetComponent<Button>();
             mmSo.FindProperty("creditsButton").objectReferenceValue = creditsBtn.GetComponent<Button>();
             mmSo.FindProperty("creditsPanel").objectReferenceValue = creditsPanel;
             mmSo.FindProperty("creditsBackButton").objectReferenceValue = creditsBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("playButtonText").objectReferenceValue = playBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("optionsButtonText").objectReferenceValue = optionsBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("optionsTitle").objectReferenceValue = optionsTitle;
+            mmSo.FindProperty("languageButton").objectReferenceValue = langBtn.GetComponent<Button>();
+            mmSo.FindProperty("languageButtonText").objectReferenceValue = langBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("optionsBackButton").objectReferenceValue = optionsBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("languageTitle").objectReferenceValue = langTitle;
+            mmSo.FindProperty("polishButton").objectReferenceValue = plBtn.GetComponent<Button>();
+            mmSo.FindProperty("englishButton").objectReferenceValue = enBtn.GetComponent<Button>();
+            mmSo.FindProperty("languageBackButton").objectReferenceValue = langBackBtn.GetComponent<Button>();
             mmSo.FindProperty("modeTitle").objectReferenceValue = modeTitle;
             mmSo.FindProperty("twoPlayersButton").objectReferenceValue = twoPlayersBtn.GetComponent<Button>();
             mmSo.FindProperty("singlePlayerButton").objectReferenceValue = singlePlayerBtn.GetComponent<Button>();
