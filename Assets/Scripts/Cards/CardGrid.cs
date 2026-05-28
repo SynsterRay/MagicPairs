@@ -126,9 +126,25 @@ namespace MagicPairs.Cards
         {
             float totalWidth = _config.gridCols * (_config.cardWidth + _config.cardSpacing) - _config.cardSpacing;
             float totalHeight = _config.gridRows * (_config.cardHeight + _config.cardSpacing) - _config.cardSpacing;
-            Vector3 origin = new(-totalWidth * 0.5f, totalHeight * 0.5f, 0f);
 
-            Vector3 dealFrom = new(0f, totalHeight * 0.5f + 2f, 0f);
+            // Adjust camera to fit grid, accounting for UI bar taking top 15% of screen
+            var cam = UnityEngine.Camera.main;
+            if (cam != null)
+            {
+                float visibleHeight = totalHeight + 1f; // padding
+                float visibleWidth = totalWidth + 1f;
+                // UI takes top 15%, so game area is 85% of screen
+                float neededOrthoForHeight = visibleHeight / (2f * 0.85f);
+                float neededOrthoForWidth = visibleWidth / (2f * cam.aspect);
+                cam.orthographicSize = Mathf.Max(neededOrthoForHeight, neededOrthoForWidth);
+            }
+
+            // Offset grid down so it's centered in the visible game area (below UI bar)
+            float ortho = cam != null ? cam.orthographicSize : 5f;
+            float gridCenterY = -ortho * 0.15f; // shift down by 15% of view
+
+            Vector3 origin = new(-totalWidth * 0.5f, gridCenterY + totalHeight * 0.5f, 0f);
+            Vector3 dealFrom = new(0f, gridCenterY + totalHeight * 0.5f + 2f, 0f);
 
             int index = 0;
             for (int row = 0; row < _config.gridRows; row++)

@@ -29,7 +29,7 @@ namespace MagicPairs.Cards
 
         public static CardData CreatePiotrusWithSprite(Sprite sprite)
         {
-            return new CardData { colorIndex = -1, faceColor = Color.white, isPiotrus = true, faceSprite = sprite };
+            return new CardData { colorIndex = -1, faceColor = new Color(0.1f, 0.1f, 0.1f), isPiotrus = true, faceSprite = sprite };
         }
     }
 }
