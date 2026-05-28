@@ -19,7 +19,9 @@ Gra karciana Memory dla dzieci — Unity 6 z URP, docelowo na urządzenia mobiln
 | Single Player (AI) | ✅ | Gracz vs komputer z pamięcią (~60% skuteczności) |
 | Punktacja | ✅ | Zliczanie par per gracz |
 | Zbieranie par | ✅ | Animacja przesuwania znalezionych par pod nick gracza |
-| Menu startowe | ✅ | Krokowe: język → tryb → trudność → imiona → start |
+| Podgląd zebranych kart | ✅ | Panel z siatką zebranych par po kliknięciu "Karty" |
+| Przerwanie gry | ✅ | Przycisk ✕ → potwierdzenie → powrót do menu |
+| Menu startowe | ✅ | Krokowe: język → tryb → trudność → typ kart → imiona → start |
 | Lokalizacja | ✅ | System PL/EN (Piotruś/Joker) |
 | Typy kart | ✅ | Kolory (klasyczny) lub Księżniczki (obrazki PNG) |
 | Poziomy trudności | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
@@ -74,6 +76,8 @@ MagicPairs.Editor     — SceneSetup
 
 ← "Cofnij" — wycentrowany przycisk na dole każdego panelu (oprócz języka)
 ✕ wyjście z gry — na ekranie wyboru języka
+✕ przerwanie gry — prawy górny róg podczas rozgrywki (z potwierdzeniem)
+"Karty" — podgląd zebranych par gracza (lewy/prawy przycisk)
 ```
 
 ### Flow gry

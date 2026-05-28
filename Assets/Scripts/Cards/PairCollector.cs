@@ -14,6 +14,9 @@ namespace MagicPairs.Cards
         private List<CardController> _player1Cards = new();
         private List<CardController> _player2Cards = new();
 
+        public IReadOnlyList<CardController> Player1Cards => _player1Cards;
+        public IReadOnlyList<CardController> Player2Cards => _player2Cards;
+
         private void OnEnable()
         {
             GameEvents.OnGameStarted += Reset;

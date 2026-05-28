@@ -184,6 +184,106 @@ namespace MagicPairs.Editor
             var turnText = CreateUIText("TurnIndicator", "Tura: Gracz 1", canvas.transform,
                 new Vector2(0.2f, 0.87f), new Vector2(0.8f, 0.92f), TextAnchor.MiddleCenter, 28);
 
+            // Pause/Menu Button (top right corner)
+            var pauseBtn = CreateButton("PauseBtn", "✕", canvas.transform,
+                new Vector2(0.88f, 0.93f), new Vector2(0.98f, 0.99f));
+            pauseBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.2f, 0.9f);
+            pauseBtn.SetActive(false);
+
+            // Confirm panel
+            var confirmPanel = new GameObject("ConfirmPanel");
+            confirmPanel.transform.SetParent(canvas.transform, false);
+            var cpImg = confirmPanel.AddComponent<Image>();
+            cpImg.color = new Color(0f, 0f, 0f, 0.85f);
+            var cpRect = confirmPanel.GetComponent<RectTransform>();
+            cpRect.anchorMin = new Vector2(0.15f, 0.35f);
+            cpRect.anchorMax = new Vector2(0.85f, 0.65f);
+            cpRect.offsetMin = Vector2.zero;
+            cpRect.offsetMax = Vector2.zero;
+
+            var confirmText = CreateUIText("ConfirmText", "Wróć do menu?", confirmPanel.transform,
+                new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 28);
+            confirmText.color = Color.white;
+
+            var yesBtn = CreateButton("YesBtn", "Tak", confirmPanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.45f));
+            yesBtn.GetComponent<Image>().color = new Color(0.2f, 0.7f, 0.2f, 1f);
+
+            var noBtn = CreateButton("NoBtn", "Nie", confirmPanel.transform,
+                new Vector2(0.55f, 0.1f), new Vector2(0.9f, 0.45f));
+            noBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.2f, 1f);
+
+            var pauseComp = canvas.AddComponent<UI.PauseButton>();
+            var pauseSo = new SerializedObject(pauseComp);
+            pauseSo.FindProperty("pauseButton").objectReferenceValue = pauseBtn.GetComponent<Button>();
+            pauseSo.FindProperty("confirmPanel").objectReferenceValue = confirmPanel;
+            pauseSo.FindProperty("yesButton").objectReferenceValue = yesBtn.GetComponent<Button>();
+            pauseSo.FindProperty("noButton").objectReferenceValue = noBtn.GetComponent<Button>();
+            pauseSo.ApplyModifiedProperties();
+
+            // Collected Cards Panel (overlay when clicking collected pairs)
+            var ccPanel = new GameObject("CollectedCardsPanel");
+            ccPanel.transform.SetParent(canvas.transform, false);
+            var ccImg = ccPanel.AddComponent<Image>();
+            ccImg.color = new Color(1f, 1f, 1f, 0.95f);
+            var ccRect = ccPanel.GetComponent<RectTransform>();
+            ccRect.anchorMin = new Vector2(0.05f, 0.1f);
+            ccRect.anchorMax = new Vector2(0.95f, 0.9f);
+            ccRect.offsetMin = Vector2.zero;
+            ccRect.offsetMax = Vector2.zero;
+            ccPanel.SetActive(false);
+
+            var ccTitle = CreateUIText("CCTitle", "Zebrane pary", ccPanel.transform,
+                new Vector2(0.05f, 0.88f), new Vector2(0.95f, 0.98f), TextAnchor.MiddleCenter, 28);
+
+            var ccCloseBtn = CreateButton("CCCloseBtn", "Zamknij", ccPanel.transform,
+                new Vector2(0.3f, 0.02f), new Vector2(0.7f, 0.1f));
+            ccCloseBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
+            // Scroll content area
+            var ccContent = new GameObject("CCContent");
+            ccContent.transform.SetParent(ccPanel.transform, false);
+            var ccContentRect = ccContent.AddComponent<RectTransform>();
+            ccContentRect.anchorMin = new Vector2(0.05f, 0.05f);
+            ccContentRect.anchorMax = new Vector2(0.95f, 0.86f);
+            ccContentRect.offsetMin = Vector2.zero;
+            ccContentRect.offsetMax = Vector2.zero;
+            var grid2 = ccContent.AddComponent<GridLayoutGroup>();
+            grid2.cellSize = new Vector2(120f, 170f);
+            grid2.spacing = new Vector2(15f, 15f);
+            grid2.childAlignment = TextAnchor.UpperCenter;
+
+            // Card slot prefab (for displaying collected cards)
+            var ccSlot = new GameObject("CardSlot");
+            ccSlot.transform.SetParent(canvas.transform, false);
+            var slotImg = ccSlot.AddComponent<Image>();
+            slotImg.color = Color.white;
+            ccSlot.SetActive(false);
+
+            // Buttons to view collected cards (below score panel, left and right)
+            var p1CollBtn = CreateButton("P1CollBtn", "Karty", canvas.transform,
+                new Vector2(0.0f, 0.78f), new Vector2(0.15f, 0.85f));
+            p1CollBtn.GetComponent<Image>().color = new Color(0.3f, 0.6f, 0.9f, 1f);
+            p1CollBtn.GetComponentInChildren<Text>().fontSize = 18;
+            p1CollBtn.SetActive(false);
+
+            var p2CollBtn = CreateButton("P2CollBtn", "Karty", canvas.transform,
+                new Vector2(0.85f, 0.78f), new Vector2(1.0f, 0.85f));
+            p2CollBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.4f, 1f);
+            p2CollBtn.GetComponentInChildren<Text>().fontSize = 18;
+            p2CollBtn.SetActive(false);
+
+            var ccComp = canvas.AddComponent<UI.CollectedCardsPanel>();
+            var ccSo = new SerializedObject(ccComp);
+            ccSo.FindProperty("panel").objectReferenceValue = ccPanel;
+            ccSo.FindProperty("titleText").objectReferenceValue = ccTitle;
+            ccSo.FindProperty("contentContainer").objectReferenceValue = ccContent.transform;
+            ccSo.FindProperty("closeButton").objectReferenceValue = ccCloseBtn.GetComponent<Button>();
+            ccSo.FindProperty("cardSlotPrefab").objectReferenceValue = ccSlot;
+            ccSo.FindProperty("player1Button").objectReferenceValue = p1CollBtn.GetComponent<Button>();
+            ccSo.FindProperty("player2Button").objectReferenceValue = p2CollBtn.GetComponent<Button>();
+            ccSo.ApplyModifiedProperties();
+
             var turnIndicator = canvas.AddComponent<UI.TurnIndicator>();
             var tiSo = new SerializedObject(turnIndicator);
             tiSo.FindProperty("turnText").objectReferenceValue = turnText;

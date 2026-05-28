@@ -214,5 +214,10 @@ namespace MagicPairs.UI
             if (menuPanel != null) menuPanel.SetActive(false);
             GameManager.Instance.StartGame();
         }
+
+        public void ReturnToMenu()
+        {
+            ShowLanguagePanel();
+        }
     }
 }
