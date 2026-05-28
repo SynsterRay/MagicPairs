@@ -1,6 +1,9 @@
 # Kiro
 .kiro/
 
+# Android build cache
+.utmp/
+
 # Unity generated
 [Ll]ibrary/
 [Tt]emp/
