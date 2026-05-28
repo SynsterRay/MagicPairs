@@ -9,6 +9,7 @@ namespace MagicPairs.UI
         [SerializeField] private GameObject panel;
         [SerializeField] private Text resultText;
         [SerializeField] private Button playAgainButton;
+        [SerializeField] private Text playAgainText;
 
         private void OnEnable()
         {
@@ -32,11 +33,17 @@ namespace MagicPairs.UI
         {
             if (panel == null) return;
             panel.SetActive(true);
+            if (playAgainText != null)
+                playAgainText.text = Localization.Get("playAgain");
             if (resultText != null)
             {
-                resultText.text = winnerIndex == -1
-                    ? "Remis!"
-                    : $"Wygrywa Gracz {winnerIndex + 1}!";
+                if (winnerIndex == -1)
+                    resultText.text = Localization.Get("draw");
+                else
+                {
+                    string name = winnerIndex == 0 ? MainMenu.Player1Name : MainMenu.Player2Name;
+                    resultText.text = Localization.Get("wins", name);
+                }
             }
         }
 

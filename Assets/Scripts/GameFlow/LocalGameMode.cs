@@ -78,6 +78,8 @@ namespace MagicPairs.GameFlow
             GameEvents.FirePairMatched(CurrentPlayerIndex, a.Data.colorIndex);
             GameEvents.FireScoreChanged(CurrentPlayerIndex, _scores[CurrentPlayerIndex]);
 
+            yield return new WaitForSeconds(0.6f);
+
             _firstPick = null;
             _waitingForResult = false;
 
@@ -86,7 +88,6 @@ namespace MagicPairs.GameFlow
                 int winner = _scores[0] > _scores[1] ? 0 : _scores[1] > _scores[0] ? 1 : -1;
                 GameEvents.FireGameOver(winner);
             }
-            yield break;
         }
 
         private IEnumerator HandleMismatch(CardController a, CardController b)

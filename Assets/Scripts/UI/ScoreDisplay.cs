@@ -23,16 +23,19 @@ namespace MagicPairs.UI
 
         private void ResetDisplay()
         {
-            if (player1ScoreText != null) player1ScoreText.text = "Gracz 1: 0";
-            if (player2ScoreText != null) player2ScoreText.text = "Gracz 2: 0";
+            if (player1ScoreText != null)
+                player1ScoreText.text = Localization.Get("score", MainMenu.Player1Name, 0);
+            if (player2ScoreText != null)
+                player2ScoreText.text = Localization.Get("score", MainMenu.Player2Name, 0);
         }
 
         private void UpdateScore(int playerIndex, int score)
         {
+            string name = playerIndex == 0 ? MainMenu.Player1Name : MainMenu.Player2Name;
             if (playerIndex == 0 && player1ScoreText != null)
-                player1ScoreText.text = $"Gracz 1: {score}";
+                player1ScoreText.text = Localization.Get("score", name, score);
             else if (playerIndex == 1 && player2ScoreText != null)
-                player2ScoreText.text = $"Gracz 2: {score}";
+                player2ScoreText.text = Localization.Get("score", name, score);
         }
     }
 }

@@ -25,14 +25,16 @@ namespace MagicPairs.UI
         private void UpdateTurn(int playerIndex)
         {
             if (turnText == null) return;
-            turnText.text = $"Tura: Gracz {playerIndex + 1}";
+            string name = playerIndex == 0 ? MainMenu.Player1Name : MainMenu.Player2Name;
+            turnText.text = Localization.Get("turn", name);
             turnText.color = playerIndex == 0 ? player1Color : player2Color;
         }
 
         private void ShowPiotrusWarning(int playerIndex)
         {
             if (turnText == null) return;
-            turnText.text = $"Piotruś! Gracz {playerIndex + 1} traci kolejkę!";
+            string name = playerIndex == 0 ? MainMenu.Player1Name : MainMenu.Player2Name;
+            turnText.text = Localization.Get("piotrus", name);
             turnText.color = Color.black;
         }
     }

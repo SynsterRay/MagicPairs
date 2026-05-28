@@ -113,6 +113,7 @@ namespace MagicPairs.Editor
             gm.AddComponent<Input.TouchInputHandler>();
 
             var cardGrid = gm.AddComponent<Cards.CardGrid>();
+            gm.AddComponent<Cards.PairCollector>();
 
             var config = AssetDatabase.LoadAssetAtPath<Core.GameConfig>("Assets/ScriptableObjects/GameConfig.asset");
             var managerSo = new SerializedObject(manager);
@@ -208,7 +209,58 @@ namespace MagicPairs.Editor
             gopSo.FindProperty("panel").objectReferenceValue = goPanel;
             gopSo.FindProperty("resultText").objectReferenceValue = resultText;
             gopSo.FindProperty("playAgainButton").objectReferenceValue = playAgainBtn.GetComponent<Button>();
+            gopSo.FindProperty("playAgainText").objectReferenceValue = playAgainBtn.GetComponentInChildren<Text>();
             gopSo.ApplyModifiedProperties();
+
+            // Main Menu Panel
+            var menuPanel = new GameObject("MenuPanel");
+            menuPanel.transform.SetParent(canvas.transform, false);
+            var menuImg = menuPanel.AddComponent<Image>();
+            menuImg.color = new Color(0.08f, 0.08f, 0.15f, 0.95f);
+            var menuRect = menuPanel.GetComponent<RectTransform>();
+            menuRect.anchorMin = Vector2.zero;
+            menuRect.anchorMax = Vector2.one;
+            menuRect.offsetMin = Vector2.zero;
+            menuRect.offsetMax = Vector2.zero;
+
+            // Title
+            var title = CreateUIText("Title", "Magic Pairs", menuPanel.transform,
+                new Vector2(0.1f, 0.75f), new Vector2(0.9f, 0.92f), TextAnchor.MiddleCenter, 56);
+
+            // Player 1 label + input
+            var p1Label = CreateUIText("P1Label", "Imię Gracza 1", menuPanel.transform,
+                new Vector2(0.1f, 0.62f), new Vector2(0.9f, 0.68f), TextAnchor.MiddleLeft, 24);
+            var p1Input = CreateInputField("P1Input", "Gracz 1", menuPanel.transform,
+                new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.62f));
+
+            // Player 2 label + input
+            var p2Label = CreateUIText("P2Label", "Imię Gracza 2", menuPanel.transform,
+                new Vector2(0.1f, 0.45f), new Vector2(0.9f, 0.51f), TextAnchor.MiddleLeft, 24);
+            var p2Input = CreateInputField("P2Input", "Gracz 2", menuPanel.transform,
+                new Vector2(0.1f, 0.38f), new Vector2(0.9f, 0.45f));
+
+            // Language button
+            var langBtn = CreateButton("LanguageBtn", "PL", menuPanel.transform,
+                new Vector2(0.35f, 0.25f), new Vector2(0.65f, 0.33f));
+
+            // Start button
+            var startBtn = CreateButton("StartBtn", "Start", menuPanel.transform,
+                new Vector2(0.2f, 0.1f), new Vector2(0.8f, 0.2f));
+            startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
+
+            var mainMenu = canvas.AddComponent<UI.MainMenu>();
+            var mmSo = new SerializedObject(mainMenu);
+            mmSo.FindProperty("menuPanel").objectReferenceValue = menuPanel;
+            mmSo.FindProperty("player1Input").objectReferenceValue = p1Input.GetComponent<InputField>();
+            mmSo.FindProperty("player2Input").objectReferenceValue = p2Input.GetComponent<InputField>();
+            mmSo.FindProperty("startButton").objectReferenceValue = startBtn.GetComponent<Button>();
+            mmSo.FindProperty("languageButton").objectReferenceValue = langBtn.GetComponent<Button>();
+            mmSo.FindProperty("languageButtonText").objectReferenceValue = langBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("player1Label").objectReferenceValue = p1Label;
+            mmSo.FindProperty("player2Label").objectReferenceValue = p2Label;
+            mmSo.FindProperty("startButtonText").objectReferenceValue = startBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("titleText").objectReferenceValue = title;
+            mmSo.ApplyModifiedProperties();
         }
 
         private static Text CreateUIText(string name, string text, Transform parent,
@@ -259,6 +311,57 @@ namespace MagicPairs.Editor
             txtRect.offsetMax = Vector2.zero;
 
             return btn;
+        }
+
+        private static GameObject CreateInputField(string name, string placeholder, Transform parent,
+            Vector2 anchorMin, Vector2 anchorMax)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            var img = go.AddComponent<Image>();
+            img.color = new Color(0.2f, 0.2f, 0.25f, 1f);
+            var rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            // Text child
+            var textObj = new GameObject("Text");
+            textObj.transform.SetParent(go.transform, false);
+            var textComp = textObj.AddComponent<Text>();
+            textComp.fontSize = 24;
+            textComp.alignment = TextAnchor.MiddleLeft;
+            textComp.color = Color.white;
+            textComp.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            textComp.supportRichText = false;
+            var textRect = textObj.GetComponent<RectTransform>();
+            textRect.anchorMin = new Vector2(0.05f, 0f);
+            textRect.anchorMax = new Vector2(0.95f, 1f);
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+
+            // Placeholder child
+            var phObj = new GameObject("Placeholder");
+            phObj.transform.SetParent(go.transform, false);
+            var phText = phObj.AddComponent<Text>();
+            phText.text = placeholder;
+            phText.fontSize = 24;
+            phText.alignment = TextAnchor.MiddleLeft;
+            phText.color = new Color(0.6f, 0.6f, 0.6f, 0.7f);
+            phText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            phText.fontStyle = FontStyle.Italic;
+            var phRect = phObj.GetComponent<RectTransform>();
+            phRect.anchorMin = new Vector2(0.05f, 0f);
+            phRect.anchorMax = new Vector2(0.95f, 1f);
+            phRect.offsetMin = Vector2.zero;
+            phRect.offsetMax = Vector2.zero;
+
+            var input = go.AddComponent<InputField>();
+            input.textComponent = textComp;
+            input.placeholder = phText;
+
+            return go;
         }
     }
 }

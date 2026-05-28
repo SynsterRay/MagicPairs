@@ -16,11 +16,6 @@ namespace MagicPairs.Core
             Instance = this;
         }
 
-        private void Start()
-        {
-            StartGame();
-        }
-
         public void StartGame()
         {
             GameEvents.FireGameStarted();
