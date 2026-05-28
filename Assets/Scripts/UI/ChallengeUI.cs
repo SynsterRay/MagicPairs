@@ -67,7 +67,16 @@ namespace MagicPairs.UI
         {
             if (scoreText != null) scoreText.text = score.ToString();
             if (streakText != null)
-                streakText.text = streak > 1 ? $"x{Mathf.Min(streak, 5)}" : "";
+            {
+                if (streak >= 2)
+                    streakText.text = $"x{Mathf.Min(streak, 5)}";
+                else if (streak < 0)
+                    streakText.text = $"-{Mathf.Abs(streak)}";
+                else
+                    streakText.text = "";
+                streakText.color = streak >= 2 ? new Color(0.9f, 0.5f, 0f) :
+                                   streak < 0 ? new Color(0.8f, 0.2f, 0.2f) : Color.white;
+            }
             if (levelText != null)
             {
                 string lvl = Localization.CurrentLanguage == Language.Polish ? "Poziom" : "Level";

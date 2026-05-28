@@ -165,8 +165,16 @@ namespace MagicPairs.GameFlow
             if (CurrentPlayerIndex == 0)
             {
                 _streak++;
-                int multiplier = Mathf.Min(_streak, 5); // max 5x
-                _score += 100 * multiplier;
+                if (_streak > 0)
+                {
+                    int multiplier = Mathf.Min(_streak, 5); // x1 to x5
+                    _score += 100 * multiplier;
+                }
+                else
+                {
+                    // Recovering from negative streak — still award base points
+                    _score += 100;
+                }
                 OnChallengeScoreChanged?.Invoke(_score, _streak, _currentLevel);
             }
 
@@ -206,7 +214,12 @@ namespace MagicPairs.GameFlow
             b.FlipBack(_config.cardBackColor);
 
             if (CurrentPlayerIndex == 0)
-                _streak = 0;
+            {
+                _streak = Mathf.Max(-3, _streak - 1); // drop by 1, floor at -3
+                // Consecutive mismatches penalize score slightly
+                if (_streak < 0)
+                    _score = Mathf.Max(0, _score - 25 * Mathf.Abs(_streak));
+            }
 
             GameEvents.FirePairMismatched();
             OnChallengeScoreChanged?.Invoke(_score, _streak, _currentLevel);
