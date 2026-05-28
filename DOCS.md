@@ -69,8 +69,9 @@ MagicPairs.Editor     — SceneSetup
 2. Wybierz tryb (2 Graczy / 1 Gracz vs AI)
 3. Wybierz trudność (★ / ★★ / ★★★)
 4. Wpisz imiona → Start
-← przyciski cofania na każdym etapie
-✕ wyjście z gry na ekranie startowym
+
+← "Cofnij" — wycentrowany przycisk na dole każdego panelu (oprócz języka)
+✕ wyjście z gry — na ekranie wyboru języka
 ```
 
 ### Flow gry
@@ -96,9 +97,15 @@ MainMenu → Start
 
 - Gracz 0 = człowiek, Gracz 1 = komputer
 - AI pamięta odkryte karty (`Dictionary<colorIndex, List<CardController>>`)
-- `aiMemoryChance = 0.6f` — 60% szans na użycie pamięci
+- Pamięć obejmuje karty odkryte przez obu graczy (AI "widzi" co gracz odkrywa)
+- `aiMemoryChance = 0.6f` — 60% szans na użycie pamięci przy wyborze
+- W 40% przypadków AI wybiera losowo, nawet jeśli "wie" gdzie jest para (symulacja niedoskonałej pamięci)
 - `aiThinkDelay = 1.0s` — opóźnienie przed ruchem (naturalność)
 - Po znalezieniu pary AI dostaje kolejną turę
+- Logika wyboru:
+  1. Pierwsza karta: sprawdza czy zna pełną parę → jeśli tak (i 60% roll), wybiera jedną z nich
+  2. Druga karta: sprawdza czy zna partnera pierwszej → jeśli tak (i 60% roll), wybiera go
+  3. W przeciwnym razie: losowy wybór z dostępnych kart
 
 ## Jak uruchomić
 

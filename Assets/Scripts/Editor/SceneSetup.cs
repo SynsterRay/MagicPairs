@@ -269,10 +269,9 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
             singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
 
-            var modeBackBtn = CreateButton("ModeBackBtn", "←", modePanel.transform,
-                new Vector2(0f, 0.0f), new Vector2(0.15f, 0.1f));
+            var modeBackBtn = CreateButton("ModeBackBtn", "← Cofnij", modePanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             modeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
-            modeBackBtn.GetComponentInChildren<Text>().fontSize = 32;
 
             // --- Difficulty Panel ---
             var diffPanel = new GameObject("DifficultyPanel");
@@ -309,10 +308,9 @@ namespace MagicPairs.Editor
             CreateUIText("HardLabel", "5x6", diffPanel.transform,
                 new Vector2(0.7f, 0.15f), new Vector2(0.95f, 0.3f), TextAnchor.MiddleCenter, 20);
 
-            var diffBackBtn = CreateButton("DiffBackBtn", "←", diffPanel.transform,
-                new Vector2(0f, 0.0f), new Vector2(0.15f, 0.1f));
+            var diffBackBtn = CreateButton("DiffBackBtn", "← Cofnij", diffPanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             diffBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
-            diffBackBtn.GetComponentInChildren<Text>().fontSize = 32;
 
             // --- Names Panel ---
             var namesPanel = new GameObject("NamesPanel");
@@ -337,10 +335,9 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.02f), new Vector2(0.9f, 0.2f));
             startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
-            var namesBackBtn = CreateButton("NamesBackBtn", "←", namesPanel.transform,
-                new Vector2(0f, 0.87f), new Vector2(0.15f, 0.99f));
+            var namesBackBtn = CreateButton("NamesBackBtn", "← Cofnij", namesPanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             namesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
-            namesBackBtn.GetComponentInChildren<Text>().fontSize = 32;
 
             // Wire MainMenu
             var mainMenu = canvas.AddComponent<UI.MainMenu>();
