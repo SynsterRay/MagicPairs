@@ -16,12 +16,13 @@ namespace MagicPairs.Input
 
         private IGameMode GetActiveMode()
         {
-            // Find whichever mode is currently enabled
-            var local = GetComponent<LocalGameMode>();
-            if (local != null && local.enabled) return local;
+            var challenge = GetComponent<ChallengeMode>();
+            if (challenge != null && challenge.enabled) return challenge;
             var single = GetComponent<SinglePlayerMode>();
             if (single != null && single.enabled) return single;
-            return local;
+            var local = GetComponent<LocalGameMode>();
+            if (local != null && local.enabled) return local;
+            return null;
         }
 
         private void Update()
