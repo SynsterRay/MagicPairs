@@ -89,7 +89,7 @@ namespace MagicPairs.Cards
             var cards = new List<Sprite>();
             foreach (var s in all)
             {
-                if (!s.name.Contains("joker"))
+                if (!s.name.Contains("joker") && !s.name.Contains("back_card"))
                     cards.Add(s);
             }
 
@@ -101,6 +101,7 @@ namespace MagicPairs.Cards
                 foreach (var tex in textures)
                 {
                     if (tex.name.Contains("joker")) continue;
+                    if (tex.name.Contains("back_card")) continue;
                     var sprite = Sprite.Create(tex,
                         new Rect(0, 0, tex.width, tex.height),
                         new Vector2(0.5f, 0.5f), 100f);

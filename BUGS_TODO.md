@@ -7,6 +7,8 @@
 - [x] ~~Sprite'y kart różnych rozmiarów~~ — SpriteDrawMode.Sliced wymusza jednolity rozmiar
 - [x] ~~Panel zebranych kart nie otwierał się~~ — przyciski "Karty" zamiast world raycast
 - [x] ~~Build cache .utmp w repo~~ — dodany do .gitignore
+- [x] ~~back_card.png ładowany jako karta do gry~~ — wykluczony z LoadPrincessSprites
+- [x] ~~Zebrane pary nachodzą na karty na mobile~~ — karty znikają, widoczne tylko w panelu "Karty"
 
 ## Znane problemy
 
