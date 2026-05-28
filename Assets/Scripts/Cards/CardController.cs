@@ -14,13 +14,35 @@ namespace MagicPairs.Cards
 
         private CardAnimator _animator;
         private Color _backColor;
+        private Sprite _backSprite;
 
         public void Initialize(CardData data, Color backColor)
         {
             Data = data;
             _backColor = backColor;
             _animator = GetComponent<CardAnimator>();
-            _animator.SetColor(backColor);
+
+            // Load back sprite for Princess theme
+            if (data.HasSprite)
+            {
+                _backSprite = Resources.Load<Sprite>("PrincessCards/back_card");
+                if (_backSprite == null)
+                {
+                    var tex = Resources.Load<Texture2D>("PrincessCards/back_card");
+                    if (tex != null)
+                        _backSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                }
+
+                if (_backSprite != null)
+                    _animator.SetSprite(_backSprite);
+                else
+                    _animator.SetColor(backColor);
+            }
+            else
+            {
+                _animator.SetColor(backColor);
+            }
+
             State = CardState.FaceDown;
         }
 
@@ -43,6 +65,9 @@ namespace MagicPairs.Cards
             _animator.PlayFlipBack(backColor, () =>
             {
                 State = CardState.FaceDown;
+                // Show back sprite again
+                if (_backSprite != null)
+                    _animator.SetSprite(_backSprite);
             });
         }
 
