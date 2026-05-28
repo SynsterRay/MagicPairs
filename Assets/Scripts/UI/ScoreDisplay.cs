@@ -23,6 +23,12 @@ namespace MagicPairs.UI
 
         private void ResetDisplay()
         {
+            if (UI.MainMenu.IsChallengeMode)
+            {
+                if (player1ScoreText != null) player1ScoreText.transform.parent.gameObject.SetActive(false);
+                return;
+            }
+            if (player1ScoreText != null) player1ScoreText.transform.parent.gameObject.SetActive(true);
             if (player1ScoreText != null)
                 player1ScoreText.text = Localization.Get("score", MainMenu.Player1Name, 0);
             if (player2ScoreText != null)

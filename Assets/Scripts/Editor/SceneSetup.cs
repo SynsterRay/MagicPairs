@@ -111,6 +111,8 @@ namespace MagicPairs.Editor
             gm.AddComponent<GameFlow.LocalGameMode>();
             var singleMode = gm.AddComponent<GameFlow.SinglePlayerMode>();
             singleMode.enabled = false;
+            var challengeMode = gm.AddComponent<GameFlow.ChallengeMode>();
+            challengeMode.enabled = false;
             gm.AddComponent<Players.ScoreTracker>();
             gm.AddComponent<Input.TouchInputHandler>();
 
@@ -324,6 +326,102 @@ namespace MagicPairs.Editor
             gopSo.FindProperty("playAgainText").objectReferenceValue = playAgainBtn.GetComponentInChildren<Text>();
             gopSo.ApplyModifiedProperties();
 
+            // --- Challenge UI ---
+            // Score panel (top center, replaces score display in challenge mode)
+            var chScorePanel = new GameObject("ChallengeScorePanel");
+            chScorePanel.transform.SetParent(canvas.transform, false);
+            var chScoreRect = chScorePanel.AddComponent<RectTransform>();
+            chScoreRect.anchorMin = new Vector2(0.2f, 0.93f);
+            chScoreRect.anchorMax = new Vector2(0.8f, 0.99f);
+            chScoreRect.offsetMin = Vector2.zero;
+            chScoreRect.offsetMax = Vector2.zero;
+
+            var chLevelText = CreateUIText("ChLevelText", "Poziom 1", chScorePanel.transform,
+                new Vector2(0f, 0f), new Vector2(0.3f, 1f), TextAnchor.MiddleCenter, 20);
+            var chScoreText = CreateUIText("ChScoreText", "0", chScorePanel.transform,
+                new Vector2(0.35f, 0f), new Vector2(0.7f, 1f), TextAnchor.MiddleCenter, 24);
+            var chStreakText = CreateUIText("ChStreakText", "", chScorePanel.transform,
+                new Vector2(0.72f, 0f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 22);
+            chStreakText.color = new Color(0.9f, 0.5f, 0f);
+
+            // Level Complete panel
+            var lvlCompletePanel = new GameObject("LevelCompletePanel");
+            lvlCompletePanel.transform.SetParent(canvas.transform, false);
+            var lcImg = lvlCompletePanel.AddComponent<Image>();
+            lcImg.color = new Color(0.1f, 0.5f, 0.2f, 0.95f);
+            var lcRect = lvlCompletePanel.GetComponent<RectTransform>();
+            lcRect.anchorMin = new Vector2(0.15f, 0.35f);
+            lcRect.anchorMax = new Vector2(0.85f, 0.65f);
+            lcRect.offsetMin = Vector2.zero;
+            lcRect.offsetMax = Vector2.zero;
+
+            var lvlCompleteText = CreateUIText("LvlCompleteText", "Poziom ukończony!", lvlCompletePanel.transform,
+                new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 28);
+            lvlCompleteText.color = Color.white;
+
+            var nextLvlBtn = CreateButton("NextLvlBtn", "Dalej", lvlCompletePanel.transform,
+                new Vector2(0.2f, 0.1f), new Vector2(0.8f, 0.4f));
+            nextLvlBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
+
+            // Challenge Over panel
+            var chOverPanel = new GameObject("ChallengeOverPanel");
+            chOverPanel.transform.SetParent(canvas.transform, false);
+            var coImg = chOverPanel.AddComponent<Image>();
+            coImg.color = new Color(0.1f, 0.1f, 0.1f, 0.95f);
+            var coRect = chOverPanel.GetComponent<RectTransform>();
+            coRect.anchorMin = new Vector2(0.1f, 0.25f);
+            coRect.anchorMax = new Vector2(0.9f, 0.75f);
+            coRect.offsetMin = Vector2.zero;
+            coRect.offsetMax = Vector2.zero;
+
+            var chFinalScoreText = CreateUIText("ChFinalScore", "Koniec! Wynik: 0", chOverPanel.transform,
+                new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 30);
+            chFinalScoreText.color = Color.white;
+
+            var chMenuBtn = CreateButton("ChMenuBtn", "Menu", chOverPanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.4f));
+
+            var chLeaderBtn = CreateButton("ChLeaderBtn", "Wyniki", chOverPanel.transform,
+                new Vector2(0.55f, 0.1f), new Vector2(0.9f, 0.4f));
+            chLeaderBtn.GetComponent<Image>().color = new Color(0.8f, 0.6f, 0.1f, 1f);
+
+            // Leaderboard panel
+            var leaderPanel = new GameObject("LeaderboardPanel");
+            leaderPanel.transform.SetParent(canvas.transform, false);
+            var lpImg = leaderPanel.AddComponent<Image>();
+            lpImg.color = new Color(1f, 1f, 1f, 0.95f);
+            var lpRect = leaderPanel.GetComponent<RectTransform>();
+            lpRect.anchorMin = new Vector2(0.05f, 0.1f);
+            lpRect.anchorMax = new Vector2(0.95f, 0.9f);
+            lpRect.offsetMin = Vector2.zero;
+            lpRect.offsetMax = Vector2.zero;
+
+            var leaderText = CreateUIText("LeaderText", "", leaderPanel.transform,
+                new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.95f), TextAnchor.UpperCenter, 22);
+
+            var leaderBackBtn = CreateButton("LeaderBackBtn", "←", leaderPanel.transform,
+                new Vector2(0.3f, 0.02f), new Vector2(0.7f, 0.12f));
+            leaderBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
+            // Wire ChallengeUI
+            var challengeUI = canvas.AddComponent<UI.ChallengeUI>();
+            var cuSo = new SerializedObject(challengeUI);
+            cuSo.FindProperty("scorePanel").objectReferenceValue = chScorePanel;
+            cuSo.FindProperty("scoreText").objectReferenceValue = chScoreText;
+            cuSo.FindProperty("streakText").objectReferenceValue = chStreakText;
+            cuSo.FindProperty("levelText").objectReferenceValue = chLevelText;
+            cuSo.FindProperty("levelCompletePanel").objectReferenceValue = lvlCompletePanel;
+            cuSo.FindProperty("levelCompleteText").objectReferenceValue = lvlCompleteText;
+            cuSo.FindProperty("nextLevelButton").objectReferenceValue = nextLvlBtn.GetComponent<Button>();
+            cuSo.FindProperty("challengeOverPanel").objectReferenceValue = chOverPanel;
+            cuSo.FindProperty("finalScoreText").objectReferenceValue = chFinalScoreText;
+            cuSo.FindProperty("challengeMenuButton").objectReferenceValue = chMenuBtn.GetComponent<Button>();
+            cuSo.FindProperty("leaderboardPanel").objectReferenceValue = leaderPanel;
+            cuSo.FindProperty("leaderboardText").objectReferenceValue = leaderText;
+            cuSo.FindProperty("leaderboardBackButton").objectReferenceValue = leaderBackBtn.GetComponent<Button>();
+            cuSo.FindProperty("showLeaderboardButton").objectReferenceValue = chLeaderBtn.GetComponent<Button>();
+            cuSo.ApplyModifiedProperties();
+
             // Main Menu Panel
             var menuPanel = new GameObject("MenuPanel");
             menuPanel.transform.SetParent(canvas.transform, false);
@@ -454,6 +552,52 @@ namespace MagicPairs.Editor
             var creditsBackBtn = CreateButton("CreditsBackBtn", "←", creditsPanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             creditsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
+            // --- Game Type Panel ---
+            var gameTypePanel = new GameObject("GameTypePanel");
+            gameTypePanel.transform.SetParent(menuPanel.transform, false);
+            var gameTypePanelRect = gameTypePanel.AddComponent<RectTransform>();
+            gameTypePanelRect.anchorMin = new Vector2(0.1f, 0.25f);
+            gameTypePanelRect.anchorMax = new Vector2(0.9f, 0.78f);
+            gameTypePanelRect.offsetMin = Vector2.zero;
+            gameTypePanelRect.offsetMax = Vector2.zero;
+
+            var gameTypeTitle = CreateUIText("GameTypeTitle", "Wybierz tryb gry", gameTypePanel.transform,
+                new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 30);
+
+            var arcadeBtn = CreateButton("ArcadeBtn", "Arcade", gameTypePanel.transform,
+                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
+            arcadeBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 1f);
+
+            var challengeBtn = CreateButton("ChallengeBtn", "Wyzwanie", gameTypePanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
+            challengeBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 1f);
+
+            var gameTypeBackBtn = CreateButton("GameTypeBackBtn", "←", gameTypePanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+            gameTypeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
+            // --- Challenge Names Panel ---
+            var challengeNamesPanel = new GameObject("ChallengeNamesPanel");
+            challengeNamesPanel.transform.SetParent(menuPanel.transform, false);
+            var challengeNamesPanelRect = challengeNamesPanel.AddComponent<RectTransform>();
+            challengeNamesPanelRect.anchorMin = new Vector2(0.1f, 0.25f);
+            challengeNamesPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            challengeNamesPanelRect.offsetMin = Vector2.zero;
+            challengeNamesPanelRect.offsetMax = Vector2.zero;
+
+            var challengeNameLabel = CreateUIText("ChallengeNameLabel", "Twoje imię", challengeNamesPanel.transform,
+                new Vector2(0f, 0.65f), new Vector2(1f, 0.85f), TextAnchor.MiddleLeft, 24);
+            var challengeNameInput = CreateInputField("ChallengeNameInput", "Gracz", challengeNamesPanel.transform,
+                new Vector2(0f, 0.45f), new Vector2(1f, 0.62f));
+
+            var challengeStartBtn = CreateButton("ChallengeStartBtn", "Start", challengeNamesPanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.35f));
+            challengeStartBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
+
+            var challengeNamesBackBtn = CreateButton("ChallengeNamesBackBtn", "←", challengeNamesPanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+            challengeNamesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Mode Panel ---
             var modePanel = new GameObject("ModePanel");
@@ -591,6 +735,19 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("polishButton").objectReferenceValue = plBtn.GetComponent<Button>();
             mmSo.FindProperty("englishButton").objectReferenceValue = enBtn.GetComponent<Button>();
             mmSo.FindProperty("languageBackButton").objectReferenceValue = langBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("gameTypePanel").objectReferenceValue = gameTypePanel;
+            mmSo.FindProperty("gameTypeTitle").objectReferenceValue = gameTypeTitle;
+            mmSo.FindProperty("arcadeButton").objectReferenceValue = arcadeBtn.GetComponent<Button>();
+            mmSo.FindProperty("arcadeButtonText").objectReferenceValue = arcadeBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("challengeButton").objectReferenceValue = challengeBtn.GetComponent<Button>();
+            mmSo.FindProperty("challengeButtonText").objectReferenceValue = challengeBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("gameTypeBackButton").objectReferenceValue = gameTypeBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("challengeNamesPanel").objectReferenceValue = challengeNamesPanel;
+            mmSo.FindProperty("challengeNameLabel").objectReferenceValue = challengeNameLabel;
+            mmSo.FindProperty("challengeNameInput").objectReferenceValue = challengeNameInput.GetComponent<InputField>();
+            mmSo.FindProperty("challengeStartButton").objectReferenceValue = challengeStartBtn.GetComponent<Button>();
+            mmSo.FindProperty("challengeStartText").objectReferenceValue = challengeStartBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("challengeNamesBackButton").objectReferenceValue = challengeNamesBackBtn.GetComponent<Button>();
             mmSo.FindProperty("modeTitle").objectReferenceValue = modeTitle;
             mmSo.FindProperty("twoPlayersButton").objectReferenceValue = twoPlayersBtn.GetComponent<Button>();
             mmSo.FindProperty("singlePlayerButton").objectReferenceValue = singlePlayerBtn.GetComponent<Button>();

@@ -32,6 +32,11 @@ namespace MagicPairs.Core
             { "play", new[] { "Graj", "Play" } },
             { "options", new[] { "Opcje", "Options" } },
             { "languageOption", new[] { "Język", "Language" } },
+            { "arcade", new[] { "Arcade", "Arcade" } },
+            { "challenge", new[] { "Wyzwanie", "Challenge" } },
+            { "yourName", new[] { "Twoje imię", "Your name" } },
+            { "level", new[] { "Poziom", "Level" } },
+            { "leaderboard", new[] { "Tabela wyników", "Leaderboard" } },
         };
 
         public static string Get(string key)

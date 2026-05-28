@@ -13,6 +13,7 @@ namespace MagicPairs.UI
         [SerializeField] private GameObject startPanel;
         [SerializeField] private GameObject optionsPanel;
         [SerializeField] private GameObject languagePanel;
+        [SerializeField] private GameObject gameTypePanel;
         [SerializeField] private GameObject modePanel;
         [SerializeField] private GameObject difficultyPanel;
         [SerializeField] private GameObject namesPanel;
@@ -32,6 +33,22 @@ namespace MagicPairs.UI
         [SerializeField] private Text languageButtonText;
         [SerializeField] private Button creditsButton;
         [SerializeField] private Button optionsBackButton;
+
+        [Header("Game Type Panel")]
+        [SerializeField] private Text gameTypeTitle;
+        [SerializeField] private Button arcadeButton;
+        [SerializeField] private Text arcadeButtonText;
+        [SerializeField] private Button challengeButton;
+        [SerializeField] private Text challengeButtonText;
+        [SerializeField] private Button gameTypeBackButton;
+
+        [Header("Challenge Names Panel")]
+        [SerializeField] private GameObject challengeNamesPanel;
+        [SerializeField] private Text challengeNameLabel;
+        [SerializeField] private InputField challengeNameInput;
+        [SerializeField] private Button challengeStartButton;
+        [SerializeField] private Text challengeStartText;
+        [SerializeField] private Button challengeNamesBackButton;
 
         [Header("Language Panel")]
         [SerializeField] private Text languageTitle;
@@ -73,13 +90,14 @@ namespace MagicPairs.UI
         public static string Player1Name { get; private set; } = "Gracz 1";
         public static string Player2Name { get; private set; } = "Gracz 2";
         public static bool IsSinglePlayer { get; private set; }
+        public static bool IsChallengeMode { get; private set; }
         public static Difficulty SelectedDifficulty { get; private set; }
 
         private bool _singlePlayer;
 
         private void Start()
         {
-            playButton?.onClick.AddListener(ShowModePanel);
+            playButton?.onClick.AddListener(ShowGameTypePanel);
             optionsButton?.onClick.AddListener(ShowOptionsPanel);
             quitButton?.onClick.AddListener(() => Application.Quit());
             creditsButton?.onClick.AddListener(ShowCredits);
@@ -89,6 +107,9 @@ namespace MagicPairs.UI
             languageBackButton?.onClick.AddListener(ShowOptionsPanel);
             polishButton?.onClick.AddListener(() => SelectLanguage(Language.Polish));
             englishButton?.onClick.AddListener(() => SelectLanguage(Language.English));
+            arcadeButton?.onClick.AddListener(SelectArcade);
+            challengeButton?.onClick.AddListener(SelectChallenge);
+            gameTypeBackButton?.onClick.AddListener(ShowStartPanel);
             twoPlayersButton?.onClick.AddListener(() => SelectMode(false));
             singlePlayerButton?.onClick.AddListener(() => SelectMode(true));
             easyButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Easy));
@@ -97,10 +118,12 @@ namespace MagicPairs.UI
             colorsThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Colors));
             princessThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Princess));
             startButton?.onClick.AddListener(OnStart);
-            modeBackButton?.onClick.AddListener(ShowStartPanel);
+            modeBackButton?.onClick.AddListener(ShowGameTypePanel);
             difficultyBackButton?.onClick.AddListener(ShowModePanel);
             themeBackButton?.onClick.AddListener(ShowDifficultyPanel);
             namesBackButton?.onClick.AddListener(ShowThemePanel);
+            challengeStartButton?.onClick.AddListener(OnChallengeStart);
+            challengeNamesBackButton?.onClick.AddListener(ShowGameTypePanel);
 
             ShowStartPanel();
         }
@@ -110,11 +133,13 @@ namespace MagicPairs.UI
             if (startPanel != null) startPanel.SetActive(false);
             if (optionsPanel != null) optionsPanel.SetActive(false);
             if (languagePanel != null) languagePanel.SetActive(false);
+            if (gameTypePanel != null) gameTypePanel.SetActive(false);
             if (modePanel != null) modePanel.SetActive(false);
             if (difficultyPanel != null) difficultyPanel.SetActive(false);
             if (themePanel != null) themePanel.SetActive(false);
             if (namesPanel != null) namesPanel.SetActive(false);
             if (creditsPanel != null) creditsPanel.SetActive(false);
+            if (challengeNamesPanel != null) challengeNamesPanel.SetActive(false);
         }
 
         private void ShowStartPanel()
@@ -160,6 +185,59 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (creditsPanel != null) creditsPanel.SetActive(true);
+        }
+
+        private void ShowGameTypePanel()
+        {
+            HideAllPanels();
+            if (gameTypePanel != null) gameTypePanel.SetActive(true);
+            bool pl = Localization.CurrentLanguage == Language.Polish;
+            if (gameTypeTitle != null) gameTypeTitle.text = pl ? "Wybierz tryb gry" : "Choose game type";
+            if (arcadeButtonText != null) arcadeButtonText.text = "Arcade";
+            if (challengeButtonText != null) challengeButtonText.text = pl ? "Wyzwanie" : "Challenge";
+        }
+
+        private void SelectArcade()
+        {
+            IsChallengeMode = false;
+            ShowModePanel();
+        }
+
+        private void SelectChallenge()
+        {
+            IsChallengeMode = true;
+            ShowChallengeNamesPanel();
+        }
+
+        private void ShowChallengeNamesPanel()
+        {
+            HideAllPanels();
+            if (challengeNamesPanel != null) challengeNamesPanel.SetActive(true);
+            bool pl = Localization.CurrentLanguage == Language.Polish;
+            if (challengeNameLabel != null) challengeNameLabel.text = pl ? "Twoje imię" : "Your name";
+            if (challengeStartText != null) challengeStartText.text = Localization.Get("start");
+        }
+
+        private void OnChallengeStart()
+        {
+            IsSinglePlayer = true;
+            Player1Name = string.IsNullOrWhiteSpace(challengeNameInput?.text)
+                ? Localization.Get("player1") : challengeNameInput.text;
+            Player2Name = Localization.Get("computer");
+
+            var config = GameManager.Instance.Config;
+            if (config != null) config.theme = Core.CardTheme.Colors;
+
+            var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
+            var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
+            var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
+
+            if (local != null) local.enabled = false;
+            if (single != null) single.enabled = false;
+            if (challenge != null) challenge.enabled = true;
+
+            if (menuPanel != null) menuPanel.SetActive(false);
+            GameManager.Instance.StartGame();
         }
 
         private void ShowModePanel()
@@ -253,6 +331,7 @@ namespace MagicPairs.UI
         private void OnStart()
         {
             IsSinglePlayer = _singlePlayer;
+            IsChallengeMode = false;
 
             Player1Name = string.IsNullOrWhiteSpace(player1Input.text)
                 ? Localization.Get("player1") : player1Input.text;
@@ -265,9 +344,11 @@ namespace MagicPairs.UI
 
             var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
             var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
+            var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
 
             if (local != null) local.enabled = !_singlePlayer;
             if (single != null) single.enabled = _singlePlayer;
+            if (challenge != null) challenge.enabled = false;
 
             if (menuPanel != null) menuPanel.SetActive(false);
             GameManager.Instance.StartGame();

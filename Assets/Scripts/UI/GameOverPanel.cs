@@ -31,6 +31,7 @@ namespace MagicPairs.UI
 
         private void Show(int winnerIndex)
         {
+            if (MainMenu.IsChallengeMode) return;
             if (panel == null) return;
             panel.SetActive(true);
             if (playAgainText != null)
