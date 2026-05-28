@@ -1,6 +1,9 @@
 # Kiro
 .kiro/
 
+# Session files
+session_*.json
+
 # Android build cache
 .utmp/
 
