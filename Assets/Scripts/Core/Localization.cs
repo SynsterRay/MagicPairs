@@ -26,6 +26,9 @@ namespace MagicPairs.Core
             { "score", new[] { "{0}: {1}", "{0}: {1}" } },
             { "mode1P", new[] { "1 Gracz (vs AI)", "1 Player (vs AI)" } },
             { "mode2P", new[] { "2 Graczy", "2 Players" } },
+            { "themeColors", new[] { "Kolory", "Colors" } },
+            { "themePrincess", new[] { "Księżniczki", "Princesses" } },
+            { "chooseTheme", new[] { "Wybierz typ kart", "Choose card type" } },
         };
 
         public static string Get(string key)

@@ -2,12 +2,17 @@ using UnityEngine;
 
 namespace MagicPairs.Core
 {
+    public enum CardTheme { Colors, Princess }
+
     [CreateAssetMenu(fileName = "GameConfig", menuName = "MagicPairs/Game Config")]
     public class GameConfig : ScriptableObject
     {
         [Header("Grid")]
         public int gridRows = 4;
         public int gridCols = 4;
+
+        [Header("Theme")]
+        public CardTheme theme = CardTheme.Colors;
 
         [Header("Colors")]
         public Color[] colorPalette = {
@@ -26,9 +31,9 @@ namespace MagicPairs.Core
 
         [Header("Card Appearance")]
         public Color cardBackColor = new(0.15f, 0.1f, 0.3f); // Dark purple
-        public float cardWidth = 0.7f;
-        public float cardHeight = 1.0f;
-        public float cardSpacing = 0.2f;
+        public float cardWidth = 1.0f;
+        public float cardHeight = 1.4f;
+        public float cardSpacing = 0.15f;
 
         [Header("Timing")]
         public float flipDuration = 0.3f;

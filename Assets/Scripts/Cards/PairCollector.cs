@@ -9,7 +9,7 @@ namespace MagicPairs.Cards
     {
         [SerializeField] private float collectDelay = 0.5f;
         [SerializeField] private float moveSpeed = 0.4f;
-        [SerializeField] private float cardScale = 0.35f;
+        [SerializeField] private float cardScale = 0.75f;
 
         private List<CardController> _player1Cards = new();
         private List<CardController> _player2Cards = new();

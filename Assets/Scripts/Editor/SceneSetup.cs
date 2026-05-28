@@ -76,7 +76,7 @@ namespace MagicPairs.Editor
 
             var card = GameObject.CreatePrimitive(PrimitiveType.Quad);
             card.name = "Card";
-            card.transform.localScale = new Vector3(0.7f, 1.0f, 1f);
+            card.transform.localScale = new Vector3(1.0f, 1.4f, 1f);
 
             Object.DestroyImmediate(card.GetComponent<MeshCollider>());
             var box = card.AddComponent<BoxCollider>();
@@ -314,7 +314,7 @@ namespace MagicPairs.Editor
             diffPanelRect.offsetMax = Vector2.zero;
 
             var diffTitle = CreateUIText("DiffTitle", "Wybierz poziom trudności", diffPanel.transform,
-                new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0f, 0.78f), new Vector2(1f, 0.98f), TextAnchor.MiddleCenter, 28);
 
             var easyBtn = CreateButton("EasyBtn", "★", diffPanel.transform,
                 new Vector2(0.05f, 0.3f), new Vector2(0.3f, 0.7f));
@@ -342,6 +342,28 @@ namespace MagicPairs.Editor
             var diffBackBtn = CreateButton("DiffBackBtn", "← Cofnij", diffPanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
             diffBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
+            // --- Theme Panel ---
+            var themePanel = new GameObject("ThemePanel");
+            themePanel.transform.SetParent(menuPanel.transform, false);
+            var themePanelRect = themePanel.AddComponent<RectTransform>();
+            themePanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            themePanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            themePanelRect.offsetMin = Vector2.zero;
+            themePanelRect.offsetMax = Vector2.zero;
+
+            var themeTitle = CreateUIText("ThemeTitle", "Wybierz typ kart", themePanel.transform,
+                new Vector2(0f, 0.78f), new Vector2(1f, 0.98f), TextAnchor.MiddleCenter, 28);
+
+            var colorsBtn = CreateButton("ColorsBtn", "🎨 Kolory", themePanel.transform,
+                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
+            var princessBtn = CreateButton("PrincessBtn", "👸 Księżniczki", themePanel.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
+            princessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
+
+            var themeBackBtn = CreateButton("ThemeBackBtn", "← Cofnij", themePanel.transform,
+                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+            themeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Names Panel ---
             var namesPanel = new GameObject("NamesPanel");
@@ -392,6 +414,11 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("mediumButton").objectReferenceValue = mediumBtn.GetComponent<Button>();
             mmSo.FindProperty("hardButton").objectReferenceValue = hardBtn.GetComponent<Button>();
             mmSo.FindProperty("difficultyBackButton").objectReferenceValue = diffBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("themePanel").objectReferenceValue = themePanel;
+            mmSo.FindProperty("themeTitle").objectReferenceValue = themeTitle;
+            mmSo.FindProperty("colorsThemeButton").objectReferenceValue = colorsBtn.GetComponent<Button>();
+            mmSo.FindProperty("princessThemeButton").objectReferenceValue = princessBtn.GetComponent<Button>();
+            mmSo.FindProperty("themeBackButton").objectReferenceValue = themeBackBtn.GetComponent<Button>();
             mmSo.FindProperty("modeBackButton").objectReferenceValue = modeBackBtn.GetComponent<Button>();
             mmSo.FindProperty("namesBackButton").objectReferenceValue = namesBackBtn.GetComponent<Button>();
             mmSo.FindProperty("player1Input").objectReferenceValue = p1Input.GetComponent<InputField>();

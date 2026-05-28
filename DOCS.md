@@ -21,6 +21,7 @@ Gra karciana Memory dla dzieci — Unity 6 z URP, docelowo na urządzenia mobiln
 | Zbieranie par | ✅ | Animacja przesuwania znalezionych par pod nick gracza |
 | Menu startowe | ✅ | Krokowe: język → tryb → trudność → imiona → start |
 | Lokalizacja | ✅ | System PL/EN (Piotruś/Joker) |
+| Typy kart | ✅ | Kolory (klasyczny) lub Księżniczki (obrazki PNG) |
 | Poziomy trudności | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
 | Nawigacja menu | ✅ | Przyciski cofania ← na każdym etapie |
 | Przycisk wyjścia | ✅ | ✕ na ekranie startowym |
@@ -68,7 +69,8 @@ MagicPairs.Editor     — SceneSetup
 1. Wybierz język (Polski / English)
 2. Wybierz tryb (2 Graczy / 1 Gracz vs AI)
 3. Wybierz trudność (★ / ★★ / ★★★)
-4. Wpisz imiona → Start
+4. Wybierz typ kart (🎨 Kolory / 👸 Księżniczki)
+5. Wpisz imiona → Start
 
 ← "Cofnij" — wycentrowany przycisk na dole każdego panelu (oprócz języka)
 ✕ wyjście z gry — na ekranie wyboru języka
@@ -164,4 +166,6 @@ Plik: `Assets/ScriptableObjects/GameConfig.asset`
 - Background gry z pliku background_game.png (50% opacity)
 - Białe tło paneli UI z ciemnym tekstem bold
 - Biały tekst wskaźnika tury (na tle gry)
+- Typy kart: Kolory (klasyczny) i Księżniczki (14 obrazków PNG + joker)
+- Karty powiększone (1.0×1.4) dla lepszej widoczności
 - GitHub repo: https://github.com/SynsterRay/MagicPairs

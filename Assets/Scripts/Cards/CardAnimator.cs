@@ -11,10 +11,14 @@ namespace MagicPairs.Cards
         private MaterialPropertyBlock _propBlock;
         private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
         private static readonly int ColorId = Shader.PropertyToID("_Color");
+        private static readonly int MainTexId = Shader.PropertyToID("_BaseMap");
+
+        private SpriteRenderer _spriteRenderer;
 
         private void Awake()
         {
-            _renderer = GetComponentInChildren<Renderer>();
+            _renderer = GetComponentInChildren<MeshRenderer>();
+            _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             _propBlock = new MaterialPropertyBlock();
             var config = Core.GameManager.Instance?.Config;
             if (config != null) _flipDuration = config.flipDuration;
@@ -22,23 +26,60 @@ namespace MagicPairs.Cards
 
         public void SetColor(Color color)
         {
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.color = color;
+                return;
+            }
             if (_renderer == null) return;
             _renderer.GetPropertyBlock(_propBlock);
             _propBlock.SetColor(BaseColorId, color);
             _propBlock.SetColor(ColorId, color);
+            _propBlock.SetTexture(MainTexId, Texture2D.whiteTexture);
             _renderer.SetPropertyBlock(_propBlock);
         }
 
-        public void PlayFlip(Color targetColor, Action onComplete)
+        public void SetSprite(Sprite sprite)
         {
-            StartCoroutine(FlipCoroutine(targetColor, onComplete));
+            if (_spriteRenderer == null)
+            {
+                _spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
+                if (_spriteRenderer == null)
+                {
+                    var sprObj = new GameObject("FaceSprite");
+                    sprObj.transform.SetParent(transform, false);
+                    sprObj.transform.localPosition = new Vector3(0f, 0f, -0.01f);
+                    _spriteRenderer = sprObj.AddComponent<SpriteRenderer>();
+                    _spriteRenderer.drawMode = SpriteDrawMode.Sliced;
+                }
+            }
+
+            _spriteRenderer.sprite = sprite;
+            _spriteRenderer.color = Color.white;
+            _spriteRenderer.drawMode = SpriteDrawMode.Sliced;
+            // Force exact size = 1x1 in local space (parent is scaled to card size)
+            _spriteRenderer.size = new Vector2(1f, 1f);
+            _spriteRenderer.transform.localScale = Vector3.one;
+
+            if (_renderer != null) _renderer.enabled = false;
         }
 
-        private IEnumerator FlipCoroutine(Color targetColor, Action onComplete)
+        public void HideSprite()
+        {
+            if (_spriteRenderer != null)
+                _spriteRenderer.sprite = null;
+            if (_renderer != null) _renderer.enabled = true;
+        }
+
+        public void PlayFlip(Color targetColor, Action onComplete, Sprite sprite = null)
+        {
+            StartCoroutine(FlipCoroutine(targetColor, sprite, onComplete));
+        }
+
+        private IEnumerator FlipCoroutine(Color targetColor, Sprite sprite, Action onComplete)
         {
             float half = _flipDuration * 0.5f;
 
-            // First half: scale X from 1 to 0 (card disappears edge-on)
             float t = 0f;
             Vector3 scale = transform.localScale;
             float originalScaleX = Mathf.Abs(scale.x);
@@ -51,10 +92,51 @@ namespace MagicPairs.Cards
                 yield return null;
             }
 
-            // Swap color at midpoint
-            SetColor(targetColor);
+            // Swap visual at midpoint
+            if (sprite != null)
+                SetSprite(sprite);
+            else
+                SetColor(targetColor);
 
-            // Second half: scale X from 0 back to original
+            t = 0f;
+            while (t < half)
+            {
+                t += Time.deltaTime;
+                float ratio = Mathf.Clamp01(t / half);
+                scale.x = Mathf.Lerp(0f, originalScaleX, ratio);
+                transform.localScale = scale;
+                yield return null;
+            }
+
+            scale.x = originalScaleX;
+            transform.localScale = scale;
+            onComplete?.Invoke();
+        }
+
+        public void PlayFlipBack(Color backColor, Action onComplete)
+        {
+            StartCoroutine(FlipBackCoroutine(backColor, onComplete));
+        }
+
+        private IEnumerator FlipBackCoroutine(Color backColor, Action onComplete)
+        {
+            float half = _flipDuration * 0.5f;
+
+            float t = 0f;
+            Vector3 scale = transform.localScale;
+            float originalScaleX = Mathf.Abs(scale.x);
+            while (t < half)
+            {
+                t += Time.deltaTime;
+                float ratio = Mathf.Clamp01(t / half);
+                scale.x = Mathf.Lerp(originalScaleX, 0f, ratio);
+                transform.localScale = scale;
+                yield return null;
+            }
+
+            HideSprite();
+            SetColor(backColor);
+
             t = 0f;
             while (t < half)
             {

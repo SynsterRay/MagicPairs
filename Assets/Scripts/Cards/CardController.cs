@@ -34,13 +34,13 @@ namespace MagicPairs.Cards
             {
                 State = CardState.FaceUp;
                 OnFlipComplete?.Invoke(this);
-            });
+            }, Data.faceSprite);
         }
 
         public void FlipBack(Color backColor)
         {
             State = CardState.Animating;
-            _animator.PlayFlip(backColor, () =>
+            _animator.PlayFlipBack(backColor, () =>
             {
                 State = CardState.FaceDown;
             });

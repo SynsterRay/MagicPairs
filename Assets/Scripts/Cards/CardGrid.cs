@@ -36,23 +36,85 @@ namespace MagicPairs.Cards
             var deck = new List<CardData>();
             int pairsNeeded = _config.PairCount;
 
-            for (int i = 0; i < pairsNeeded; i++)
+            bool usePrincess = _config.theme == Core.CardTheme.Princess;
+            Sprite[] sprites = null;
+
+            if (usePrincess)
             {
-                var color = _config.colorPalette[i % _config.colorPalette.Length];
-                deck.Add(CardData.CreatePair(i, color));
-                deck.Add(CardData.CreatePair(i, color));
+                sprites = LoadPrincessSprites();
+                if (sprites.Length == 0)
+                {
+                    Debug.LogWarning("[CardGrid] No princess sprites found in Resources/PrincessCards. Falling back to colors.");
+                    usePrincess = false;
+                }
             }
 
-            // Add Piotruś
-            deck.Add(CardData.CreatePiotrus(_config.piotrusColor));
+            if (usePrincess)
+            {
+                for (int i = 0; i < pairsNeeded; i++)
+                {
+                    var sprite = sprites[i % sprites.Length];
+                    deck.Add(CardData.CreatePairWithSprite(i, sprite));
+                    deck.Add(CardData.CreatePairWithSprite(i, sprite));
+                }
+                var jokerSprite = Resources.Load<Sprite>("PrincessCards/joker");
+                if (jokerSprite == null)
+                {
+                    var jokerTex = Resources.Load<Texture2D>("PrincessCards/joker");
+                    if (jokerTex != null)
+                        jokerSprite = Sprite.Create(jokerTex, new Rect(0, 0, jokerTex.width, jokerTex.height), new Vector2(0.5f, 0.5f), 100f);
+                }
+                deck.Add(CardData.CreatePiotrusWithSprite(jokerSprite));
+            }
+            else
+            {
+                for (int i = 0; i < pairsNeeded; i++)
+                {
+                    var color = _config.colorPalette != null && _config.colorPalette.Length > 0
+                        ? _config.colorPalette[i % _config.colorPalette.Length]
+                        : Color.HSVToRGB((float)i / Mathf.Max(1, pairsNeeded), 0.8f, 0.9f);
+                    deck.Add(CardData.CreatePair(i, color));
+                    deck.Add(CardData.CreatePair(i, color));
+                }
+                deck.Add(CardData.CreatePiotrus(_config.piotrusColor));
+            }
 
-            // If deck is smaller than grid, trim grid (shouldn't happen with proper config)
             return deck;
+        }
+
+        private Sprite[] LoadPrincessSprites()
+        {
+            // Try loading as Sprite first
+            var all = Resources.LoadAll<Sprite>("PrincessCards");
+            var cards = new List<Sprite>();
+            foreach (var s in all)
+            {
+                if (!s.name.Contains("joker"))
+                    cards.Add(s);
+            }
+
+            // Fallback: load as Texture2D and create sprites
+            if (cards.Count == 0)
+            {
+                var textures = Resources.LoadAll<Texture2D>("PrincessCards");
+                Debug.Log($"[CardGrid] Loaded {textures.Length} textures from PrincessCards");
+                foreach (var tex in textures)
+                {
+                    if (tex.name.Contains("joker")) continue;
+                    var sprite = Sprite.Create(tex,
+                        new Rect(0, 0, tex.width, tex.height),
+                        new Vector2(0.5f, 0.5f), 100f);
+                    sprite.name = tex.name;
+                    cards.Add(sprite);
+                }
+            }
+
+            Debug.Log($"[CardGrid] Princess sprites found: {cards.Count}");
+            return cards.ToArray();
         }
 
         private void Shuffle(List<CardData> deck)
         {
-            // Fisher-Yates
             for (int i = deck.Count - 1; i > 0; i--)
             {
                 int j = Random.Range(0, i + 1);
@@ -66,7 +128,6 @@ namespace MagicPairs.Cards
             float totalHeight = _config.gridRows * (_config.cardHeight + _config.cardSpacing) - _config.cardSpacing;
             Vector3 origin = new(-totalWidth * 0.5f, totalHeight * 0.5f, 0f);
 
-            // Deal from position (above grid)
             Vector3 dealFrom = new(0f, totalHeight * 0.5f + 2f, 0f);
 
             int index = 0;
@@ -86,7 +147,6 @@ namespace MagicPairs.Cards
                     var controller = go.GetComponent<CardController>();
                     controller.Initialize(deck[index], _config.cardBackColor);
 
-                    // Deal animation
                     var animator = go.GetComponent<CardAnimator>();
                     float delay = index * 0.05f;
                     animator.PlayDealAnimation(dealFrom, targetPos, delay);

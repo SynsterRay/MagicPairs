@@ -36,6 +36,13 @@ namespace MagicPairs.UI
         [SerializeField] private Button hardButton;
         [SerializeField] private Button difficultyBackButton;
 
+        [Header("Theme Panel")]
+        [SerializeField] private GameObject themePanel;
+        [SerializeField] private Text themeTitle;
+        [SerializeField] private Button colorsThemeButton;
+        [SerializeField] private Button princessThemeButton;
+        [SerializeField] private Button themeBackButton;
+
         [Header("Names Panel")]
         [SerializeField] private InputField player1Input;
         [SerializeField] private InputField player2Input;
@@ -62,10 +69,13 @@ namespace MagicPairs.UI
             easyButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Easy));
             mediumButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Medium));
             hardButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Hard));
+            colorsThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Colors));
+            princessThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Princess));
             startButton?.onClick.AddListener(OnStart);
             modeBackButton?.onClick.AddListener(ShowLanguagePanel);
             difficultyBackButton?.onClick.AddListener(ShowModePanel);
-            namesBackButton?.onClick.AddListener(ShowDifficultyPanel);
+            themeBackButton?.onClick.AddListener(ShowDifficultyPanel);
+            namesBackButton?.onClick.AddListener(ShowThemePanel);
 
             ShowLanguagePanel();
         }
@@ -76,6 +86,7 @@ namespace MagicPairs.UI
             if (languagePanel != null) languagePanel.SetActive(true);
             if (modePanel != null) modePanel.SetActive(false);
             if (difficultyPanel != null) difficultyPanel.SetActive(false);
+            if (themePanel != null) themePanel.SetActive(false);
             if (namesPanel != null) namesPanel.SetActive(false);
             if (languageTitle != null) languageTitle.text = "Choose Language / Wybierz język";
         }
@@ -91,6 +102,7 @@ namespace MagicPairs.UI
             if (languagePanel != null) languagePanel.SetActive(false);
             if (modePanel != null) modePanel.SetActive(true);
             if (difficultyPanel != null) difficultyPanel.SetActive(false);
+            if (themePanel != null) themePanel.SetActive(false);
             if (namesPanel != null) namesPanel.SetActive(false);
             if (modeTitle != null) modeTitle.text = Localization.CurrentLanguage == Language.Polish
                 ? "Wybierz tryb" : "Choose mode";
@@ -108,6 +120,7 @@ namespace MagicPairs.UI
         {
             if (modePanel != null) modePanel.SetActive(false);
             if (difficultyPanel != null) difficultyPanel.SetActive(true);
+            if (themePanel != null) themePanel.SetActive(false);
             if (namesPanel != null) namesPanel.SetActive(false);
             if (difficultyTitle != null)
                 difficultyTitle.text = Localization.CurrentLanguage == Language.Polish
@@ -118,6 +131,22 @@ namespace MagicPairs.UI
         {
             SelectedDifficulty = diff;
             ApplyDifficulty(diff);
+            ShowThemePanel();
+        }
+
+        private void ShowThemePanel()
+        {
+            if (difficultyPanel != null) difficultyPanel.SetActive(false);
+            if (themePanel != null) themePanel.SetActive(true);
+            if (namesPanel != null) namesPanel.SetActive(false);
+            if (themeTitle != null)
+                themeTitle.text = Localization.Get("chooseTheme");
+        }
+
+        private void SelectTheme(Core.CardTheme theme)
+        {
+            var config = GameManager.Instance.Config;
+            if (config != null) config.theme = theme;
             ShowNamesPanel();
         }
 
@@ -145,6 +174,7 @@ namespace MagicPairs.UI
         private void ShowNamesPanel()
         {
             if (difficultyPanel != null) difficultyPanel.SetActive(false);
+            if (themePanel != null) themePanel.SetActive(false);
             if (namesPanel != null) namesPanel.SetActive(true);
 
             if (player1Label != null) player1Label.text = Localization.Get("player1Name");
