@@ -44,13 +44,9 @@ namespace MagicPairs.GameFlow
             if (_isNextLevel)
             {
                 _isNextLevel = false;
-                return; // Don't reset score on next level
+                return;
             }
-            StartGame();
-        }
-
-        public void StartGame()
-        {
+            // Config already applied by OnChallengeStart before FireGameStarted
             _currentLevel = 1;
             _score = 0;
             _streak = 0;
@@ -58,9 +54,17 @@ namespace MagicPairs.GameFlow
             _waitingForResult = false;
             _aiMemory.Clear();
             CurrentPlayerIndex = 0;
-            ApplyLevelConfig();
+            _totalPairs = GameManager.Instance.Config.PairCount;
+            _pairsFound = 0;
+            _currentAiMemory = baseAiMemory;
             GameEvents.FireTurnChanged(CurrentPlayerIndex);
             OnChallengeScoreChanged?.Invoke(_score, _streak, _currentLevel);
+        }
+
+        public void StartGame()
+        {
+            // Called externally to pre-apply config before FireGameStarted
+            ApplyLevelConfig();
         }
 
         public void StartNextLevel()
@@ -72,7 +76,7 @@ namespace MagicPairs.GameFlow
             CurrentPlayerIndex = 0;
             ApplyLevelConfig();
             _isNextLevel = true;
-            GameEvents.FireGameStarted();
+            GameEvents.FireGameStarted(); // CardGrid rebuilds with new config
             GameEvents.FireTurnChanged(CurrentPlayerIndex);
             OnChallengeScoreChanged?.Invoke(_score, _streak, _currentLevel);
         }

@@ -255,7 +255,11 @@ namespace MagicPairs.UI
 
             if (local != null) local.enabled = false;
             if (single != null) single.enabled = false;
-            if (challenge != null) challenge.enabled = true;
+            if (challenge != null)
+            {
+                challenge.enabled = true;
+                challenge.StartGame(); // Apply level 1 config before grid builds
+            }
 
             if (menuPanel != null) menuPanel.SetActive(false);
             GameManager.Instance.StartGame();
