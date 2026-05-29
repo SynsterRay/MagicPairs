@@ -29,6 +29,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 - 🔥 Challenge mode: streak multiplier (x1–x5), level progression, leaderboard
 - ✨ Particle effects on pair match + floating score popup
 - 🌍 Full localization: Polish / English
+- 🔊 Sound effects: card flip, pair match, mismatch, joker, level complete
 - 📱 Touch & mouse input
 - ← Back navigation on every screen
 
@@ -60,6 +61,7 @@ Assets/Scripts/
 ├── Players/    — PlayerData, ScoreTracker
 ├── UI/         — MainMenu, ScoreDisplay, TurnIndicator, GameOverPanel, ChallengeUI, ScorePopup
 ├── Input/      — TouchInputHandler
+├── Audio/      — SFXManager
 └── Editor/     — SceneSetup
 ```
 

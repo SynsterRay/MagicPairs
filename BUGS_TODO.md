@@ -9,6 +9,9 @@
 - [x] ~~Build cache .utmp in repo~~ — added to .gitignore
 - [x] ~~back_card.png loaded as playable card~~ — excluded from LoadPrincessSprites
 - [x] ~~Collected pairs overlapping cards on mobile~~ — cards hidden, visible only in "Cards" panel
+- [x] ~~Null reference on menu return~~ — StopAllCoroutines + disable game modes before destroying cards
+- [x] ~~Names panel inconsistent between Arcade/Challenge~~ — unified to single panel
+- [x] ~~Leaderboard entries misaligned~~ — removed blank line, PadLeft for numbers
 
 ## Known Issues
 
@@ -20,7 +23,6 @@
 ## TODO (High Priority)
 
 - [ ] Add more colors to palette (min. 15 for Hard)
-- [ ] Sound effects: card flip, pair found, Joker, game over
 - [ ] Visual distinction for Joker card in Colors theme
 
 ## TODO (Medium Priority)

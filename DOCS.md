@@ -34,12 +34,12 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Quit Button | ✅ | ✕ on start screen |
 | Game Over | ✅ | Panel with result and "Play Again" button |
 | Editor Setup | ✅ | Idempotent SceneSetup (one click) |
+| Sound Effects | ✅ | Card flip, pair match, mismatch, joker, level complete, button click |
 | Touch Input | ✅ | Touch and mouse support |
 
 ### Not Yet Implemented
 
 - [ ] Online multiplayer (placeholder `OnlineGameMode` exists)
-- [ ] Sound effects (SFX)
 - [ ] Safe Area for notches (mobile)
 - [ ] More card themes
 - [ ] More colors in palette (Hard needs 14, currently 8)
@@ -54,6 +54,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | v1.2 | 2026-05-28 | Fix: back_card as playable card, hide matched pairs on mobile |
 | v1.21 | 2026-05-28 | Score labels closer to center, universal back arrow |
 | v1.22 | 2026-05-28 | Options menu, Challenge mode, leaderboard, particle effects |
+| v1.23 | 2026-05-29 | SFX, English docs, UI alignment fixes, null reference fixes |
 
 ## Architecture
 
@@ -66,6 +67,7 @@ MagicPairs.GameFlow   — IGameMode, LocalGameMode, SinglePlayerMode, ChallengeM
 MagicPairs.Players    — PlayerData, ScoreTracker
 MagicPairs.UI         — MainMenu, ScoreDisplay, TurnIndicator, GameOverPanel, ChallengeUI, ScorePopup, CollectedCardsPanel, PauseButton
 MagicPairs.Input      — TouchInputHandler
+MagicPairs.Audio      — SFXManager
 MagicPairs.Editor     — SceneSetup
 ```
 
@@ -215,7 +217,14 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 ## Changelog
 
 ### 2026-05-29
+- Sound effects: card flip, pair match, mismatch, joker, level complete, button click
+- Translated all documentation to English (Google Play preparation)
 - UI alignment fixes for menu panels (consistent positioning across all screens)
+- Unified names panel (Arcade single-player and Challenge share same panel)
+- Fixed null reference errors when returning to menu mid-game
+- Fixed leaderboard formatting (removed extra blank line, aligned numbers)
+- Default language: English, default player names: "Player 1" / "Player 2"
+- Menu panel fully opaque white background (no game elements bleeding through)
 
 ### 2026-05-28 (evening)
 - Start screen with Play / Options / Scores / ✕ buttons
