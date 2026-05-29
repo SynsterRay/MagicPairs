@@ -21,6 +21,9 @@ namespace MagicPairs.UI
         [SerializeField] private Text leaderboardText;
         [SerializeField] private Button leaderboardBackButton;
         [SerializeField] private Button showLeaderboardButton;
+        [SerializeField] private Button secondChanceButton;
+
+        private bool _secondChanceUsed;
 
         private void Start()
         {
@@ -28,6 +31,7 @@ namespace MagicPairs.UI
             challengeMenuButton?.onClick.AddListener(OnReturnToMenu);
             leaderboardBackButton?.onClick.AddListener(() => leaderboardPanel?.SetActive(false));
             showLeaderboardButton?.onClick.AddListener(ShowLeaderboard);
+            secondChanceButton?.onClick.AddListener(OnSecondChance);
             HideAll();
         }
 
@@ -106,6 +110,31 @@ namespace MagicPairs.UI
             if (challengeOverPanel != null) challengeOverPanel.SetActive(true);
             if (finalScoreText != null)
                 finalScoreText.text = Localization.Get("challengeOver", finalScore);
+
+            // Show second chance button if rewarded ad is ready and not used yet
+            if (secondChanceButton != null)
+            {
+                var adManager = FindAnyObjectByType<Ads.AdManager>();
+                bool canShow = !_secondChanceUsed && adManager != null && adManager.IsRewardedReady;
+                secondChanceButton.gameObject.SetActive(canShow);
+            }
+        }
+
+        private void OnSecondChance()
+        {
+            var adManager = FindAnyObjectByType<Ads.AdManager>();
+            if (adManager == null) return;
+
+            adManager.ShowRewarded(() =>
+            {
+                _secondChanceUsed = true;
+                if (challengeOverPanel != null) challengeOverPanel.SetActive(false);
+                if (secondChanceButton != null) secondChanceButton.gameObject.SetActive(false);
+
+                // Continue the game — restart current level
+                var challenge = FindAnyObjectByType<ChallengeMode>();
+                challenge?.StartNextLevel();
+            });
         }
 
         private void OnNextLevel()

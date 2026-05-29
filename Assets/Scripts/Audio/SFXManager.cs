@@ -24,6 +24,17 @@ namespace MagicPairs.Audio
         {
             _source = gameObject.AddComponent<AudioSource>();
             _source.playOnAwake = false;
+            LoadClipsFromResources();
+        }
+
+        private void LoadClipsFromResources()
+        {
+            if (cardFlip == null) cardFlip = Resources.Load<AudioClip>("Audio/Card_Flip");
+            if (pairMatch == null) pairMatch = Resources.Load<AudioClip>("Audio/Pair_Match");
+            if (mismatch == null) mismatch = Resources.Load<AudioClip>("Audio/Pair_Mismatch");
+            if (joker == null) joker = Resources.Load<AudioClip>("Audio/Joker");
+            if (buttonClick == null) buttonClick = Resources.Load<AudioClip>("Audio/Button_Click");
+            if (levelComplete == null) levelComplete = Resources.Load<AudioClip>("Audio/Level_Complete");
         }
 
         private void OnEnable()

@@ -117,6 +117,7 @@ namespace MagicPairs.Editor
             gm.AddComponent<Players.ScoreTracker>();
             gm.AddComponent<Input.TouchInputHandler>();
             gm.AddComponent<Audio.SFXManager>();
+            gm.AddComponent<Ads.AdManager>();
 
             var cardGrid = gm.AddComponent<Cards.CardGrid>();
             gm.AddComponent<Cards.PairCollector>();
@@ -387,6 +388,12 @@ namespace MagicPairs.Editor
                 new Vector2(0.55f, 0.1f), new Vector2(0.9f, 0.4f));
             chLeaderBtn.GetComponent<Image>().color = new Color(0.8f, 0.6f, 0.1f, 1f);
 
+            var secondChanceBtn = CreateButton("SecondChanceBtn", "▶ Second Chance", chOverPanel.transform,
+                new Vector2(0.15f, 0.42f), new Vector2(0.85f, 0.55f));
+            secondChanceBtn.GetComponent<Image>().color = new Color(0.2f, 0.7f, 0.3f, 1f);
+            secondChanceBtn.GetComponentInChildren<Text>().fontSize = 24;
+            secondChanceBtn.SetActive(false);
+
             // Leaderboard panel
             var leaderPanel = new GameObject("LeaderboardPanel");
             leaderPanel.transform.SetParent(canvas.transform, false);
@@ -422,6 +429,7 @@ namespace MagicPairs.Editor
             cuSo.FindProperty("leaderboardText").objectReferenceValue = leaderText;
             cuSo.FindProperty("leaderboardBackButton").objectReferenceValue = leaderBackBtn.GetComponent<Button>();
             cuSo.FindProperty("showLeaderboardButton").objectReferenceValue = chLeaderBtn.GetComponent<Button>();
+            cuSo.FindProperty("secondChanceButton").objectReferenceValue = secondChanceBtn.GetComponent<Button>();
             cuSo.ApplyModifiedProperties();
 
             // Score Popup (floating +points animation)
