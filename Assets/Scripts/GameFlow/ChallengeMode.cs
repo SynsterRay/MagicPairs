@@ -53,7 +53,7 @@ namespace MagicPairs.GameFlow
                 _isNextLevel = false;
                 return;
             }
-            // Config already applied by OnChallengeStart before FireGameStarted
+            // Config already applied by StartGame() before FireGameStarted
             _currentLevel = 1;
             _score = 0;
             _streak = 0;
@@ -61,7 +61,6 @@ namespace MagicPairs.GameFlow
             _waitingForResult = false;
             _aiMemory.Clear();
             CurrentPlayerIndex = 0;
-            _totalPairs = GameManager.Instance.Config.PairCount;
             _pairsFound = 0;
             _currentAiMemory = baseAiMemory;
             GameEvents.FireTurnChanged(CurrentPlayerIndex);
@@ -108,7 +107,7 @@ namespace MagicPairs.GameFlow
             _config.gridRows = rows;
             _config.gridCols = cols;
 
-            _totalPairs = _config.PairCount;
+            _totalPairs = pairs;
             _pairsFound = 0;
 
             // AI scales: +4% per cycle, smooth progression
@@ -118,14 +117,15 @@ namespace MagicPairs.GameFlow
 
         private void GetGridSize(int totalCards, out int rows, out int cols)
         {
-            // Find smallest grid that fits totalCards
-            if (totalCards <= 6) { rows = 2; cols = 3; return; }
-            if (totalCards <= 9) { rows = 3; cols = 3; return; }
-            if (totalCards <= 12) { rows = 3; cols = 4; return; }
-            if (totalCards <= 15) { rows = 3; cols = 5; return; }
-            if (totalCards <= 20) { rows = 4; cols = 5; return; }
-            if (totalCards <= 25) { rows = 5; cols = 5; return; }
-            rows = 5; cols = 6;
+            // Find grid where rows*cols == totalCards (totalCards is always odd: pairs*2+1)
+            if (totalCards <= 5) { rows = 1; cols = totalCards; }
+            else if (totalCards <= 7) { rows = 2; cols = (totalCards + 1) / 2; }
+            else if (totalCards <= 9) { rows = 3; cols = 3; }
+            else if (totalCards <= 12) { rows = 3; cols = 4; }
+            else if (totalCards <= 15) { rows = 3; cols = 5; }
+            else if (totalCards <= 20) { rows = 4; cols = 5; }
+            else if (totalCards <= 25) { rows = 5; cols = 5; }
+            else { rows = 5; cols = 6; }
         }
 
         public void OnCardSelected(CardController card)
