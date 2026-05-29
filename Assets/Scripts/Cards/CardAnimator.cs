@@ -24,6 +24,8 @@ namespace MagicPairs.Cards
             if (config != null) _flipDuration = config.flipDuration;
         }
 
+        private void OnDisable() => StopAllCoroutines();
+
         public void SetColor(Color color)
         {
             if (_spriteRenderer != null)
@@ -115,6 +117,7 @@ namespace MagicPairs.Cards
 
         public void PlayFlipBack(Color backColor, Action onComplete)
         {
+            if (!isActiveAndEnabled) return;
             StartCoroutine(FlipBackCoroutine(backColor, onComplete));
         }
 

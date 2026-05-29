@@ -52,6 +52,8 @@ namespace MagicPairs.Cards
         {
             if (!CanFlip) return;
             State = CardState.Animating;
+            var sfx = FindAnyObjectByType<Audio.SFXManager>();
+            sfx?.PlayFlip();
             _animator.PlayFlip(Data.faceColor, () =>
             {
                 State = CardState.FaceUp;
@@ -61,11 +63,12 @@ namespace MagicPairs.Cards
 
         public void FlipBack(Color backColor)
         {
+            if (_animator == null || !_animator.isActiveAndEnabled) return;
             State = CardState.Animating;
             _animator.PlayFlipBack(backColor, () =>
             {
+                if (this == null) return;
                 State = CardState.FaceDown;
-                // Show back sprite again
                 if (_backSprite != null)
                     _animator.SetSprite(_backSprite);
             });

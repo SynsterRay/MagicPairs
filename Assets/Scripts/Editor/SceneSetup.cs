@@ -116,6 +116,7 @@ namespace MagicPairs.Editor
             gm.AddComponent<Cards.MatchEffect>();
             gm.AddComponent<Players.ScoreTracker>();
             gm.AddComponent<Input.TouchInputHandler>();
+            gm.AddComponent<Audio.SFXManager>();
 
             var cardGrid = gm.AddComponent<Cards.CardGrid>();
             gm.AddComponent<Cards.PairCollector>();
@@ -430,7 +431,7 @@ namespace MagicPairs.Editor
             var menuPanel = new GameObject("MenuPanel");
             menuPanel.transform.SetParent(canvas.transform, false);
             var menuImg = menuPanel.AddComponent<Image>();
-            menuImg.color = new Color(1f, 1f, 1f, 0.95f);
+            menuImg.color = new Color(1f, 1f, 1f, 1f);
             var menuRect = menuPanel.GetComponent<RectTransform>();
             menuRect.anchorMin = Vector2.zero;
             menuRect.anchorMax = Vector2.one;
@@ -614,7 +615,7 @@ namespace MagicPairs.Editor
 
             var challengeNameLabel = CreateUIText("ChallengeNameLabel", "Twoje imię", challengeNamesPanel.transform,
                 new Vector2(0f, 0.65f), new Vector2(1f, 0.85f), TextAnchor.MiddleLeft, 24);
-            var challengeNameInput = CreateInputField("ChallengeNameInput", "Gracz", challengeNamesPanel.transform,
+            var challengeNameInput = CreateInputField("ChallengeNameInput", "Player", challengeNamesPanel.transform,
                 new Vector2(0f, 0.45f), new Vector2(1f, 0.62f));
 
             var challengeStartBtn = CreateButton("ChallengeStartBtn", "Start", challengeNamesPanel.transform,
@@ -734,23 +735,23 @@ namespace MagicPairs.Editor
             var namesPanel = new GameObject("NamesPanel");
             namesPanel.transform.SetParent(menuPanel.transform, false);
             var namesPanelRect = namesPanel.AddComponent<RectTransform>();
-            namesPanelRect.anchorMin = new Vector2(0.1f, 0.15f);
+            namesPanelRect.anchorMin = new Vector2(0.1f, 0.25f);
             namesPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
             namesPanelRect.offsetMin = Vector2.zero;
             namesPanelRect.offsetMax = Vector2.zero;
 
             var p1Label = CreateUIText("P1Label", "Imię Gracza 1", namesPanel.transform,
-                new Vector2(0f, 0.75f), new Vector2(1f, 0.85f), TextAnchor.MiddleLeft, 24);
-            var p1Input = CreateInputField("P1Input", "Gracz 1", namesPanel.transform,
-                new Vector2(0f, 0.6f), new Vector2(1f, 0.74f));
+                new Vector2(0f, 0.65f), new Vector2(1f, 0.85f), TextAnchor.MiddleLeft, 24);
+            var p1Input = CreateInputField("P1Input", "Player 1", namesPanel.transform,
+                new Vector2(0f, 0.45f), new Vector2(1f, 0.62f));
 
             var p2Label = CreateUIText("P2Label", "Imię Gracza 2", namesPanel.transform,
-                new Vector2(0f, 0.45f), new Vector2(1f, 0.55f), TextAnchor.MiddleLeft, 24);
-            var p2Input = CreateInputField("P2Input", "Gracz 2", namesPanel.transform,
-                new Vector2(0f, 0.3f), new Vector2(1f, 0.44f));
+                new Vector2(0f, 0.25f), new Vector2(1f, 0.42f), TextAnchor.MiddleLeft, 24);
+            var p2Input = CreateInputField("P2Input", "Player 2", namesPanel.transform,
+                new Vector2(0f, 0.05f), new Vector2(1f, 0.22f));
 
             var startBtn = CreateButton("StartBtn", "Start", namesPanel.transform,
-                new Vector2(0.1f, 0.02f), new Vector2(0.9f, 0.2f));
+                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.35f));
             startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var namesBackBtn = CreateButton("NamesBackBtn", "←", namesPanel.transform,

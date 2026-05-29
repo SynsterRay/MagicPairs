@@ -97,8 +97,8 @@ namespace MagicPairs.UI
         [SerializeField] private Text startButtonText;
         [SerializeField] private Button namesBackButton;
 
-        public static string Player1Name { get; private set; } = "Gracz 1";
-        public static string Player2Name { get; private set; } = "Gracz 2";
+        public static string Player1Name { get; private set; } = "Player 1";
+        public static string Player2Name { get; private set; } = "Player 2";
         public static bool IsSinglePlayer { get; private set; }
         public static bool IsChallengeMode { get; private set; }
         public static Difficulty SelectedDifficulty { get; private set; }
@@ -133,7 +133,7 @@ namespace MagicPairs.UI
             modeBackButton?.onClick.AddListener(ShowGameTypePanel);
             difficultyBackButton?.onClick.AddListener(ShowModePanel);
             themeBackButton?.onClick.AddListener(ShowDifficultyPanel);
-            namesBackButton?.onClick.AddListener(ShowThemePanel);
+            namesBackButton?.onClick.AddListener(OnNamesBack);
             challengeStartButton?.onClick.AddListener(OnChallengeStart);
             challengeNamesBackButton?.onClick.AddListener(ShowChallengeThemePanel);
             challengeColorsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Colors));
@@ -183,11 +183,11 @@ namespace MagicPairs.UI
             var entries = Core.Leaderboard.Entries;
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(Localization.Get("leaderboard").ToUpper());
-            sb.AppendLine();
             for (int i = 0; i < entries.Count; i++)
             {
                 var e = entries[i];
-                sb.AppendLine($"{i + 1}. {e.playerName} — {e.score} (Lv.{e.level})");
+                string num = (i + 1).ToString().PadLeft(2);
+                sb.AppendLine($"{num}. {e.playerName} — {e.score} (Lv.{e.level})");
             }
             if (entries.Count == 0)
                 sb.AppendLine(Localization.Get("noScores"));
@@ -260,7 +260,8 @@ namespace MagicPairs.UI
         {
             var config = GameManager.Instance.Config;
             if (config != null) config.theme = theme;
-            ShowChallengeNamesPanel();
+            _singlePlayer = true;
+            ShowNamesPanel();
         }
 
         private void ShowChallengeNamesPanel()
@@ -268,6 +269,8 @@ namespace MagicPairs.UI
             HideAllPanels();
             if (challengeNamesPanel != null) challengeNamesPanel.SetActive(true);
             if (challengeNameLabel != null) challengeNameLabel.text = Localization.Get("yourName");
+            if (challengeNameInput != null)
+                challengeNameInput.placeholder.GetComponent<Text>().text = Localization.Get("player1");
             if (challengeStartText != null) challengeStartText.text = Localization.Get("start");
         }
 
@@ -368,7 +371,8 @@ namespace MagicPairs.UI
             HideAllPanels();
             if (namesPanel != null) namesPanel.SetActive(true);
 
-            if (player1Label != null) player1Label.text = Localization.Get("player1Name");
+            if (player1Label != null)
+                player1Label.text = _singlePlayer ? Localization.Get("yourName") : Localization.Get("player1Name");
             if (player1Input != null)
                 player1Input.placeholder.GetComponent<Text>().text = Localization.Get("player1");
 
@@ -383,10 +387,17 @@ namespace MagicPairs.UI
             if (startButtonText != null) startButtonText.text = Localization.Get("start");
         }
 
+        private void OnNamesBack()
+        {
+            if (IsChallengeMode)
+                ShowChallengeThemePanel();
+            else
+                ShowThemePanel();
+        }
+
         private void OnStart()
         {
             IsSinglePlayer = _singlePlayer;
-            IsChallengeMode = false;
 
             Player1Name = string.IsNullOrWhiteSpace(player1Input.text)
                 ? Localization.Get("player1") : player1Input.text;
@@ -401,9 +412,22 @@ namespace MagicPairs.UI
             var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
             var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
 
-            if (local != null) local.enabled = !_singlePlayer;
-            if (single != null) single.enabled = _singlePlayer;
-            if (challenge != null) challenge.enabled = false;
+            if (IsChallengeMode)
+            {
+                if (local != null) local.enabled = false;
+                if (single != null) single.enabled = false;
+                if (challenge != null)
+                {
+                    challenge.enabled = true;
+                    challenge.StartGame();
+                }
+            }
+            else
+            {
+                if (local != null) local.enabled = !_singlePlayer;
+                if (single != null) single.enabled = _singlePlayer;
+                if (challenge != null) challenge.enabled = false;
+            }
 
             if (menuPanel != null) menuPanel.SetActive(false);
             GameManager.Instance.StartGame();

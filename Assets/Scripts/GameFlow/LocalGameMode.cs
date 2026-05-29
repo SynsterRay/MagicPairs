@@ -17,7 +17,11 @@ namespace MagicPairs.GameFlow
         private GameConfig _config;
 
         private void OnEnable() => GameEvents.OnGameStarted += StartGame;
-        private void OnDisable() => GameEvents.OnGameStarted -= StartGame;
+        private void OnDisable()
+        {
+            GameEvents.OnGameStarted -= StartGame;
+            StopAllCoroutines();
+        }
 
         public void StartGame()
         {

@@ -84,8 +84,11 @@ namespace MagicPairs.UI
                 closeButton.GetComponentInChildren<Text>().text = Localization.Get("close");
 
             // Clear old slots
+            var oldSlots = new System.Collections.Generic.List<GameObject>();
             foreach (Transform child in contentContainer)
-                Destroy(child.gameObject);
+                if (child != null) oldSlots.Add(child.gameObject);
+            foreach (var go in oldSlots)
+                Destroy(go);
 
             // Show both cards of each pair
             for (int i = 0; i < cards.Count; i++)

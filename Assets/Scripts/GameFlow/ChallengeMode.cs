@@ -39,7 +39,11 @@ namespace MagicPairs.GameFlow
         private bool _isNextLevel;
 
         private void OnEnable() => GameEvents.OnGameStarted += OnGameStarted;
-        private void OnDisable() => GameEvents.OnGameStarted -= OnGameStarted;
+        private void OnDisable()
+        {
+            GameEvents.OnGameStarted -= OnGameStarted;
+            StopAllCoroutines();
+        }
 
         private void OnGameStarted()
         {
@@ -248,7 +252,7 @@ namespace MagicPairs.GameFlow
         private IEnumerator HandlePiotrus(CardController card)
         {
             yield return new WaitForSeconds(_config.piotrusDelay);
-            card.FlipBack(_config.cardBackColor);
+            if (card != null) card.FlipBack(_config.cardBackColor);
             if (_firstPick != null)
             {
                 _firstPick.FlipBack(_config.cardBackColor);
@@ -260,6 +264,7 @@ namespace MagicPairs.GameFlow
 
         private void SwitchTurn()
         {
+            if (!isActiveAndEnabled) return;
             CurrentPlayerIndex = 1 - CurrentPlayerIndex;
             GameEvents.FireTurnChanged(CurrentPlayerIndex);
             if (CurrentPlayerIndex == 1)

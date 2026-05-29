@@ -27,7 +27,7 @@ namespace MagicPairs.Cards
         private void ClearGrid()
         {
             foreach (var card in _cards)
-                if (card != null) Destroy(card.gameObject);
+                if (card != null && card.gameObject != null) Destroy(card.gameObject);
             _cards.Clear();
         }
 

@@ -35,6 +35,7 @@ namespace MagicPairs.GameFlow
         {
             GameEvents.OnGameStarted -= StartGame;
             GameEvents.OnTurnChanged -= OnTurnChanged;
+            StopAllCoroutines();
         }
 
         public void StartGame()
@@ -65,6 +66,7 @@ namespace MagicPairs.GameFlow
 
         private void OnTurnChanged(int playerIndex)
         {
+            if (!isActiveAndEnabled) return;
             if (playerIndex == 1)
                 StartCoroutine(AITurn());
         }

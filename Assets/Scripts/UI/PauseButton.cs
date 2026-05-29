@@ -68,12 +68,23 @@ namespace MagicPairs.UI
             HideConfirm();
             if (pauseButton != null) pauseButton.gameObject.SetActive(false);
 
+            // Stop all game mode coroutines first
+            var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
+            var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
+            var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
+            if (local != null) { local.StopAllCoroutines(); local.enabled = false; }
+            if (single != null) { single.StopAllCoroutines(); single.enabled = false; }
+            if (challenge != null) { challenge.StopAllCoroutines(); challenge.enabled = false; }
+
             // Clear cards
             var grid = FindAnyObjectByType<Cards.CardGrid>();
             if (grid != null)
             {
+                var children = new System.Collections.Generic.List<GameObject>();
                 foreach (Transform child in grid.transform)
-                    Destroy(child.gameObject);
+                    if (child != null) children.Add(child.gameObject);
+                foreach (var go in children)
+                    if (go != null) Destroy(go);
             }
 
             // Return to menu
