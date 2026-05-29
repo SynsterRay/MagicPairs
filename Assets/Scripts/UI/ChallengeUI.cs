@@ -76,13 +76,14 @@ namespace MagicPairs.UI
             if (streakText != null)
             {
                 if (streak >= 2)
+                {
                     streakText.text = $"x{Mathf.Min(streak, 5)}";
-                else if (streak < 0)
-                    streakText.text = $"-{Mathf.Abs(streak)}";
+                    streakText.color = new Color(0.9f, 0.5f, 0f);
+                }
                 else
+                {
                     streakText.text = "";
-                streakText.color = streak >= 2 ? new Color(0.9f, 0.5f, 0f) :
-                                   streak < 0 ? new Color(0.8f, 0.2f, 0.2f) : Color.white;
+                }
             }
             if (levelText != null)
                 levelText.text = $"{Localization.Get("level")} {level}";

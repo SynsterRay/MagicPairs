@@ -333,8 +333,8 @@ namespace MagicPairs.Editor
             var chScorePanel = new GameObject("ChallengeScorePanel");
             chScorePanel.transform.SetParent(canvas.transform, false);
             var chScoreRect = chScorePanel.AddComponent<RectTransform>();
-            chScoreRect.anchorMin = new Vector2(0.2f, 0.93f);
-            chScoreRect.anchorMax = new Vector2(0.8f, 0.99f);
+            chScoreRect.anchorMin = new Vector2(0.15f, 0.85f);
+            chScoreRect.anchorMax = new Vector2(0.85f, 0.93f);
             chScoreRect.offsetMin = Vector2.zero;
             chScoreRect.offsetMax = Vector2.zero;
 

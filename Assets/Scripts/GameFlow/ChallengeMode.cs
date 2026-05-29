@@ -108,7 +108,7 @@ namespace MagicPairs.GameFlow
             _config.gridRows = rows;
             _config.gridCols = cols;
 
-            _totalPairs = pairs;
+            _totalPairs = _config.PairCount;
             _pairsFound = 0;
 
             // AI scales: +4% per cycle, smooth progression
