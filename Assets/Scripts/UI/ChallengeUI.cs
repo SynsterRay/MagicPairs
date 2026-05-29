@@ -158,12 +158,12 @@ namespace MagicPairs.UI
 
             var entries = Leaderboard.Entries;
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine(Localization.Get("leaderboard").ToUpper());
+            sb.AppendLine($"<size=32><b><color=#D4AF37>{Localization.Get("leaderboard").ToUpper()}</color></b></size>");
+            sb.AppendLine();
             for (int i = 0; i < entries.Count; i++)
             {
                 var e = entries[i];
-                string num = (i + 1).ToString().PadLeft(2);
-                sb.AppendLine($"{num}. {e.playerName} — {e.score} (Lv.{e.level})");
+                sb.AppendLine($" {i + 1}. {e.playerName} — {e.score} (Lv.{e.level})");
             }
             if (entries.Count == 0)
                 sb.AppendLine(Localization.Get("noScores"));

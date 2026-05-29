@@ -406,7 +406,7 @@ namespace MagicPairs.Editor
             lpRect.offsetMax = Vector2.zero;
 
             var leaderText = CreateUIText("LeaderText", "", leaderPanel.transform,
-                new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.95f), TextAnchor.UpperCenter, 22);
+                new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.85f), TextAnchor.UpperLeft, 22);
 
             var leaderBackBtn = CreateButton("LeaderBackBtn", "←", leaderPanel.transform,
                 new Vector2(0.3f, 0.02f), new Vector2(0.7f, 0.12f));
@@ -512,14 +512,14 @@ namespace MagicPairs.Editor
             startLeaderPanel.transform.SetParent(menuPanel.transform, false);
             var slpRect = startLeaderPanel.AddComponent<RectTransform>();
             slpRect.anchorMin = new Vector2(0.05f, 0.05f);
-            slpRect.anchorMax = new Vector2(0.95f, 0.95f);
+            slpRect.anchorMax = new Vector2(0.95f, 1.0f);
             slpRect.offsetMin = Vector2.zero;
             slpRect.offsetMax = Vector2.zero;
             var slpImg = startLeaderPanel.AddComponent<Image>();
             slpImg.color = new Color(1f, 1f, 1f, 0.95f);
 
             var startLeaderText = CreateUIText("StartLeaderText", "", startLeaderPanel.transform,
-                new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.95f), TextAnchor.UpperCenter, 22);
+                new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.85f), TextAnchor.UpperLeft, 22);
 
             var startLeaderBackBtn = CreateButton("StartLeaderBackBtn", "←", startLeaderPanel.transform,
                 new Vector2(0.3f, 0.02f), new Vector2(0.7f, 0.12f));
