@@ -1,55 +1,53 @@
 # Bugs & TODO
 
-## Naprawione
+## Fixed
 
-- [x] ~~Karty zasłaniane przez panel UI na trudnym poziomie~~ — kamera auto-skaluje się do rozmiaru gridu
-- [x] ~~Piotruś/Joker niewidoczny po odkryciu (biały na białym)~~ — fallback kolor czarny
-- [x] ~~Sprite'y kart różnych rozmiarów~~ — SpriteDrawMode.Sliced wymusza jednolity rozmiar
-- [x] ~~Panel zebranych kart nie otwierał się~~ — przyciski "Karty" zamiast world raycast
-- [x] ~~Build cache .utmp w repo~~ — dodany do .gitignore
-- [x] ~~back_card.png ładowany jako karta do gry~~ — wykluczony z LoadPrincessSprites
-- [x] ~~Zebrane pary nachodzą na karty na mobile~~ — karty znikają, widoczne tylko w panelu "Karty"
+- [x] ~~Cards hidden by UI panel on Hard difficulty~~ — camera auto-scales to grid size
+- [x] ~~Joker invisible after reveal (white on white)~~ — fallback black color
+- [x] ~~Card sprites different sizes~~ — SpriteDrawMode.Sliced forces uniform size
+- [x] ~~Collected cards panel not opening~~ — "Cards" buttons instead of world raycast
+- [x] ~~Build cache .utmp in repo~~ — added to .gitignore
+- [x] ~~back_card.png loaded as playable card~~ — excluded from LoadPrincessSprites
+- [x] ~~Collected pairs overlapping cards on mobile~~ — cards hidden, visible only in "Cards" panel
 
-## Znane problemy
+## Known Issues
 
-- [ ] **GameConfig** — paleta kolorów ma 8 kolorów, ale Hard (5×6) wymaga 14 par. Kolory się powtarzają.
-- [ ] **PairCollector.cs** — zebrane karty mogą wychodzić poza ekran przy dużej liczbie par na Hard.
-- [ ] **MainMenu.cs** — `Player1Name`/`Player2Name` są statyczne — nie resetują się między sesjami Unity.
-- [ ] **Application.Quit()** — nie działa w edytorze Unity, tylko w buildzie.
+- [ ] **GameConfig** — color palette has 8 colors, but Hard (5×6) requires 14 pairs. Colors repeat.
+- [ ] **PairCollector.cs** — collected cards may overflow screen on Hard with many pairs.
+- [ ] **MainMenu.cs** — `Player1Name`/`Player2Name` are static — don't reset between Unity sessions.
+- [ ] **Application.Quit()** — doesn't work in Unity Editor, only in builds.
 
-## TODO (priorytet wysoki)
+## TODO (High Priority)
 
-- [ ] Dodać więcej kolorów do palety (min. 15 dla Hard)
-- [ ] Dźwięki: flip karty, znalezienie pary, Piotruś/Joker, game over
-- [ ] Wizualne wyróżnienie karty Piotruś/Joker w trybie kolorów
+- [ ] Add more colors to palette (min. 15 for Hard)
+- [ ] Sound effects: card flip, pair found, Joker, game over
+- [ ] Visual distinction for Joker card in Colors theme
 
-## TODO (priorytet średni)
+## TODO (Medium Priority)
 
-- [ ] Online multiplayer — implementacja `OnlineGameMode` (placeholder istnieje)
-- [ ] Save/Load wyników — lokalny leaderboard (JSON)
-- [ ] Safe Area — padding UI dla notchy/zaokrągleń na mobile
-- [ ] Efekt cząsteczkowy przy znalezieniu pary
-- [ ] Timer opcjonalny — ograniczenie czasu na turę
-- [ ] Więcej motywów kart (zwierzęta, pojazdy, itp.)
+- [ ] Online multiplayer — implement `OnlineGameMode` (placeholder exists)
+- [ ] Safe Area — UI padding for notches/rounded corners on mobile
+- [ ] Optional timer — time limit per turn
+- [ ] More card themes (animals, vehicles, etc.)
 
-## TODO (priorytet niski)
+## TODO (Low Priority)
 
-- [ ] Więcej niż 2 graczy
-- [ ] Statystyki gracza (% trafień, najszybsza gra)
-- [ ] Animacja tasowania kart przed rozdaniem
-- [ ] Podgląd wszystkich kart na 2 sekundy przed startem (opcjonalny)
+- [ ] More than 2 players
+- [ ] Player statistics (hit rate, fastest game)
+- [ ] Card shuffle animation before deal
+- [ ] Preview all cards for 2 seconds before start (optional)
 
-## Lekcje z projektu DemonsAndAngels (zastosowane)
+## Lessons from DemonsAndAngels Project (Applied)
 
-| Problem w D&A | Rozwiązanie w MagicPairs |
-|---------------|--------------------------|
-| Polling w Update() | Event-driven: GameEvents static bus |
+| Problem in D&A | Solution in MagicPairs |
+|----------------|------------------------|
+| Polling in Update() | Event-driven: GameEvents static bus |
 | `.material.color` leak | MaterialPropertyBlock + SpriteRenderer |
-| SceneSetup nie idempotentny | Sprawdzanie istniejących obiektów |
-| Shader.Find() nie działa w buildach | Materiał z prefaba / Resources |
-| Singleton bez ochrony | GameManager z null check |
-| Martwy kod | Brak nieużywanych klas |
-| Brak interfejsów | IGameMode (local/single/online) |
+| SceneSetup not idempotent | Checks for existing objects |
+| Shader.Find() fails in builds | Material from prefab / Resources |
+| Singleton without protection | GameManager with null check |
+| Dead code | No unused classes |
+| No interfaces | IGameMode (local/single/online) |
 | Magic numbers | GameConfig ScriptableObject |
-| TMPro problemy | UnityEngine.UI.Text (wbudowany) |
-| asmdef problemy | Brak asmdef — Assembly-CSharp default |
+| TMPro issues | UnityEngine.UI.Text (built-in) |
+| asmdef issues | No asmdef — Assembly-CSharp default |

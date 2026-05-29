@@ -1,63 +1,63 @@
-# Magic Pairs — Dokumentacja Projektu
+# Magic Pairs — Project Documentation
 
-## Przegląd
+## Overview
 
-Gra karciana Memory dla dzieci — Unity 6 z URP, docelowo na urządzenia mobilne (Android/iOS). Dwóch graczy na zmianę odkrywa karty szukając par o tym samym kolorze.
+A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS). Two players take turns flipping cards looking for matching pairs.
 
-## Stan projektu (2026-05-28)
+## Project Status (2026-05-29)
 
-### Zaimplementowane
+### Implemented
 
-| System | Status | Opis |
-|--------|--------|------|
-| Siatka kart | ✅ | Dynamiczny grid (3×4 / 4×5 / 5×6) z kolorowymi kartami |
-| Flip animation | ✅ | Animacja odkrywania karty (scale X) |
-| Deal animation | ✅ | Karty "lecą" z talii na swoje pozycje |
-| Mechanika par | ✅ | Odkrycie dwóch kart tego samego koloru = para |
-| Karta Piotruś/Joker | ✅ | Specjalna czarna karta — utrata kolejki |
-| System tur | ✅ | Hot-seat dla 2 graczy, zmiana po błędzie |
-| Single Player (AI) | ✅ | Gracz vs komputer z pamięcią (~60% skuteczności) |
-| Tryb Wyzwanie | ✅ | Progresywny single-player z rosnącą trudnością i punktacją |
-| Punktacja | ✅ | Zliczanie par (Arcade) / mnożnik serii (Wyzwanie) |
-| Leaderboard | ✅ | Top 10 wyników zapisywanych w PlayerPrefs |
-| Zbieranie par | ✅ | Ukrywanie znalezionych par z efektem cząsteczkowym |
-| Efekt cząsteczkowy | ✅ | Burst 20 cząsteczek w kolorze karty przy odkryciu pary |
-| Animacja punktów | ✅ | Floating popup "+100 x3!" z punch scale i fade out |
-| Podgląd zebranych kart | ✅ | Panel z siatką zebranych par po kliknięciu "Karty" |
-| Przerwanie gry | ✅ | Przycisk ✕ → potwierdzenie → powrót do menu |
-| Menu startowe | ✅ | Ekran główny → Opcje/Graj → Arcade/Wyzwanie → ... |
-| Opcje | ✅ | Panel z wyborem języka i credits |
-| Lokalizacja | ✅ | Pełny system PL/EN — wszystkie przyciski, panele, komunikaty |
-| Typy kart | ✅ | Kolory (klasyczny) lub Księżniczki (obrazki PNG) |
-| Poziomy trudności | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
-| Nawigacja menu | ✅ | Przyciski cofania ← na każdym etapie |
-| Przycisk wyjścia | ✅ | ✕ na ekranie startowym |
-| Game Over | ✅ | Panel z wynikiem i przyciskiem "Zagraj ponownie" |
-| Editor Setup | ✅ | Idempotentny SceneSetup (jedno kliknięcie) |
-| Touch Input | ✅ | Obsługa dotyku i myszy |
+| System | Status | Description |
+|--------|--------|-------------|
+| Card Grid | ✅ | Dynamic grid (3×4 / 4×5 / 5×6) with colored cards |
+| Flip Animation | ✅ | Card reveal animation (scale X) |
+| Deal Animation | ✅ | Cards fly from deck to their positions |
+| Pair Mechanics | ✅ | Flipping two cards of the same color = pair |
+| Joker Card | ✅ | Special black card — lose your turn |
+| Turn System | ✅ | Hot-seat for 2 players, switch on mismatch |
+| Single Player (AI) | ✅ | Player vs computer with memory (~60% accuracy) |
+| Challenge Mode | ✅ | Progressive single-player with increasing difficulty and scoring |
+| Scoring | ✅ | Pair counting (Arcade) / streak multiplier (Challenge) |
+| Leaderboard | ✅ | Top 10 scores saved in PlayerPrefs |
+| Pair Collection | ✅ | Hiding found pairs with particle effect |
+| Particle Effect | ✅ | Burst of 20 particles in card color on pair match |
+| Score Popup | ✅ | Floating popup "+100 x3!" with punch scale and fade out |
+| Collected Cards View | ✅ | Panel with grid of collected pairs via "Cards" button |
+| Pause/Quit | ✅ | ✕ button → confirmation → return to menu |
+| Main Menu | ✅ | Start screen → Options/Play → Arcade/Challenge → ... |
+| Options | ✅ | Panel with language selection and credits |
+| Localization | ✅ | Full PL/EN system — all buttons, panels, messages |
+| Card Themes | ✅ | Colors (classic) or Princesses (PNG images) |
+| Difficulty Levels | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
+| Menu Navigation | ✅ | Back buttons ← on every step |
+| Quit Button | ✅ | ✕ on start screen |
+| Game Over | ✅ | Panel with result and "Play Again" button |
+| Editor Setup | ✅ | Idempotent SceneSetup (one click) |
+| Touch Input | ✅ | Touch and mouse support |
 
-### Niezaimplementowane
+### Not Yet Implemented
 
-- [ ] Multiplayer online (placeholder `OnlineGameMode` istnieje)
-- [ ] Efekty dźwiękowe (SFX)
-- [ ] Safe Area dla notchy (mobile)
-- [ ] Więcej motywów kart
-- [ ] Więcej kolorów w palecie (dla Hard potrzeba 14, jest 8)
+- [ ] Online multiplayer (placeholder `OnlineGameMode` exists)
+- [ ] Sound effects (SFX)
+- [ ] Safe Area for notches (mobile)
+- [ ] More card themes
+- [ ] More colors in palette (Hard needs 14, currently 8)
 - [ ] Timer option
 
 ## Releases
 
-| Wersja | Data | Opis |
-|--------|------|------|
-| v1.0 | 2026-05-28 | Pierwsza wersja APK |
-| v1.1 | 2026-05-28 | Fix: kamera auto-scale, karty nie zasłaniane przez UI, Piotruś widoczny |
-| v1.2 | 2026-05-28 | Fix back_card as playable card, hide matched pairs on mobile |
+| Version | Date | Description |
+|---------|------|-------------|
+| v1.0 | 2026-05-28 | First APK release |
+| v1.1 | 2026-05-28 | Fix: camera auto-scale, cards not hidden by UI, Joker visible |
+| v1.2 | 2026-05-28 | Fix: back_card as playable card, hide matched pairs on mobile |
 | v1.21 | 2026-05-28 | Score labels closer to center, universal back arrow |
-| v1.3 | 2026-05-28 | Options menu, Challenge mode, leaderboard, particle effects |
+| v1.22 | 2026-05-28 | Options menu, Challenge mode, leaderboard, particle effects |
 
-## Architektura
+## Architecture
 
-### Namespace'y
+### Namespaces
 
 ```
 MagicPairs.Core       — GameManager, GameEvents, GameConfig, Localization, Leaderboard
@@ -69,186 +69,190 @@ MagicPairs.Input      — TouchInputHandler
 MagicPairs.Editor     — SceneSetup
 ```
 
-### Wzorce projektowe
+### Design Patterns
 
-| Wzorzec | Użycie |
-|---------|--------|
-| Event Bus | `GameEvents` — statyczne eventy C# |
-| Static Events | `ChallengeMode.OnChallengeScoreChanged` — dedykowane eventy trybu |
-| MaterialPropertyBlock | Kolory kart (brak leaków materiałów) |
-| Interface (IGameMode) | Separacja trybu gry: Local / SinglePlayer / Challenge / Online |
-| ScriptableObject | `GameConfig` — konfiguracja bez zmian w kodzie |
-| Idempotentny Setup | SceneSetup sprawdza istniejące obiekty |
-| PlayerPrefs persistence | Leaderboard — zapis/odczyt wyników |
+| Pattern | Usage |
+|---------|-------|
+| Event Bus | `GameEvents` — static C# events |
+| Static Events | `ChallengeMode.OnChallengeScoreChanged` — dedicated mode events |
+| MaterialPropertyBlock | Card colors (no material leaks) |
+| Interface (IGameMode) | Game mode separation: Local / SinglePlayer / Challenge / Online |
+| ScriptableObject | `GameConfig` — configuration without code changes |
+| Idempotent Setup | SceneSetup checks for existing objects |
+| PlayerPrefs Persistence | Leaderboard — save/load scores |
 
-### Flow menu
+### Menu Flow
 
 ```
-Ekran startowy (logo + przyciski):
-├── Graj / Play
+Start Screen (logo + buttons):
+├── Play
 │   ├── Arcade
-│   │   ├── Tryb (2 Graczy / 1 Gracz vs AI)
-│   │   ├── Trudność (★ / ★★ / ★★★)
-│   │   ├── Typ kart (🎨 Kolory / 👸 Księżniczki)
-│   │   └── Imiona → Start
-│   └── Wyzwanie / Challenge
-│       ├── Typ kart (🎨 Kolory / 👸 Księżniczki)
-│       └── Imię → Start
-├── Opcje / Options
-│   ├── Język / Language (Polski / English)
-│   └── Autor / Credits
-└── ✕ (wyjście)
+│   │   ├── Mode (2 Players / 1 Player vs AI)
+│   │   ├── Difficulty (★ / ★★ / ★★★)
+│   │   ├── Card Type (🎨 Colors / 👸 Princesses)
+│   │   └── Names → Start
+│   └── Challenge
+│       ├── Card Type (🎨 Colors / 👸 Princesses)
+│       └── Name → Start
+├── Options
+│   ├── Language (Polski / English)
+│   └── Credits
+├── Scores (Leaderboard)
+└── ✕ (quit)
 
-← "Cofnij" — na każdym panelu
-✕ przerwanie gry — prawy górny róg podczas rozgrywki (z potwierdzeniem)
-"Karty" — podgląd zebranych par gracza (lewy/prawy przycisk)
+← "Back" — on every panel
+✕ quit game — top right corner during gameplay (with confirmation)
+"Cards" — view collected pairs (left/right button)
 ```
 
-### Flow gry (Arcade)
+### Game Flow (Arcade)
 
 ```
 MainMenu → Start
   → GameManager.StartGame() → GameEvents.OnGameStarted
-    → CardGrid.BuildGrid() — spawn kart z animacją deal
-    → LocalGameMode/SinglePlayerMode.StartGame() — reset tur i punktów
-  → Gracz klika kartę → TouchInputHandler → IGameMode.OnCardSelected()
-    → Flip animation → sprawdzenie:
-      - Piotruś/Joker → utrata kolejki
-      - Match → PairCollector ukrywa karty + MatchEffect (particles), +1 punkt
-      - Mismatch → flip back, zmiana tury
-  → Wszystkie pary znalezione → GameOver (winner)
+    → CardGrid.BuildGrid() — spawn cards with deal animation
+    → LocalGameMode/SinglePlayerMode.StartGame() — reset turns and scores
+  → Player taps card → TouchInputHandler → IGameMode.OnCardSelected()
+    → Flip animation → check:
+      - Joker → lose turn
+      - Match → PairCollector hides cards + MatchEffect (particles), +1 point
+      - Mismatch → flip back, switch turn
+  → All pairs found → GameOver (winner)
 ```
 
-### Flow gry (Wyzwanie)
+### Game Flow (Challenge)
 
 ```
-MainMenu → Wyzwanie → Typ kart → Imię → Start
-  → ChallengeMode.StartGame() — level 1 (5 kart = 2 pary + Piotruś)
-  → Gracz vs AI na zmianę
+MainMenu → Challenge → Card Type → Name → Start
+  → ChallengeMode.StartGame() — level 1 (5 cards = 2 pairs + Joker)
+  → Player vs AI taking turns
   → Match:
-    - Gracz: streak++, score += 100 × min(streak, 5)
-    - AI: brak punktów
+    - Player: streak++, score += 100 × min(streak, 5)
+    - AI: no points
   → Mismatch:
-    - Gracz: streak--, score -= 25 × |streak| (min streak = -3)
-  → Level complete (gracz znalazł ostatnią parę):
-    - Bonus: 500 × numer levelu
-    - Panel "Dalej" → następny level (+1 para, większy grid)
-  → Game Over (AI znalazło ostatnią parę):
-    - Zapis do leaderboard
-    - Panel z wynikiem + przycisk "Wyniki"
+    - Player: streak--, score -= 25 × |streak| (min streak = -3)
+  → Level complete (player found last pair):
+    - Bonus: 500 × level number
+    - "Next" panel → next level (+1 pair, larger grid)
+  → Game Over (AI found last pair):
+    - Save to leaderboard
+    - Panel with score + "Scores" button
 ```
 
-### Tryb Wyzwanie — szczegóły
+### Challenge Mode — Details
 
-**Progresja levelów:**
-- Level 1: 5 kart (2 pary + Piotruś), grid 2×3
-- Level 2: 7 kart (3 pary), grid 3×3
-- Level N: 2+N-1 par, max 8 (Colors) lub 14 (Princess)
-- Po osiągnięciu max kart: AI staje się trudniejsze (+5% pamięci/level)
+**Level Progression:**
+- Level 1: 5 cards (2 pairs + Joker), grid 2×3
+- Level 2: 7 cards (3 pairs), grid 3×3
+- Level N: 2+N-1 pairs, max 8 (Colors) or 14 (Princess)
+- After reaching max cards: AI becomes harder (+4% memory/cycle)
 
-**System punktacji:**
-- Trafienie: +100 × mnożnik (streak x1 do x5)
-- Pomyłka: streak -1 (min -3), kara -25 × |streak|
-- Piotruś: streak = 0
-- Bonus za level: +500 × numer levelu
-- Odbudowa: po serii pomyłek, trafienie daje bazowe 100 pkt
+**Scoring System:**
+- Match: +100 × multiplier (streak x1 to x5)
+- Mismatch: streak -1 (min -3), penalty -25 × |streak|
+- Joker: streak = 0, penalty 50 + 25×level
+- Level bonus: +500 × level number
+- Recovery: after mismatches, a match gives base 100 pts
 
-**AI w Wyzwaniu:**
-- Bazowa pamięć: 30% (łatwe na początku)
-- Po max kartach: +5% pamięci na każdy kolejny level
-- Max pamięć: 95%
+**AI in Challenge:**
+- Base memory: 30% (easy at start)
+- After max cards: +4% memory per cycle
+- Max memory: 90%
 
 ### AI (SinglePlayerMode — Arcade)
 
-- Gracz 0 = człowiek, Gracz 1 = komputer
-- AI pamięta odkryte karty (`Dictionary<colorIndex, List<CardController>>`)
-- `aiMemoryChance = 0.6f` — 60% szans na użycie pamięci
-- `aiThinkDelay = 1.0s` — opóźnienie przed ruchem
-- Po znalezieniu pary AI dostaje kolejną turę
+- Player 0 = human, Player 1 = computer
+- AI remembers revealed cards (`Dictionary<colorIndex, List<CardController>>`)
+- `aiMemoryChance = 0.6f` — 60% chance to use memory
+- `aiThinkDelay = 1.0s` — delay before move
+- After finding a pair, AI gets another turn
 
 ### Leaderboard
 
-- Top 10 wyników
-- Zapis: PlayerPrefs (JSON)
-- Dane: imię gracza, wynik, osiągnięty level
-- Dostępny po zakończeniu Wyzwania (przycisk "Wyniki")
+- Top 10 scores
+- Storage: PlayerPrefs (JSON)
+- Data: player name, score, level reached
+- Accessible after Challenge ends ("Scores" button) and from start screen
 
-## Jak uruchomić
+## How to Run
 
-1. Otwórz projekt w Unity 6
-2. Zainstaluj pakiet **Input System** (Package Manager → Unity Registry)
-3. Włącz nowy Input System: Edit → Project Settings → Player → Active Input Handling → **Both**
-4. Otwórz `Assets/Scenes/MainScene`
-5. Jeśli scena pusta: **MagicPairs → Setup Scene**
+1. Open project in Unity 6
+2. Install **Input System** package (Package Manager → Unity Registry)
+3. Enable new Input System: Edit → Project Settings → Player → Active Input Handling → **Both**
+4. Open `Assets/Scenes/MainScene`
+5. If scene is empty: **MagicPairs → Setup Scene**
 6. Play
 
-## Jak przebudować scenę od zera
+## How to Rebuild Scene from Scratch
 
-1. Ctrl+A w Hierarchy → Delete
+1. Ctrl+A in Hierarchy → Delete
 2. **MagicPairs → Setup Scene**
 3. Ctrl+S
-4. Gotowe (idempotentne)
+4. Done (idempotent)
 
-## Sterowanie
+## Controls
 
-| Akcja | Input |
-|-------|-------|
-| Odkryj kartę | Dotknij / LPM |
-| Nawigacja menu | Przyciski na ekranie |
+| Action | Input |
+|--------|-------|
+| Flip card | Tap / Left Click |
+| Menu navigation | On-screen buttons |
 
-## Konfiguracja (GameConfig ScriptableObject)
+## Configuration (GameConfig ScriptableObject)
 
-Plik: `Assets/ScriptableObjects/GameConfig.asset`
+File: `Assets/ScriptableObjects/GameConfig.asset`
 
-| Parametr | Domyślna | Opis |
-|----------|----------|------|
-| gridRows | 4 | Zmieniane przez wybór trudności / level |
-| gridCols | 4 | Zmieniane przez wybór trudności / level |
-| colorPalette | 8 kolorów | Kolory par |
-| piotrusColor | czarny | Kolor karty Piotruś/Joker |
-| cardBackColor | ciemny fiolet | Kolor rewersu |
-| flipDuration | 0.3s | Czas animacji flipu |
-| mismatchDelay | 1.0s | Czas pokazania błędnej pary |
-| piotrusDelay | 1.5s | Czas pokazania Piotrusia |
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| gridRows | 4 | Changed by difficulty selection / level |
+| gridCols | 4 | Changed by difficulty selection / level |
+| colorPalette | 8 colors | Pair colors |
+| piotrusColor | black | Joker card color |
+| cardBackColor | dark purple | Card back color |
+| flipDuration | 0.3s | Flip animation time |
+| mismatchDelay | 1.0s | Time to show mismatched pair |
+| piotrusDelay | 1.5s | Time to show Joker |
 
-## Historia zmian
+## Changelog
 
-### 2026-05-28 (wieczór)
-- Ekran startowy z przyciskami Graj / Opcje / Wyniki / ✕
-- Panel Opcje z wyborem języka i credits
-- Przycisk Tabela Wyników na ekranie startowym (PlayerPrefs, persystentny)
-- Tryb Wyzwanie (Challenge) — progresywny single-player vs AI
-- Wybór typu kart w trybie Wyzwanie (Kolory / Księżniczki)
-- System punktacji z mnożnikiem serii (streak x1-x5)
-- Kara za pomyłki (streak spada, odejmowanie punktów)
-- Leaderboard — top 10 wyników (PlayerPrefs)
-- Efekt cząsteczkowy (particle burst) przy odkryciu pary
-- Animacja floating popup z punktami (+100 x3!)
-- Pełna lokalizacja PL/EN wszystkich przycisków i paneli
-- Fix: wskaźnik tury niewidoczny (przesunięty pod TopBar, ciemne kolory)
-- Fix: Challenge mode — złą liczbę kart przy pierwszym uruchomieniu
-- Fix: TouchInputHandler nie rozpoznawał ChallengeMode
-- Fix: przyciski po angielsku wyświetlały polski tekst
+### 2026-05-29
+- UI alignment fixes for menu panels (consistent positioning across all screens)
+
+### 2026-05-28 (evening)
+- Start screen with Play / Options / Scores / ✕ buttons
+- Options panel with language selection and credits
+- Leaderboard button on start screen (PlayerPrefs, persistent)
+- Challenge mode — progressive single-player vs AI
+- Card type selection in Challenge mode (Colors / Princesses)
+- Scoring system with streak multiplier (x1-x5)
+- Mismatch penalty (streak drops, point deduction)
+- Leaderboard — top 10 scores (PlayerPrefs)
+- Particle effect (burst) on pair match
+- Floating score popup animation (+100 x3!)
+- Full PL/EN localization for all buttons and panels
+- Fix: turn indicator invisible (moved below TopBar, dark colors)
+- Fix: Challenge mode wrong card count on first run
+- Fix: TouchInputHandler not recognizing ChallengeMode
+- Fix: buttons showing wrong language text
 
 ### 2026-05-28
-- Stworzenie projektu Unity 6 z URP
-- Implementacja pełnej mechaniki Memory
-- Karta Piotruś/Joker (utrata kolejki)
-- System tur dla 2 graczy (hot-seat)
-- Tryb Single Player (AI z pamięcią)
-- Animacje: deal, flip (scale X), collect
-- Menu krokowe: język → tryb → trudność → imiona
-- Przyciski cofania ← i wyjścia ✕
-- 3 poziomy trudności (★/★★/★★★)
-- Lokalizacja PL/EN
-- PairCollector — zbieranie par pod nickiem gracza
-- Editor tool: SceneSetup (idempotentny)
-- Logo jednorożca w menu
-- Background gry z pliku background_game.png (50% opacity)
-- Typy kart: Kolory i Księżniczki (14 obrazków PNG + joker)
-- Back card: dedykowany rewers w trybie Księżniczki
-- Karty powiększone (1.0×1.4)
-- Biały pasek górny z wynikami graczy
-- Panel autora/credits
-- Przygotowanie pod Android (ikona aplikacji)
+- Created Unity 6 project with URP
+- Full Memory game mechanics implementation
+- Joker card (lose turn)
+- Turn system for 2 players (hot-seat)
+- Single Player mode (AI with memory)
+- Animations: deal, flip (scale X), collect
+- Step-by-step menu: language → mode → difficulty → names
+- Back buttons ← and quit ✕
+- 3 difficulty levels (★/★★/★★★)
+- PL/EN localization
+- PairCollector — collecting pairs under player name
+- Editor tool: SceneSetup (idempotent)
+- Unicorn logo in menu
+- Game background from background_game.png (50% opacity)
+- Card themes: Colors and Princesses (14 PNG images + joker)
+- Back card: dedicated back image for Princess theme
+- Cards enlarged (1.0×1.4)
+- White top bar with player scores
+- Credits panel
+- Android preparation (app icon)
 - GitHub repo: https://github.com/SynsterRay/MagicPairs

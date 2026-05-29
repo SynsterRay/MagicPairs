@@ -629,13 +629,13 @@ namespace MagicPairs.Editor
             var challengeThemePanel = new GameObject("ChallengeThemePanel");
             challengeThemePanel.transform.SetParent(menuPanel.transform, false);
             var challengeThemePanelRect = challengeThemePanel.AddComponent<RectTransform>();
-            challengeThemePanelRect.anchorMin = new Vector2(0.1f, 0.15f);
-            challengeThemePanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            challengeThemePanelRect.anchorMin = new Vector2(0.1f, 0.25f);
+            challengeThemePanelRect.anchorMax = new Vector2(0.9f, 0.78f);
             challengeThemePanelRect.offsetMin = Vector2.zero;
             challengeThemePanelRect.offsetMax = Vector2.zero;
 
             var challengeThemeTitle = CreateUIText("ChallengeThemeTitle", "Wybierz typ kart", challengeThemePanel.transform,
-                new Vector2(0f, 0.78f), new Vector2(1f, 0.98f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 28);
 
             var chColorsBtn = CreateButton("ChColorsBtn", "🎨 Kolory", challengeThemePanel.transform,
                 new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
@@ -673,36 +673,36 @@ namespace MagicPairs.Editor
             var diffPanel = new GameObject("DifficultyPanel");
             diffPanel.transform.SetParent(menuPanel.transform, false);
             var diffPanelRect = diffPanel.AddComponent<RectTransform>();
-            diffPanelRect.anchorMin = new Vector2(0.1f, 0.15f);
-            diffPanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            diffPanelRect.anchorMin = new Vector2(0.1f, 0.25f);
+            diffPanelRect.anchorMax = new Vector2(0.9f, 0.78f);
             diffPanelRect.offsetMin = Vector2.zero;
             diffPanelRect.offsetMax = Vector2.zero;
 
             var diffTitle = CreateUIText("DiffTitle", "Wybierz poziom trudności", diffPanel.transform,
-                new Vector2(0f, 0.78f), new Vector2(1f, 0.98f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 28);
 
             var easyBtn = CreateButton("EasyBtn", "★", diffPanel.transform,
-                new Vector2(0.05f, 0.3f), new Vector2(0.3f, 0.7f));
+                new Vector2(0.05f, 0.12f), new Vector2(0.3f, 0.5f));
             easyBtn.GetComponent<Image>().color = new Color(0.3f, 0.8f, 0.3f, 1f);
             easyBtn.GetComponentInChildren<Text>().fontSize = 48;
 
             var mediumBtn = CreateButton("MediumBtn", "★★", diffPanel.transform,
-                new Vector2(0.35f, 0.3f), new Vector2(0.65f, 0.7f));
+                new Vector2(0.35f, 0.12f), new Vector2(0.65f, 0.5f));
             mediumBtn.GetComponent<Image>().color = new Color(0.9f, 0.7f, 0.1f, 1f);
             mediumBtn.GetComponentInChildren<Text>().fontSize = 40;
 
             var hardBtn = CreateButton("HardBtn", "★★★", diffPanel.transform,
-                new Vector2(0.7f, 0.3f), new Vector2(0.95f, 0.7f));
+                new Vector2(0.7f, 0.12f), new Vector2(0.95f, 0.5f));
             hardBtn.GetComponent<Image>().color = new Color(0.9f, 0.2f, 0.2f, 1f);
             hardBtn.GetComponentInChildren<Text>().fontSize = 32;
 
             // Labels under stars
             CreateUIText("EasyLabel", "3x4", diffPanel.transform,
-                new Vector2(0.05f, 0.15f), new Vector2(0.3f, 0.3f), TextAnchor.MiddleCenter, 20);
+                new Vector2(0.05f, 0.0f), new Vector2(0.3f, 0.12f), TextAnchor.MiddleCenter, 20);
             CreateUIText("MediumLabel", "4x5", diffPanel.transform,
-                new Vector2(0.35f, 0.15f), new Vector2(0.65f, 0.3f), TextAnchor.MiddleCenter, 20);
+                new Vector2(0.35f, 0.0f), new Vector2(0.65f, 0.12f), TextAnchor.MiddleCenter, 20);
             CreateUIText("HardLabel", "5x6", diffPanel.transform,
-                new Vector2(0.7f, 0.15f), new Vector2(0.95f, 0.3f), TextAnchor.MiddleCenter, 20);
+                new Vector2(0.7f, 0.0f), new Vector2(0.95f, 0.12f), TextAnchor.MiddleCenter, 20);
 
             var diffBackBtn = CreateButton("DiffBackBtn", "←", diffPanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
@@ -712,13 +712,13 @@ namespace MagicPairs.Editor
             var themePanel = new GameObject("ThemePanel");
             themePanel.transform.SetParent(menuPanel.transform, false);
             var themePanelRect = themePanel.AddComponent<RectTransform>();
-            themePanelRect.anchorMin = new Vector2(0.1f, 0.15f);
-            themePanelRect.anchorMax = new Vector2(0.9f, 0.75f);
+            themePanelRect.anchorMin = new Vector2(0.1f, 0.25f);
+            themePanelRect.anchorMax = new Vector2(0.9f, 0.78f);
             themePanelRect.offsetMin = Vector2.zero;
             themePanelRect.offsetMax = Vector2.zero;
 
             var themeTitle = CreateUIText("ThemeTitle", "Wybierz typ kart", themePanel.transform,
-                new Vector2(0f, 0.78f), new Vector2(1f, 0.98f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 28);
 
             var colorsBtn = CreateButton("ColorsBtn", "🎨 Kolory", themePanel.transform,
                 new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));

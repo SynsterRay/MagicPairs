@@ -6,7 +6,7 @@ namespace MagicPairs.Core
 
     public static class Localization
     {
-        public static Language CurrentLanguage { get; set; } = Language.Polish;
+        public static Language CurrentLanguage { get; set; } = Language.English;
 
         private static readonly Dictionary<string, string[]> Texts = new()
         {
