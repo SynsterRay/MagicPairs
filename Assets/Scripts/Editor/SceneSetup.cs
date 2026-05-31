@@ -114,6 +114,8 @@ namespace MagicPairs.Editor
             var challengeMode = gm.AddComponent<GameFlow.ChallengeMode>();
             challengeMode.enabled = false;
             gm.AddComponent<GameFlow.PowerUpManager>();
+            var timeAttackMode = gm.AddComponent<GameFlow.TimeAttackMode>();
+            timeAttackMode.enabled = false;
             gm.AddComponent<Cards.MatchEffect>();
             gm.AddComponent<Players.ScoreTracker>();
             gm.AddComponent<Input.TouchInputHandler>();
@@ -445,6 +447,7 @@ namespace MagicPairs.Editor
 
             // Score Popup (floating +points animation)
             canvas.AddComponent<UI.ScorePopup>();
+            canvas.AddComponent<UI.TimeAttackUI>();
 
             // Main Menu Panel
             var menuPanel = new GameObject("MenuPanel");
@@ -612,12 +615,16 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.55f), new Vector2(1f, 0.75f), TextAnchor.MiddleCenter, 30);
 
             var arcadeBtn = CreateButton("ArcadeBtn", "Arcade", gameTypePanel.transform,
-                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.55f));
+                new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.75f));
             arcadeBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 1f);
 
             var challengeBtn = CreateButton("ChallengeBtn", "Wyzwanie", gameTypePanel.transform,
-                new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.3f));
+                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.5f));
             challengeBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 1f);
+
+            var timeAttackBtn = CreateButton("TimeAttackBtn", "Na czas", gameTypePanel.transform,
+                new Vector2(0.1f, 0.05f), new Vector2(0.9f, 0.25f));
+            timeAttackBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.5f, 1f);
 
             var gameTypeBackBtn = CreateButton("GameTypeBackBtn", "←", gameTypePanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
@@ -814,6 +821,8 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("arcadeButtonText").objectReferenceValue = arcadeBtn.GetComponentInChildren<Text>();
             mmSo.FindProperty("challengeButton").objectReferenceValue = challengeBtn.GetComponent<Button>();
             mmSo.FindProperty("challengeButtonText").objectReferenceValue = challengeBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("timeAttackButton").objectReferenceValue = timeAttackBtn.GetComponent<Button>();
+            mmSo.FindProperty("timeAttackButtonText").objectReferenceValue = timeAttackBtn.GetComponentInChildren<Text>();
             mmSo.FindProperty("gameTypeBackButton").objectReferenceValue = gameTypeBackBtn.GetComponent<Button>();
             mmSo.FindProperty("challengeNamesPanel").objectReferenceValue = challengeNamesPanel;
             mmSo.FindProperty("challengeNameLabel").objectReferenceValue = challengeNameLabel;

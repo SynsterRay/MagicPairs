@@ -41,12 +41,13 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Ads (AdMob) | ✅ | Interstitial (between games) + Rewarded (second chance) |
 | Second Chance | ✅ | Watch rewarded ad to restart current level after game over |
 | Power-ups | ✅ | Peek, Shuffle, Freeze — earned every 3 levels or at streak x5 |
+| Time Attack | ✅ | Solo mode — find all pairs before time runs out, no Joker |
+| Player Name Persistence | ✅ | Names saved in PlayerPrefs, pre-filled on next game |
 
 ### Not Yet Implemented
 
 - [ ] Online multiplayer (placeholder `OnlineGameMode` exists)
 - [ ] More card themes (animals, vehicles, etc.)
-- [ ] Timer option
 - [ ] Daily Challenge
 
 ## Releases
@@ -68,7 +69,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 ```
 MagicPairs.Core       — GameManager, GameEvents, GameConfig, Localization, Leaderboard
 MagicPairs.Cards      — CardController, CardAnimator, CardGrid, CardData, PairCollector, MatchEffect
-MagicPairs.GameFlow   — IGameMode, LocalGameMode, SinglePlayerMode, ChallengeMode, PowerUpManager, OnlineGameMode (placeholder)
+MagicPairs.GameFlow   — IGameMode, LocalGameMode, SinglePlayerMode, ChallengeMode, PowerUpManager, TimeAttackMode, OnlineGameMode (placeholder)
 MagicPairs.Players    — PlayerData, ScoreTracker
 MagicPairs.UI         — MainMenu, ScoreDisplay, TurnIndicator, GameOverPanel, ChallengeUI, ScorePopup, CollectedCardsPanel, PauseButton
 MagicPairs.Input      — TouchInputHandler
@@ -240,6 +241,10 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 - Power-ups: Peek, Shuffle, Freeze with localized UI buttons
 - Refactored FindAnyObjectByType calls — cached references in ChallengeUI and CardController
 - Fixed power-up buttons remaining visible after returning to menu
+- Time Attack mode: solo, 60s timer, +2s match, -3s mismatch, no Joker
+- Time Attack leaderboard (sorted by time remaining)
+- Time bonus/penalty popups (+2s / -3s) visible during gameplay
+- Player names saved in PlayerPrefs, pre-filled on next game
 
 ### 2026-05-29
 - Sound effects: card flip, pair match, mismatch, joker, level complete, button click

@@ -45,6 +45,8 @@ namespace MagicPairs.UI
         [SerializeField] private Text arcadeButtonText;
         [SerializeField] private Button challengeButton;
         [SerializeField] private Text challengeButtonText;
+        [SerializeField] private Button timeAttackButton;
+        [SerializeField] private Text timeAttackButtonText;
         [SerializeField] private Button gameTypeBackButton;
 
         [Header("Challenge Names Panel")]
@@ -101,6 +103,7 @@ namespace MagicPairs.UI
         public static string Player2Name { get; private set; } = "Player 2";
         public static bool IsSinglePlayer { get; private set; }
         public static bool IsChallengeMode { get; private set; }
+        public static bool IsTimeAttackMode { get; private set; }
         public static Difficulty SelectedDifficulty { get; private set; }
 
         private bool _singlePlayer;
@@ -121,6 +124,7 @@ namespace MagicPairs.UI
             englishButton?.onClick.AddListener(() => SelectLanguage(Language.English));
             arcadeButton?.onClick.AddListener(SelectArcade);
             challengeButton?.onClick.AddListener(SelectChallenge);
+            timeAttackButton?.onClick.AddListener(SelectTimeAttack);
             gameTypeBackButton?.onClick.AddListener(ShowStartPanel);
             twoPlayersButton?.onClick.AddListener(() => SelectMode(false));
             singlePlayerButton?.onClick.AddListener(() => SelectMode(true));
@@ -131,7 +135,11 @@ namespace MagicPairs.UI
             princessThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Princess));
             startButton?.onClick.AddListener(OnStart);
             modeBackButton?.onClick.AddListener(ShowGameTypePanel);
-            difficultyBackButton?.onClick.AddListener(ShowModePanel);
+            difficultyBackButton?.onClick.AddListener(() =>
+            {
+                if (IsTimeAttackMode) ShowGameTypePanel();
+                else ShowModePanel();
+            });
             themeBackButton?.onClick.AddListener(ShowDifficultyPanel);
             namesBackButton?.onClick.AddListener(OnNamesBack);
             challengeStartButton?.onClick.AddListener(OnChallengeStart);
@@ -191,6 +199,20 @@ namespace MagicPairs.UI
             }
             if (entries.Count == 0)
                 sb.AppendLine(Localization.Get("noScores"));
+
+            var taEntries = Core.Leaderboard.TimeAttackEntries;
+            if (taEntries.Count > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine($"<size=28><b><color=#D4AF37>⏱ {Localization.Get("timeAttack").ToUpper()}</color></b></size>");
+                sb.AppendLine();
+                for (int i = 0; i < taEntries.Count; i++)
+                {
+                    var e = taEntries[i];
+                    sb.AppendLine($" {i + 1}. {e.playerName} — {e.timeLeft:F1}s ({e.difficulty})");
+                }
+            }
+
             startLeaderboardText.text = sb.ToString();
         }
 
@@ -230,18 +252,32 @@ namespace MagicPairs.UI
             if (gameTypeTitle != null) gameTypeTitle.text = Localization.Get("chooseGameType");
             if (arcadeButtonText != null) arcadeButtonText.text = Localization.Get("arcade");
             if (challengeButtonText != null) challengeButtonText.text = Localization.Get("challenge");
+            if (timeAttackButtonText != null) timeAttackButtonText.text = Localization.Get("timeAttack");
         }
 
         private void SelectArcade()
         {
             IsChallengeMode = false;
+            IsTimeAttackMode = false;
+            GameFlow.TimeAttackMode.IsTimeAttackMode = false;
             ShowModePanel();
         }
 
         private void SelectChallenge()
         {
             IsChallengeMode = true;
+            IsTimeAttackMode = false;
+            GameFlow.TimeAttackMode.IsTimeAttackMode = false;
             ShowChallengeThemePanel();
+        }
+
+        private void SelectTimeAttack()
+        {
+            IsChallengeMode = false;
+            IsTimeAttackMode = true;
+            GameFlow.TimeAttackMode.IsTimeAttackMode = true;
+            _singlePlayer = true;
+            ShowDifficultyPanel();
         }
 
         private void ShowChallengeThemePanel()
@@ -371,10 +407,17 @@ namespace MagicPairs.UI
             HideAllPanels();
             if (namesPanel != null) namesPanel.SetActive(true);
 
+            // Load saved names
+            string saved1 = PlayerPrefs.GetString("MagicPairs_Player1Name", "");
+            string saved2 = PlayerPrefs.GetString("MagicPairs_Player2Name", "");
+
             if (player1Label != null)
                 player1Label.text = _singlePlayer ? Localization.Get("yourName") : Localization.Get("player1Name");
             if (player1Input != null)
+            {
                 player1Input.placeholder.GetComponent<Text>().text = Localization.Get("player1");
+                if (!string.IsNullOrEmpty(saved1)) player1Input.text = saved1;
+            }
 
             if (player2Label != null) player2Label.gameObject.SetActive(!_singlePlayer);
             if (player2Input != null) player2Input.gameObject.SetActive(!_singlePlayer);
@@ -382,6 +425,10 @@ namespace MagicPairs.UI
             if (!_singlePlayer && player2Label != null)
                 player2Label.text = Localization.Get("player2Name");
             if (!_singlePlayer && player2Input != null)
+            {
+                player2Input.placeholder.GetComponent<Text>().text = Localization.Get("player2");
+                if (!string.IsNullOrEmpty(saved2)) player2Input.text = saved2;
+            }
                 player2Input.placeholder.GetComponent<Text>().text = Localization.Get("player2");
 
             if (startButtonText != null) startButtonText.text = Localization.Get("start");
@@ -408,11 +455,24 @@ namespace MagicPairs.UI
                 Player2Name = string.IsNullOrWhiteSpace(player2Input.text)
                     ? Localization.Get("player2") : player2Input.text;
 
+            // Save names for next time
+            PlayerPrefs.SetString("MagicPairs_Player1Name", Player1Name);
+            if (!_singlePlayer) PlayerPrefs.SetString("MagicPairs_Player2Name", Player2Name);
+            PlayerPrefs.Save();
+
             var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
             var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
             var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
+            var timeAttack = FindAnyObjectByType<GameFlow.TimeAttackMode>(FindObjectsInactive.Include);
 
-            if (IsChallengeMode)
+            if (IsTimeAttackMode)
+            {
+                if (local != null) local.enabled = false;
+                if (single != null) single.enabled = false;
+                if (challenge != null) challenge.enabled = false;
+                if (timeAttack != null) timeAttack.enabled = true;
+            }
+            else if (IsChallengeMode)
             {
                 if (local != null) local.enabled = false;
                 if (single != null) single.enabled = false;
@@ -421,12 +481,14 @@ namespace MagicPairs.UI
                     challenge.enabled = true;
                     challenge.StartGame();
                 }
+                if (timeAttack != null) timeAttack.enabled = false;
             }
             else
             {
                 if (local != null) local.enabled = !_singlePlayer;
                 if (single != null) single.enabled = _singlePlayer;
                 if (challenge != null) challenge.enabled = false;
+                if (timeAttack != null) timeAttack.enabled = false;
             }
 
             if (menuPanel != null) menuPanel.SetActive(false);

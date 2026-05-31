@@ -56,6 +56,9 @@ namespace MagicPairs.Core
             { "peek", new[] { "Podgląd", "Peek" } },
             { "shuffle", new[] { "Tasuj", "Shuffle" } },
             { "freeze", new[] { "Zamróź", "Freeze" } },
+            { "timeAttack", new[] { "Na czas", "Time Attack" } },
+            { "timeAttackWin", new[] { "Ukończono! Pozostało: {0:F1}s", "Complete! Time left: {0:F1}s" } },
+            { "timeAttackLose", new[] { "Czas minął!", "Time's up!" } },
         };
 
         public static string Get(string key)

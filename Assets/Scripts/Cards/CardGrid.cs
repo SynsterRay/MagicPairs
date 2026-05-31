@@ -34,7 +34,8 @@ namespace MagicPairs.Cards
         private List<CardData> GenerateDeck()
         {
             var deck = new List<CardData>();
-            int pairsNeeded = _config.PairCount;
+            bool skipJoker = GameFlow.TimeAttackMode.IsTimeAttackMode;
+            int pairsNeeded = skipJoker ? _config.TotalSlots / 2 : _config.PairCount;
 
             bool usePrincess = _config.theme == Core.CardTheme.Princess;
             Sprite[] sprites = null;
@@ -57,14 +58,17 @@ namespace MagicPairs.Cards
                     deck.Add(CardData.CreatePairWithSprite(i, sprite));
                     deck.Add(CardData.CreatePairWithSprite(i, sprite));
                 }
-                var jokerSprite = Resources.Load<Sprite>("PrincessCards/joker");
-                if (jokerSprite == null)
+                if (!skipJoker)
                 {
-                    var jokerTex = Resources.Load<Texture2D>("PrincessCards/joker");
-                    if (jokerTex != null)
-                        jokerSprite = Sprite.Create(jokerTex, new Rect(0, 0, jokerTex.width, jokerTex.height), new Vector2(0.5f, 0.5f), 100f);
+                    var jokerSprite = Resources.Load<Sprite>("PrincessCards/joker");
+                    if (jokerSprite == null)
+                    {
+                        var jokerTex = Resources.Load<Texture2D>("PrincessCards/joker");
+                        if (jokerTex != null)
+                            jokerSprite = Sprite.Create(jokerTex, new Rect(0, 0, jokerTex.width, jokerTex.height), new Vector2(0.5f, 0.5f), 100f);
+                    }
+                    deck.Add(CardData.CreatePiotrusWithSprite(jokerSprite));
                 }
-                deck.Add(CardData.CreatePiotrusWithSprite(jokerSprite));
             }
             else
             {
@@ -76,7 +80,8 @@ namespace MagicPairs.Cards
                     deck.Add(CardData.CreatePair(i, color));
                     deck.Add(CardData.CreatePair(i, color));
                 }
-                deck.Add(CardData.CreatePiotrus(_config.piotrusColor));
+                if (!skipJoker)
+                    deck.Add(CardData.CreatePiotrus(_config.piotrusColor));
             }
 
             return deck;

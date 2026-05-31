@@ -72,9 +72,11 @@ namespace MagicPairs.UI
             var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
             var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
             var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
+            var timeAttack = FindAnyObjectByType<GameFlow.TimeAttackMode>(FindObjectsInactive.Include);
             if (local != null) { local.StopAllCoroutines(); local.enabled = false; }
             if (single != null) { single.StopAllCoroutines(); single.enabled = false; }
             if (challenge != null) { challenge.StopAllCoroutines(); challenge.enabled = false; }
+            if (timeAttack != null) { timeAttack.StopAllCoroutines(); timeAttack.enabled = false; }
 
             // Clear cards
             var grid = FindAnyObjectByType<Cards.CardGrid>();

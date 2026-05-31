@@ -37,14 +37,15 @@ namespace MagicPairs.UI
 
         private void OnGameStarted()
         {
+            bool hideButtons = MainMenu.IsTimeAttackMode;
             if (player1Button != null)
             {
-                player1Button.gameObject.SetActive(true);
+                player1Button.gameObject.SetActive(!hideButtons);
                 player1Button.GetComponentInChildren<Text>().text = Localization.Get("cards");
             }
             if (player2Button != null)
             {
-                player2Button.gameObject.SetActive(true);
+                player2Button.gameObject.SetActive(!hideButtons);
                 player2Button.GetComponentInChildren<Text>().text = Localization.Get("cards");
             }
             Close();

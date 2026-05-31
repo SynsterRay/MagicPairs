@@ -23,7 +23,7 @@ namespace MagicPairs.UI
 
         private void ResetDisplay()
         {
-            if (UI.MainMenu.IsChallengeMode)
+            if (UI.MainMenu.IsChallengeMode || UI.MainMenu.IsTimeAttackMode)
             {
                 if (player1ScoreText != null) player1ScoreText.transform.parent.gameObject.SetActive(false);
                 return;

@@ -16,6 +16,8 @@ namespace MagicPairs.Input
 
         private IGameMode GetActiveMode()
         {
+            var timeAttack = GetComponent<TimeAttackMode>();
+            if (timeAttack != null && timeAttack.enabled) return timeAttack;
             var challenge = GetComponent<ChallengeMode>();
             if (challenge != null && challenge.enabled) return challenge;
             var single = GetComponent<SinglePlayerMode>();
