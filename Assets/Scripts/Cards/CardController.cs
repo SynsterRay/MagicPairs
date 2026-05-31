@@ -15,12 +15,14 @@ namespace MagicPairs.Cards
         private CardAnimator _animator;
         private Color _backColor;
         private Sprite _backSprite;
+        private static Audio.SFXManager _sfxCache;
 
         public void Initialize(CardData data, Color backColor)
         {
             Data = data;
             _backColor = backColor;
             _animator = GetComponent<CardAnimator>();
+            if (_sfxCache == null) _sfxCache = FindAnyObjectByType<Audio.SFXManager>();
 
             // Load back sprite for Princess theme
             if (data.HasSprite)
@@ -52,8 +54,7 @@ namespace MagicPairs.Cards
         {
             if (!CanFlip) return;
             State = CardState.Animating;
-            var sfx = FindAnyObjectByType<Audio.SFXManager>();
-            sfx?.PlayFlip();
+            _sfxCache?.PlayFlip();
             _animator.PlayFlip(Data.faceColor, () =>
             {
                 State = CardState.FaceUp;

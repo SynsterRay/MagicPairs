@@ -53,6 +53,9 @@ namespace MagicPairs.Core
             { "noScores", new[] { "Brak wyników", "No scores yet" } },
             { "pairs", new[] { "{0} - {1} par", "{0} - {1} pairs" } },
             { "pair", new[] { "{0} - 1 para", "{0} - 1 pair" } },
+            { "peek", new[] { "Podgląd", "Peek" } },
+            { "shuffle", new[] { "Tasuj", "Shuffle" } },
+            { "freeze", new[] { "Zamróź", "Freeze" } },
         };
 
         public static string Get(string key)

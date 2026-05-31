@@ -280,7 +280,18 @@ namespace MagicPairs.GameFlow
             CurrentPlayerIndex = 1 - CurrentPlayerIndex;
             GameEvents.FireTurnChanged(CurrentPlayerIndex);
             if (CurrentPlayerIndex == 1)
+            {
+                // Check if Freeze power-up is active
+                var powerUps = GetComponent<PowerUpManager>();
+                if (powerUps != null && powerUps.ConsumeFreeze())
+                {
+                    // AI skips turn
+                    CurrentPlayerIndex = 0;
+                    GameEvents.FireTurnChanged(CurrentPlayerIndex);
+                    return;
+                }
                 StartCoroutine(AITurn());
+            }
         }
 
         private IEnumerator AITurn()
@@ -357,6 +368,8 @@ namespace MagicPairs.GameFlow
             if (!_aiMemory[idx].Contains(card))
                 _aiMemory[idx].Add(card);
         }
+
+        public void ClearAIMemory() => _aiMemory.Clear();
 
         /// <summary>Called when player loses (AI finds last pair or player quits).</summary>
         public void EndChallenge()

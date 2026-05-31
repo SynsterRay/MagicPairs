@@ -88,6 +88,9 @@ namespace MagicPairs.UI
             }
 
             // Return to menu
+            var challengeUI = FindAnyObjectByType<ChallengeUI>(FindObjectsInactive.Include);
+            if (challengeUI != null) challengeUI.SendMessage("HideAll", SendMessageOptions.DontRequireReceiver);
+
             var menu = FindAnyObjectByType<MainMenu>(FindObjectsInactive.Include);
             if (menu != null) menu.ReturnToMenu();
         }

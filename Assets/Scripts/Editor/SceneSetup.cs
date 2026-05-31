@@ -113,6 +113,7 @@ namespace MagicPairs.Editor
             singleMode.enabled = false;
             var challengeMode = gm.AddComponent<GameFlow.ChallengeMode>();
             challengeMode.enabled = false;
+            gm.AddComponent<GameFlow.PowerUpManager>();
             gm.AddComponent<Cards.MatchEffect>();
             gm.AddComponent<Players.ScoreTracker>();
             gm.AddComponent<Input.TouchInputHandler>();

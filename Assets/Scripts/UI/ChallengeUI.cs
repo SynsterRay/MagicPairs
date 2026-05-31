@@ -25,13 +25,32 @@ namespace MagicPairs.UI
 
         private bool _secondChanceUsed;
 
+        // Power-up UI (created dynamically)
+        private GameObject _powerUpPanel;
+        private Button _peekBtn;
+        private Button _shuffleBtn;
+        private Button _freezeBtn;
+        private Text _peekText;
+        private Text _shuffleText;
+        private Text _freezeText;
+
+        // Cached references
+        private PowerUpManager _powerUpManager;
+        private ChallengeMode _challengeMode;
+        private Ads.AdManager _adManager;
+
         private void Start()
         {
+            _powerUpManager = FindAnyObjectByType<PowerUpManager>();
+            _challengeMode = FindAnyObjectByType<ChallengeMode>();
+            _adManager = FindAnyObjectByType<Ads.AdManager>();
+
             nextLevelButton?.onClick.AddListener(OnNextLevel);
             challengeMenuButton?.onClick.AddListener(OnReturnToMenu);
             leaderboardBackButton?.onClick.AddListener(() => leaderboardPanel?.SetActive(false));
             showLeaderboardButton?.onClick.AddListener(ShowLeaderboard);
             secondChanceButton?.onClick.AddListener(OnSecondChance);
+            CreatePowerUpUI();
             HideAll();
         }
 
@@ -41,6 +60,7 @@ namespace MagicPairs.UI
             ChallengeMode.OnLevelComplete += ShowLevelComplete;
             ChallengeMode.OnChallengeGameOver += ShowChallengeOver;
             GameEvents.OnGameStarted += OnGameStarted;
+            PowerUpManager.OnPowerUpsChanged += UpdatePowerUpUI;
         }
 
         private void OnDisable()
@@ -49,6 +69,95 @@ namespace MagicPairs.UI
             ChallengeMode.OnLevelComplete -= ShowLevelComplete;
             ChallengeMode.OnChallengeGameOver -= ShowChallengeOver;
             GameEvents.OnGameStarted -= OnGameStarted;
+            PowerUpManager.OnPowerUpsChanged -= UpdatePowerUpUI;
+        }
+
+        private void CreatePowerUpUI()
+        {
+            var canvas = GetComponent<Canvas>();
+            if (canvas == null) canvas = GetComponentInParent<Canvas>();
+            if (canvas == null) return;
+
+            _powerUpPanel = new GameObject("PowerUpPanel");
+            _powerUpPanel.transform.SetParent(canvas.transform, false);
+            var rect = _powerUpPanel.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.05f, 0.02f);
+            rect.anchorMax = new Vector2(0.95f, 0.08f);
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            _peekBtn = CreatePowerUpButton("🔍", 0f, 0.3f, _powerUpPanel.transform);
+            _shuffleBtn = CreatePowerUpButton("🔄", 0.35f, 0.65f, _powerUpPanel.transform);
+            _freezeBtn = CreatePowerUpButton("❄️", 0.7f, 1f, _powerUpPanel.transform);
+
+            _peekText = _peekBtn.GetComponentInChildren<Text>();
+            _shuffleText = _shuffleBtn.GetComponentInChildren<Text>();
+            _freezeText = _freezeBtn.GetComponentInChildren<Text>();
+
+            _peekBtn.onClick.AddListener(OnPeek);
+            _shuffleBtn.onClick.AddListener(OnShuffle);
+            _freezeBtn.onClick.AddListener(OnFreeze);
+
+            _powerUpPanel.SetActive(false);
+        }
+
+        private Button CreatePowerUpButton(string label, float xMin, float xMax, Transform parent)
+        {
+            var go = new GameObject(label);
+            go.transform.SetParent(parent, false);
+            var img = go.AddComponent<Image>();
+            img.color = new Color(0.2f, 0.2f, 0.3f, 0.9f);
+            go.AddComponent<Button>();
+            var r = go.GetComponent<RectTransform>();
+            r.anchorMin = new Vector2(xMin, 0f);
+            r.anchorMax = new Vector2(xMax, 1f);
+            r.offsetMin = Vector2.zero;
+            r.offsetMax = Vector2.zero;
+
+            var txtObj = new GameObject("Text");
+            txtObj.transform.SetParent(go.transform, false);
+            var txt = txtObj.AddComponent<Text>();
+            txt.text = label;
+            txt.fontSize = 22;
+            txt.fontStyle = FontStyle.Bold;
+            txt.alignment = TextAnchor.MiddleCenter;
+            txt.color = Color.white;
+            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            var tr = txtObj.GetComponent<RectTransform>();
+            tr.anchorMin = Vector2.zero;
+            tr.anchorMax = Vector2.one;
+            tr.offsetMin = Vector2.zero;
+            tr.offsetMax = Vector2.zero;
+
+            return go.GetComponent<Button>();
+        }
+
+        private void OnPeek()
+        {
+            _powerUpManager?.UsePeek();
+        }
+
+        private void OnShuffle()
+        {
+            _powerUpManager?.UseShuffle();
+        }
+
+        private void OnFreeze()
+        {
+            _powerUpManager?.UseFreeze();
+        }
+
+        private void UpdatePowerUpUI()
+        {
+            if (_powerUpManager == null || _powerUpPanel == null) return;
+
+            if (_peekText != null) _peekText.text = $"{Localization.Get("peek")} ({_powerUpManager.PeekCount})";
+            if (_shuffleText != null) _shuffleText.text = $"{Localization.Get("shuffle")} ({_powerUpManager.ShuffleCount})";
+            if (_freezeText != null) _freezeText.text = $"{Localization.Get("freeze")} ({_powerUpManager.FreezeCount})";
+
+            if (_peekBtn != null) _peekBtn.interactable = _powerUpManager.PeekCount > 0;
+            if (_shuffleBtn != null) _shuffleBtn.interactable = _powerUpManager.ShuffleCount > 0;
+            if (_freezeBtn != null) _freezeBtn.interactable = _powerUpManager.FreezeCount > 0;
         }
 
         private void OnGameStarted()
@@ -57,6 +166,7 @@ namespace MagicPairs.UI
             if (scorePanel != null) scorePanel.SetActive(true);
             if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
             if (challengeOverPanel != null) challengeOverPanel.SetActive(false);
+            if (_powerUpPanel != null) _powerUpPanel.SetActive(true);
 
             if (nextLevelButton != null)
                 nextLevelButton.GetComponentInChildren<Text>().text = Localization.Get("next");
@@ -64,6 +174,8 @@ namespace MagicPairs.UI
                 challengeMenuButton.GetComponentInChildren<Text>().text = "Menu";
             if (showLeaderboardButton != null)
                 showLeaderboardButton.GetComponentInChildren<Text>().text = Localization.Get("scores");
+
+            UpdatePowerUpUI();
         }
 
         private void HideAll()
@@ -72,6 +184,7 @@ namespace MagicPairs.UI
             if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
             if (challengeOverPanel != null) challengeOverPanel.SetActive(false);
             if (leaderboardPanel != null) leaderboardPanel.SetActive(false);
+            if (_powerUpPanel != null) _powerUpPanel.SetActive(false);
         }
 
         private void UpdateScore(int score, int streak, int level)
@@ -102,8 +215,7 @@ namespace MagicPairs.UI
 
         private void ShowChallengeOver(int finalScore)
         {
-            var challenge = FindAnyObjectByType<ChallengeMode>();
-            int level = challenge != null ? challenge.CurrentLevel : 1;
+            int level = _challengeMode != null ? _challengeMode.CurrentLevel : 1;
 
             Leaderboard.AddEntry(MainMenu.Player1Name, finalScore, level);
 
@@ -114,26 +226,23 @@ namespace MagicPairs.UI
             // Show second chance button if rewarded ad is ready and not used yet
             if (secondChanceButton != null)
             {
-                var adManager = FindAnyObjectByType<Ads.AdManager>();
-                bool canShow = !_secondChanceUsed && adManager != null && adManager.IsRewardedReady;
+                bool canShow = !_secondChanceUsed && _adManager != null && _adManager.IsRewardedReady;
                 secondChanceButton.gameObject.SetActive(canShow);
             }
         }
 
         private void OnSecondChance()
         {
-            var adManager = FindAnyObjectByType<Ads.AdManager>();
-            if (adManager == null) return;
+            if (_adManager == null) return;
 
-            adManager.ShowRewarded(() =>
+            _adManager.ShowRewarded(() =>
             {
                 _secondChanceUsed = true;
                 if (challengeOverPanel != null) challengeOverPanel.SetActive(false);
                 if (secondChanceButton != null) secondChanceButton.gameObject.SetActive(false);
 
                 // Continue the game — restart current level (not next!)
-                var challenge = FindAnyObjectByType<ChallengeMode>();
-                challenge?.RestartCurrentLevel();
+                _challengeMode?.RestartCurrentLevel();
             });
         }
 
@@ -142,21 +251,16 @@ namespace MagicPairs.UI
             if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
 
             // Show interstitial every 3 levels
-            var challenge = FindAnyObjectByType<ChallengeMode>();
-            if (challenge != null && challenge.CurrentLevel % 3 == 0)
-            {
-                var adManager = FindAnyObjectByType<Ads.AdManager>();
-                adManager?.TryShowInterstitialBetweenGames();
-            }
+            if (_challengeMode != null && _challengeMode.CurrentLevel % 3 == 0)
+                _adManager?.TryShowInterstitialBetweenGames();
 
-            challenge?.StartNextLevel();
+            _challengeMode?.StartNextLevel();
         }
 
         private void OnReturnToMenu()
         {
             HideAll();
-            var adManager = FindAnyObjectByType<Ads.AdManager>();
-            adManager?.TryShowInterstitialBetweenGames();
+            _adManager?.TryShowInterstitialBetweenGames();
             var menu = FindAnyObjectByType<MainMenu>();
             menu?.ReturnToMenu();
         }

@@ -40,13 +40,13 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Safe Area | ✅ | UI adapts to notches and rounded corners on mobile |
 | Ads (AdMob) | ✅ | Interstitial (between games) + Rewarded (second chance) |
 | Second Chance | ✅ | Watch rewarded ad to restart current level after game over |
+| Power-ups | ✅ | Peek, Shuffle, Freeze — earned every 3 levels or at streak x5 |
 
 ### Not Yet Implemented
 
 - [ ] Online multiplayer (placeholder `OnlineGameMode` exists)
 - [ ] More card themes (animals, vehicles, etc.)
 - [ ] Timer option
-- [ ] Power-ups in Challenge mode
 - [ ] Daily Challenge
 
 ## Releases
@@ -68,7 +68,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 ```
 MagicPairs.Core       — GameManager, GameEvents, GameConfig, Localization, Leaderboard
 MagicPairs.Cards      — CardController, CardAnimator, CardGrid, CardData, PairCollector, MatchEffect
-MagicPairs.GameFlow   — IGameMode, LocalGameMode, SinglePlayerMode, ChallengeMode, OnlineGameMode (placeholder)
+MagicPairs.GameFlow   — IGameMode, LocalGameMode, SinglePlayerMode, ChallengeMode, PowerUpManager, OnlineGameMode (placeholder)
 MagicPairs.Players    — PlayerData, ScoreTracker
 MagicPairs.UI         — MainMenu, ScoreDisplay, TurnIndicator, GameOverPanel, ChallengeUI, ScorePopup, CollectedCardsPanel, PauseButton
 MagicPairs.Input      — TouchInputHandler
@@ -167,6 +167,13 @@ MainMenu → Challenge → Card Type → Name → Start
 - After max cards: +4% memory per cycle
 - Max memory: 90%
 
+**Power-ups (Challenge only):**
+- 🔍 Peek — reveals 2 random cards for 1 second (start with 1)
+- 🔄 Shuffle — randomizes positions of face-down cards, clears AI memory
+- ❄️ Freeze — AI skips its next turn
+- Earned: +1 every 3 levels (rotating), +1 random on streak x5
+- Only usable on player's turn
+
 ### AI (SinglePlayerMode — Arcade)
 
 - Player 0 = human, Player 1 = computer
@@ -230,6 +237,9 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 - Fixed second chance: now restarts current level instead of advancing to next
 - Ads reworked: interstitial on "Play Again" (Arcade), every 3 levels (Challenge), on menu return
 - Reverted ad IDs to test mode for development
+- Power-ups: Peek, Shuffle, Freeze with localized UI buttons
+- Refactored FindAnyObjectByType calls — cached references in ChallengeUI and CardController
+- Fixed power-up buttons remaining visible after returning to menu
 
 ### 2026-05-29
 - Sound effects: card flip, pair match, mismatch, joker, level complete, button click
