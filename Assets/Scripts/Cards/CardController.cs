@@ -57,6 +57,8 @@ namespace MagicPairs.Cards
             _animator.PlayFlip(Data.faceColor, () =>
             {
                 State = CardState.FaceUp;
+                if (Data.isPiotrus && !Data.HasSprite)
+                    _animator.ShowJokerSymbol();
                 OnFlipComplete?.Invoke(this);
             }, Data.faceSprite);
         }
@@ -65,6 +67,7 @@ namespace MagicPairs.Cards
         {
             if (_animator == null || !_animator.isActiveAndEnabled) return;
             State = CardState.Animating;
+            _animator.HideJokerSymbol();
             _animator.PlayFlipBack(backColor, () =>
             {
                 if (this == null) return;

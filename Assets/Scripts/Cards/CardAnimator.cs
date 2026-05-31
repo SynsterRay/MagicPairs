@@ -41,6 +41,29 @@ namespace MagicPairs.Cards
             _renderer.SetPropertyBlock(_propBlock);
         }
 
+        public void ShowJokerSymbol()
+        {
+            var existing = transform.Find("JokerSymbol");
+            if (existing != null) { existing.gameObject.SetActive(true); return; }
+
+            var go = new GameObject("JokerSymbol");
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = new Vector3(0f, 0f, -0.02f);
+            var tm = go.AddComponent<TextMesh>();
+            tm.text = "☠";
+            tm.fontSize = 64;
+            tm.characterSize = 0.12f;
+            tm.anchor = TextAnchor.MiddleCenter;
+            tm.alignment = TextAlignment.Center;
+            tm.color = Color.red;
+        }
+
+        public void HideJokerSymbol()
+        {
+            var existing = transform.Find("JokerSymbol");
+            if (existing != null) existing.gameObject.SetActive(false);
+        }
+
         public void SetSprite(Sprite sprite)
         {
             if (_spriteRenderer == null)

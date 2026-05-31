@@ -24,6 +24,13 @@ namespace MagicPairs.Core
             new(1.0f, 0.5f, 0.0f),  // Orange
             new(0.0f, 0.8f, 0.8f),  // Cyan
             new(1.0f, 0.4f, 0.7f),  // Pink
+            new(0.6f, 0.3f, 0.1f),  // Brown
+            new(0.5f, 0.9f, 0.5f),  // Lime
+            new(0.4f, 0.2f, 0.6f),  // Indigo
+            new(1.0f, 0.9f, 0.5f),  // Gold
+            new(0.7f, 0.7f, 0.7f),  // Silver
+            new(0.0f, 0.4f, 0.3f),  // Teal
+            new(0.9f, 0.1f, 0.5f),  // Magenta
         };
 
         [Header("Piotruś")]

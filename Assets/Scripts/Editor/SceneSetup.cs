@@ -165,6 +165,16 @@ namespace MagicPairs.Editor
             scaler.matchWidthOrHeight = 1f;
             canvas.AddComponent<GraphicRaycaster>();
 
+            // Safe Area wrapper — all UI goes inside this
+            var safeArea = new GameObject("SafeArea");
+            safeArea.transform.SetParent(canvas.transform, false);
+            var safeRect = safeArea.AddComponent<RectTransform>();
+            safeRect.anchorMin = Vector2.zero;
+            safeRect.anchorMax = Vector2.one;
+            safeRect.offsetMin = Vector2.zero;
+            safeRect.offsetMax = Vector2.zero;
+            safeArea.AddComponent<UI.SafeArea>();
+
             // Score Display - top (on white bar)
             var topBar = new GameObject("TopBar");
             topBar.transform.SetParent(canvas.transform, false);

@@ -4,7 +4,7 @@
 
 A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS). Two players take turns flipping cards looking for matching pairs.
 
-## Project Status (2026-05-29)
+## Project Status (2026-05-31)
 
 ### Implemented
 
@@ -14,7 +14,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Flip Animation | ✅ | Card reveal animation (scale X) |
 | Deal Animation | ✅ | Cards fly from deck to their positions |
 | Pair Mechanics | ✅ | Flipping two cards of the same color = pair |
-| Joker Card | ✅ | Special black card — lose your turn |
+| Joker Card | ✅ | Special black card with ☠ symbol — lose your turn |
 | Turn System | ✅ | Hot-seat for 2 players, switch on mismatch |
 | Single Player (AI) | ✅ | Player vs computer with memory (~60% accuracy) |
 | Challenge Mode | ✅ | Progressive single-player with increasing difficulty and scoring |
@@ -30,20 +30,24 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Localization | ✅ | Full PL/EN system — all buttons, panels, messages |
 | Card Themes | ✅ | Colors (classic) or Princesses (PNG images) |
 | Difficulty Levels | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
+| Color Palette | ✅ | 15 distinct colors — supports Hard mode (14 pairs) |
 | Menu Navigation | ✅ | Back buttons ← on every step |
 | Quit Button | ✅ | ✕ on start screen |
 | Game Over | ✅ | Panel with result and "Play Again" button |
 | Editor Setup | ✅ | Idempotent SceneSetup (one click) |
 | Sound Effects | ✅ | Card flip, pair match, mismatch, joker, level complete, button click |
 | Touch Input | ✅ | Touch and mouse support |
+| Safe Area | ✅ | UI adapts to notches and rounded corners on mobile |
+| Ads (AdMob) | ✅ | Interstitial (between games) + Rewarded (second chance) |
+| Second Chance | ✅ | Watch rewarded ad to restart current level after game over |
 
 ### Not Yet Implemented
 
 - [ ] Online multiplayer (placeholder `OnlineGameMode` exists)
-- [ ] Safe Area for notches (mobile)
-- [ ] More card themes
-- [ ] More colors in palette (Hard needs 14, currently 8)
+- [ ] More card themes (animals, vehicles, etc.)
 - [ ] Timer option
+- [ ] Power-ups in Challenge mode
+- [ ] Daily Challenge
 
 ## Releases
 
@@ -55,6 +59,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | v1.21 | 2026-05-28 | Score labels closer to center, universal back arrow |
 | v1.22 | 2026-05-28 | Options menu, Challenge mode, leaderboard, particle effects |
 | v1.23 | 2026-05-29 | SFX, English docs, UI alignment fixes, null reference fixes |
+| v1.3 | 2026-05-31 | 15-color palette, Joker ☠ symbol, Safe Area, ads fix, second chance fix |
 
 ## Architecture
 
@@ -68,6 +73,7 @@ MagicPairs.Players    — PlayerData, ScoreTracker
 MagicPairs.UI         — MainMenu, ScoreDisplay, TurnIndicator, GameOverPanel, ChallengeUI, ScorePopup, CollectedCardsPanel, PauseButton
 MagicPairs.Input      — TouchInputHandler
 MagicPairs.Audio      — SFXManager
+MagicPairs.Ads        — AdManager
 MagicPairs.Editor     — SceneSetup
 ```
 
@@ -207,7 +213,7 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 |-----------|---------|-------------|
 | gridRows | 4 | Changed by difficulty selection / level |
 | gridCols | 4 | Changed by difficulty selection / level |
-| colorPalette | 8 colors | Pair colors |
+| colorPalette | 15 colors | Pair colors |
 | piotrusColor | black | Joker card color |
 | cardBackColor | dark purple | Card back color |
 | flipDuration | 0.3s | Flip animation time |
@@ -215,6 +221,15 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 | piotrusDelay | 1.5s | Time to show Joker |
 
 ## Changelog
+
+### 2026-05-31
+- Expanded color palette from 8 to 15 distinct colors (Hard mode fully playable)
+- Joker card now shows red ☠ symbol when revealed in Colors theme
+- Safe Area support — UI adapts to notches and rounded corners on mobile
+- Fixed challenge level ending early (totalPairs mismatch with actual grid size)
+- Fixed second chance: now restarts current level instead of advancing to next
+- Ads reworked: interstitial on "Play Again" (Arcade), every 3 levels (Challenge), on menu return
+- Reverted ad IDs to test mode for development
 
 ### 2026-05-29
 - Sound effects: card flip, pair match, mismatch, joker, level complete, button click
