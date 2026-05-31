@@ -14,12 +14,20 @@ namespace MagicPairs.UI
         {
             GameEvents.OnTurnChanged += UpdateTurn;
             GameEvents.OnPiotrusFlipped += ShowPiotrusWarning;
+            GameEvents.OnGameStarted += OnGameStarted;
         }
 
         private void OnDisable()
         {
             GameEvents.OnTurnChanged -= UpdateTurn;
             GameEvents.OnPiotrusFlipped -= ShowPiotrusWarning;
+            GameEvents.OnGameStarted -= OnGameStarted;
+        }
+
+        private void OnGameStarted()
+        {
+            if (turnText != null && MainMenu.IsTimeAttackMode)
+                turnText.text = "";
         }
 
         private void UpdateTurn(int playerIndex)
