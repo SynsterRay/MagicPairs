@@ -7,11 +7,8 @@ namespace MagicPairs.Ads
     public class AdManager : MonoBehaviour
     {
 #if UNITY_ANDROID
-        private const string InterstitialId = "ca-app-pub-3940256099942544/1033173712"; // TEST ID
-        private const string RewardedId = "ca-app-pub-3940256099942544/5224354917"; // TEST ID
-        // Real IDs (uncomment before release):
-        // private const string InterstitialId = "ca-app-pub-4975261609017200/2340336848";
-        // private const string RewardedId = "ca-app-pub-4975261609017200/2467799124";
+        private const string InterstitialId = "ca-app-pub-3940256099942544/1033173712";
+        private const string RewardedId = "ca-app-pub-3940256099942544/5224354917";
 #else
         private const string InterstitialId = "unused";
         private const string RewardedId = "unused";
@@ -20,11 +17,22 @@ namespace MagicPairs.Ads
         private InterstitialAd _interstitialAd;
         private RewardedAd _rewardedAd;
         private int _gamesPlayed;
-        private const int GamesBeforeAd = 3;
+        private const int GamesBeforeAd = 2;
 
         private System.Action _onRewardEarned;
 
         public bool IsRewardedReady => _rewardedAd != null && _rewardedAd.CanShowAd();
+
+        /// <summary>Call before starting a new game. Shows interstitial if due.</summary>
+        public void TryShowInterstitialBetweenGames()
+        {
+            _gamesPlayed++;
+            if (_gamesPlayed >= GamesBeforeAd)
+            {
+                _gamesPlayed = 0;
+                ShowInterstitial();
+            }
+        }
 
         private void Start()
         {
@@ -34,19 +42,6 @@ namespace MagicPairs.Ads
                 LoadInterstitial();
                 LoadRewarded();
             });
-        }
-
-        private void OnEnable() => GameEvents.OnGameOver += OnGameOver;
-        private void OnDisable() => GameEvents.OnGameOver -= OnGameOver;
-
-        private void OnGameOver(int _)
-        {
-            _gamesPlayed++;
-            if (_gamesPlayed >= GamesBeforeAd)
-            {
-                ShowInterstitial();
-                _gamesPlayed = 0;
-            }
         }
 
         // --- Interstitial ---

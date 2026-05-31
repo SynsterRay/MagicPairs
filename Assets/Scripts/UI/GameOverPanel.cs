@@ -55,6 +55,8 @@ namespace MagicPairs.UI
 
         private void OnPlayAgain()
         {
+            var adManager = FindAnyObjectByType<Ads.AdManager>();
+            adManager?.TryShowInterstitialBetweenGames();
             GameManager.Instance.StartGame();
         }
     }

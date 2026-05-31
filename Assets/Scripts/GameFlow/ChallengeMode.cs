@@ -79,6 +79,16 @@ namespace MagicPairs.GameFlow
         public void StartNextLevel()
         {
             _currentLevel++;
+            ResetAndRebuild();
+        }
+
+        public void RestartCurrentLevel()
+        {
+            ResetAndRebuild();
+        }
+
+        private void ResetAndRebuild()
+        {
             _firstPick = null;
             _waitingForResult = false;
             _aiMemory.Clear();
@@ -107,7 +117,9 @@ namespace MagicPairs.GameFlow
             _config.gridRows = rows;
             _config.gridCols = cols;
 
-            _totalPairs = pairs;
+            // Use config.PairCount which is what CardGrid actually generates
+            // Grid may have more slots than totalCards, so more pairs get spawned
+            _totalPairs = _config.PairCount;
             _pairsFound = 0;
 
             // AI scales: +4% per cycle, smooth progression

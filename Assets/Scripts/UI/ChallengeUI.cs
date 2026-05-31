@@ -131,22 +131,32 @@ namespace MagicPairs.UI
                 if (challengeOverPanel != null) challengeOverPanel.SetActive(false);
                 if (secondChanceButton != null) secondChanceButton.gameObject.SetActive(false);
 
-                // Continue the game — restart current level
+                // Continue the game — restart current level (not next!)
                 var challenge = FindAnyObjectByType<ChallengeMode>();
-                challenge?.StartNextLevel();
+                challenge?.RestartCurrentLevel();
             });
         }
 
         private void OnNextLevel()
         {
             if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
+
+            // Show interstitial every 3 levels
             var challenge = FindAnyObjectByType<ChallengeMode>();
+            if (challenge != null && challenge.CurrentLevel % 3 == 0)
+            {
+                var adManager = FindAnyObjectByType<Ads.AdManager>();
+                adManager?.TryShowInterstitialBetweenGames();
+            }
+
             challenge?.StartNextLevel();
         }
 
         private void OnReturnToMenu()
         {
             HideAll();
+            var adManager = FindAnyObjectByType<Ads.AdManager>();
+            adManager?.TryShowInterstitialBetweenGames();
             var menu = FindAnyObjectByType<MainMenu>();
             menu?.ReturnToMenu();
         }
