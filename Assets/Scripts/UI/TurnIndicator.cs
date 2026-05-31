@@ -25,6 +25,7 @@ namespace MagicPairs.UI
         private void UpdateTurn(int playerIndex)
         {
             if (turnText == null) return;
+            if (MainMenu.IsTimeAttackMode) { turnText.text = ""; return; }
             string name = playerIndex == 0 ? MainMenu.Player1Name : MainMenu.Player2Name;
             turnText.text = Localization.Get("turn", name);
             turnText.color = playerIndex == 0 ? player1Color : player2Color;

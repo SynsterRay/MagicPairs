@@ -6,7 +6,24 @@ namespace MagicPairs.Core
 
     public static class Localization
     {
-        public static Language CurrentLanguage { get; set; } = Language.English;
+        private static Language _currentLanguage = Language.English;
+        private const string LangKey = "MagicPairs_Language";
+
+        public static Language CurrentLanguage
+        {
+            get => _currentLanguage;
+            set
+            {
+                _currentLanguage = value;
+                UnityEngine.PlayerPrefs.SetInt(LangKey, (int)value);
+                UnityEngine.PlayerPrefs.Save();
+            }
+        }
+
+        static Localization()
+        {
+            _currentLanguage = (Language)UnityEngine.PlayerPrefs.GetInt(LangKey, (int)Language.English);
+        }
 
         private static readonly Dictionary<string, string[]> Texts = new()
         {
