@@ -35,7 +35,14 @@ android {
     androidResources {
         noCompress = **BUILTIN_NOCOMPRESS** + unityStreamingAssets.tokenize(', ')
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
-    }**LINT_OPTIONS****PACKAGING****PLAY_ASSET_PACKS****SPLITS**
+    }**SIGN**
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+**LINT_OPTIONS****PACKAGING****PLAY_ASSET_PACKS****SPLITS**
 **BUILDS**
 **SPLITS_VERSION_CODE**
 **BUNDLE**

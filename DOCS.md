@@ -230,6 +230,17 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 
 ## Changelog
 
+### 2026-06-01
+- Edge-to-edge support for Android 15 (SDK 35) — custom Activity with WindowCompat
+- Unified menu panel layout — all panels same size, buttons aligned across screens
+- Fixed difficulty buttons not centered between title and back button
+- Fixed names panel Start button overlapping Player 2 input
+- Dynamic Start button positioning (centered for single player, lower for two players)
+- Quit button shows localized text ("Wyjdź"/"Quit") instead of ✕ symbol
+- Logo repositioned to avoid being cut off at top
+- Fixed duplicate line in MainMenu.cs (potential NullReferenceException)
+- Fixed AAB signing — added buildTypes with signingConfig to launcherTemplate.gradle
+
 ### 2026-05-31
 - Expanded color palette from 8 to 15 distinct colors (Hard mode fully playable)
 - Joker card now shows red ☠ symbol when revealed in Colors theme
