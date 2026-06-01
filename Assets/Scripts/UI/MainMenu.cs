@@ -429,7 +429,6 @@ namespace MagicPairs.UI
                 player2Input.placeholder.GetComponent<Text>().text = Localization.Get("player2");
                 if (!string.IsNullOrEmpty(saved2)) player2Input.text = saved2;
             }
-                player2Input.placeholder.GetComponent<Text>().text = Localization.Get("player2");
 
             if (startButtonText != null) startButtonText.text = Localization.Get("start");
         }
