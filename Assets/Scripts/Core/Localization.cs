@@ -48,6 +48,7 @@ namespace MagicPairs.Core
             { "cards", new[] { "Karty", "Cards" } },
             { "play", new[] { "Graj", "Play" } },
             { "options", new[] { "Opcje", "Options" } },
+            { "quit", new[] { "Wyjdź", "Quit" } },
             { "languageOption", new[] { "Język", "Language" } },
             { "arcade", new[] { "Arcade", "Arcade" } },
             { "challenge", new[] { "Wyzwanie", "Challenge" } },

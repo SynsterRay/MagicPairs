@@ -180,6 +180,7 @@ namespace MagicPairs.UI
             if (playButtonText != null) playButtonText.text = Localization.Get("play");
             if (optionsButtonText != null) optionsButtonText.text = Localization.Get("options");
             if (leaderboardButtonText != null) leaderboardButtonText.text = Localization.Get("scores");
+            if (quitButton != null) quitButton.GetComponentInChildren<Text>().text = Localization.Get("quit");
         }
 
         private void ShowStartLeaderboard()
@@ -428,6 +429,22 @@ namespace MagicPairs.UI
             {
                 player2Input.placeholder.GetComponent<Text>().text = Localization.Get("player2");
                 if (!string.IsNullOrEmpty(saved2)) player2Input.text = saved2;
+            }
+
+            // Reposition start button: center between last input and back button
+            if (startButton != null)
+            {
+                var rect = startButton.GetComponent<RectTransform>();
+                if (_singlePlayer)
+                {
+                    rect.anchorMin = new Vector2(0.1f, 0.23f);
+                    rect.anchorMax = new Vector2(0.9f, 0.43f);
+                }
+                else
+                {
+                    rect.anchorMin = new Vector2(0.1f, 0.06f);
+                    rect.anchorMax = new Vector2(0.9f, 0.26f);
+                }
             }
 
             if (startButtonText != null) startButtonText.text = Localization.Get("start");
