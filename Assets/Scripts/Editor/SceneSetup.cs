@@ -551,10 +551,10 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var langBtn = CreateButton("LanguageBtn", "Język", optionsPanel.transform,
-                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
+                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
 
             var creditsBtn = CreateButton("CreditsBtn", "Autor", optionsPanel.transform,
-                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
+                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
             creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
 
             var optionsBackBtn = CreateButton("OptionsBackBtn", "←", optionsPanel.transform,
@@ -574,9 +574,9 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var plBtn = CreateButton("PolishBtn", "Polski", langPanel.transform,
-                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
+                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
             var enBtn = CreateButton("EnglishBtn", "English", langPanel.transform,
-                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
+                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
 
             var langBackBtn = CreateButton("LangBackBtn", "←", langPanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
@@ -614,15 +614,15 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var arcadeBtn = CreateButton("ArcadeBtn", "Arcade", gameTypePanel.transform,
-                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
+                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
             arcadeBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 1f);
 
             var challengeBtn = CreateButton("ChallengeBtn", "Wyzwanie", gameTypePanel.transform,
-                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
+                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
             challengeBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 1f);
 
             var timeAttackBtn = CreateButton("TimeAttackBtn", "Na czas", gameTypePanel.transform,
-                new Vector2(0.2f, 0.04f), new Vector2(0.8f, 0.24f));
+                new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
             timeAttackBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.5f, 1f);
 
             var gameTypeBackBtn = CreateButton("GameTypeBackBtn", "←", gameTypePanel.transform,
@@ -689,9 +689,9 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var twoPlayersBtn = CreateButton("TwoPlayersBtn", "2 Graczy", modePanel.transform,
-                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
+                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
             var singlePlayerBtn = CreateButton("SinglePlayerBtn", "1 Gracz (vs AI)", modePanel.transform,
-                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
+                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
             singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
 
             var modeBackBtn = CreateButton("ModeBackBtn", "←", modePanel.transform,
