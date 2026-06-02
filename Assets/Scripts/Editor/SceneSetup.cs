@@ -551,14 +551,14 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var langBtn = CreateButton("LanguageBtn", "Język", optionsPanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
+                new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.68f));
 
             var creditsBtn = CreateButton("CreditsBtn", "Autor", optionsPanel.transform,
-                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
+                new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.42f));
             creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
 
             var optionsBackBtn = CreateButton("OptionsBackBtn", "←", optionsPanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             optionsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Language Panel ---
@@ -574,12 +574,12 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var plBtn = CreateButton("PolishBtn", "Polski", langPanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
+                new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.68f));
             var enBtn = CreateButton("EnglishBtn", "English", langPanel.transform,
-                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
+                new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.42f));
 
             var langBackBtn = CreateButton("LangBackBtn", "←", langPanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             langBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Credits Panel ---
@@ -598,7 +598,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.65f), TextAnchor.MiddleCenter, 28);
 
             var creditsBackBtn = CreateButton("CreditsBackBtn", "←", creditsPanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             creditsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Game Type Panel ---
@@ -626,7 +626,7 @@ namespace MagicPairs.Editor
             timeAttackBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.5f, 1f);
 
             var gameTypeBackBtn = CreateButton("GameTypeBackBtn", "←", gameTypePanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             gameTypeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Challenge Names Panel ---
@@ -648,7 +648,7 @@ namespace MagicPairs.Editor
             challengeStartBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var challengeNamesBackBtn = CreateButton("ChallengeNamesBackBtn", "←", challengeNamesPanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             challengeNamesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Challenge Theme Panel ---
@@ -673,7 +673,7 @@ namespace MagicPairs.Editor
             chCarsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
 
             var challengeThemeBackBtn = CreateButton("ChallengeThemeBackBtn", "←", challengeThemePanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             challengeThemeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Mode Panel ---
@@ -689,13 +689,13 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var twoPlayersBtn = CreateButton("TwoPlayersBtn", "2 Graczy", modePanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
+                new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.68f));
             var singlePlayerBtn = CreateButton("SinglePlayerBtn", "1 Gracz (vs AI)", modePanel.transform,
-                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
+                new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.42f));
             singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
 
             var modeBackBtn = CreateButton("ModeBackBtn", "←", modePanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             modeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Difficulty Panel ---
@@ -734,7 +734,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.7f, 0.18f), new Vector2(0.95f, 0.3f), TextAnchor.MiddleCenter, 20);
 
             var diffBackBtn = CreateButton("DiffBackBtn", "←", diffPanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             diffBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Theme Panel ---
@@ -759,7 +759,7 @@ namespace MagicPairs.Editor
             carsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
 
             var themeBackBtn = CreateButton("ThemeBackBtn", "←", themePanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             themeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Names Panel ---
@@ -786,7 +786,7 @@ namespace MagicPairs.Editor
             startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var namesBackBtn = CreateButton("NamesBackBtn", "←", namesPanel.transform,
-                new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
+                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
             namesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // Wire MainMenu
@@ -886,7 +886,7 @@ namespace MagicPairs.Editor
             var txt = go.AddComponent<Text>();
             txt.text = text;
             txt.fontSize = (fontSize + 6) * 2;
-            txt.fontStyle = FontStyle.Bold;
+            txt.fontStyle = FontStyle.Normal;
             txt.alignment = alignment;
             txt.color = new Color(0.15f, 0.15f, 0.15f);
             txt.font = GetGameFont();
@@ -960,11 +960,11 @@ namespace MagicPairs.Editor
 
             // Bevel: dark shadow below + light highlight above
             var txtShadow = txtObj.AddComponent<Shadow>();
-            txtShadow.effectColor = new Color(0f, 0f, 0f, 0.5f);
-            txtShadow.effectDistance = new Vector2(1.5f, -2f);
+            txtShadow.effectColor = new Color(0f, 0f, 0f, 0.6f);
+            txtShadow.effectDistance = new Vector2(2f, -2.5f);
             var txtOutline = txtObj.AddComponent<Outline>();
-            txtOutline.effectColor = new Color(1f, 1f, 1f, 0.25f);
-            txtOutline.effectDistance = new Vector2(-0.8f, 0.8f);
+            txtOutline.effectColor = new Color(0.7f, 0.7f, 0.7f, 0.4f);
+            txtOutline.effectDistance = new Vector2(-1f, 1f);
 
             return btn;
         }
