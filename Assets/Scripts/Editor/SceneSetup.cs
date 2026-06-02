@@ -222,7 +222,9 @@ namespace MagicPairs.Editor
             var confirmPanel = new GameObject("ConfirmPanel");
             confirmPanel.transform.SetParent(canvas.transform, false);
             var cpImg = confirmPanel.AddComponent<Image>();
-            cpImg.color = new Color(0f, 0f, 0f, 0.85f);
+            cpImg.color = new Color(0f, 0f, 0f, 0.65f);
+            cpImg.sprite = UI.RoundedButtonHelper.GetRoundedSprite();
+            cpImg.type = Image.Type.Sliced;
             var cpRect = confirmPanel.GetComponent<RectTransform>();
             cpRect.anchorMin = new Vector2(0.15f, 0.35f);
             cpRect.anchorMax = new Vector2(0.85f, 0.65f);
@@ -364,7 +366,9 @@ namespace MagicPairs.Editor
             var lvlCompletePanel = new GameObject("LevelCompletePanel");
             lvlCompletePanel.transform.SetParent(canvas.transform, false);
             var lcImg = lvlCompletePanel.AddComponent<Image>();
-            lcImg.color = new Color(0.1f, 0.5f, 0.2f, 0.95f);
+            lcImg.color = new Color(0.1f, 0.5f, 0.2f, 0.85f);
+            lcImg.sprite = UI.RoundedButtonHelper.GetRoundedSprite();
+            lcImg.type = Image.Type.Sliced;
             var lcRect = lvlCompletePanel.GetComponent<RectTransform>();
             lcRect.anchorMin = new Vector2(0.15f, 0.35f);
             lcRect.anchorMax = new Vector2(0.85f, 0.65f);
