@@ -61,6 +61,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | v1.22 | 2026-05-28 | Options menu, Challenge mode, leaderboard, particle effects |
 | v1.23 | 2026-05-29 | SFX, English docs, UI alignment fixes, null reference fixes |
 | v1.3 | 2026-05-31 | 15-color palette, Joker ☠ symbol, Safe Area, ads fix, second chance fix |
+| v1.31 | 2026-06-01 | Fix Android crash, remove custom Activity, unify menu layout |
 
 ## Architecture
 
@@ -231,7 +232,10 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 ## Changelog
 
 ### 2026-06-01
-- Edge-to-edge support for Android 15 (SDK 35) — custom Activity with WindowCompat
+- Fixed Android crash on launch — removed custom EdgeToEdgeActivity and AndroidManifest override
+- Removed androidx.core dependency (no longer needed without custom Activity)
+- Fixed duplicate Gradle import in launcherTemplate
+- Unity handles fullscreen/immersive mode natively (no custom Activity required)
 - Unified menu panel layout — all panels same size, buttons aligned across screens
 - Fixed difficulty buttons not centered between title and back button
 - Fixed names panel Start button overlapping Player 2 input
