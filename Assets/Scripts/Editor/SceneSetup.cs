@@ -888,7 +888,7 @@ namespace MagicPairs.Editor
             txt.fontSize = (fontSize + 6) * 2;
             txt.fontStyle = FontStyle.Normal;
             txt.alignment = alignment;
-            txt.color = new Color(0.15f, 0.15f, 0.15f);
+            txt.color = new Color(0.25f, 0.25f, 0.25f);
             txt.font = GetGameFont();
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = anchorMin;

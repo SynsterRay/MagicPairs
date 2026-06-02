@@ -81,14 +81,17 @@ namespace MagicPairs.UI
             _powerUpPanel = new GameObject("PowerUpPanel");
             _powerUpPanel.transform.SetParent(canvas.transform, false);
             var rect = _powerUpPanel.AddComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.05f, 0.02f);
-            rect.anchorMax = new Vector2(0.95f, 0.08f);
+            rect.anchorMin = new Vector2(0.05f, 0.015f);
+            rect.anchorMax = new Vector2(0.95f, 0.065f);
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
 
             _peekBtn = CreatePowerUpButton("🔍", 0f, 0.3f, _powerUpPanel.transform);
+            _peekBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 0.9f);
             _shuffleBtn = CreatePowerUpButton("🔄", 0.35f, 0.65f, _powerUpPanel.transform);
+            _shuffleBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 0.9f);
             _freezeBtn = CreatePowerUpButton("❄️", 0.7f, 1f, _powerUpPanel.transform);
+            _freezeBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.8f, 0.9f);
 
             _peekText = _peekBtn.GetComponentInChildren<Text>();
             _shuffleText = _shuffleBtn.GetComponentInChildren<Text>();
@@ -134,7 +137,7 @@ namespace MagicPairs.UI
             txtObj.transform.SetParent(go.transform, false);
             var txt = txtObj.AddComponent<Text>();
             txt.text = label;
-            txt.fontSize = 26;
+            txt.fontSize = 32;
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
