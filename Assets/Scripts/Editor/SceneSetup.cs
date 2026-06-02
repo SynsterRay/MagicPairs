@@ -747,10 +747,13 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
 
             var colorsBtn = CreateButton("ColorsBtn", "🎨 Kolory", themePanel.transform,
-                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
+                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
             var princessBtn = CreateButton("PrincessBtn", "👸 Księżniczki", themePanel.transform,
-                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
+                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
             princessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
+            var carsBtn = CreateButton("CarsBtn", "🚗 Samochody", themePanel.transform,
+                new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
+            carsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
 
             var themeBackBtn = CreateButton("ThemeBackBtn", "←", themePanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
@@ -848,6 +851,7 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("themeTitle").objectReferenceValue = themeTitle;
             mmSo.FindProperty("colorsThemeButton").objectReferenceValue = colorsBtn.GetComponent<Button>();
             mmSo.FindProperty("princessThemeButton").objectReferenceValue = princessBtn.GetComponent<Button>();
+            mmSo.FindProperty("carsThemeButton").objectReferenceValue = carsBtn.GetComponent<Button>();
             mmSo.FindProperty("themeBackButton").objectReferenceValue = themeBackBtn.GetComponent<Button>();
             mmSo.FindProperty("modeBackButton").objectReferenceValue = modeBackBtn.GetComponent<Button>();
             mmSo.FindProperty("namesBackButton").objectReferenceValue = namesBackBtn.GetComponent<Button>();

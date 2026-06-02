@@ -24,13 +24,18 @@ namespace MagicPairs.Cards
             _animator = GetComponent<CardAnimator>();
             if (_sfxCache == null) _sfxCache = FindAnyObjectByType<Audio.SFXManager>();
 
-            // Load back sprite for Princess theme
+            // Load back sprite for sprite-based themes
             if (data.HasSprite)
             {
-                _backSprite = Resources.Load<Sprite>("PrincessCards/back_card");
+                string folder = Core.GameManager.Instance?.Config?.theme == Core.CardTheme.Cars
+                    ? "CarCards" : "PrincessCards";
+                _backSprite = Resources.Load<Sprite>($"{folder}/back_card");
+                if (_backSprite == null)
+                    _backSprite = Resources.Load<Sprite>($"{folder}/cars_back");
                 if (_backSprite == null)
                 {
-                    var tex = Resources.Load<Texture2D>("PrincessCards/back_card");
+                    var tex = Resources.Load<Texture2D>($"{folder}/back_card")
+                           ?? Resources.Load<Texture2D>($"{folder}/cars_back");
                     if (tex != null)
                         _backSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
                 }

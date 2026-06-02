@@ -44,6 +44,7 @@ namespace MagicPairs.Core
             { "mode2P", new[] { "2 Graczy", "2 Players" } },
             { "themeColors", new[] { "🎨 Kolory", "🎨 Colors" } },
             { "themePrincess", new[] { "👸 Księżniczki", "👸 Princesses" } },
+            { "themeCars", new[] { "🚗 Samochody", "🚗 Cars" } },
             { "chooseTheme", new[] { "Wybierz typ kart", "Choose card type" } },
             { "cards", new[] { "Karty", "Cards" } },
             { "play", new[] { "Graj", "Play" } },

@@ -37,20 +37,21 @@ namespace MagicPairs.Cards
             bool skipJoker = GameFlow.TimeAttackMode.IsTimeAttackMode;
             int pairsNeeded = skipJoker ? _config.TotalSlots / 2 : _config.PairCount;
 
-            bool usePrincess = _config.theme == Core.CardTheme.Princess;
+            bool useSpriteTheme = _config.theme == Core.CardTheme.Princess || _config.theme == Core.CardTheme.Cars;
+            string folder = _config.theme == Core.CardTheme.Cars ? "CarCards" : "PrincessCards";
             Sprite[] sprites = null;
 
-            if (usePrincess)
+            if (useSpriteTheme)
             {
-                sprites = LoadPrincessSprites();
+                sprites = LoadThemeSprites(folder);
                 if (sprites.Length == 0)
                 {
-                    Debug.LogWarning("[CardGrid] No princess sprites found in Resources/PrincessCards. Falling back to colors.");
-                    usePrincess = false;
+                    Debug.LogWarning($"[CardGrid] No sprites found in Resources/{folder}. Falling back to colors.");
+                    useSpriteTheme = false;
                 }
             }
 
-            if (usePrincess)
+            if (useSpriteTheme)
             {
                 for (int i = 0; i < pairsNeeded; i++)
                 {
@@ -60,10 +61,10 @@ namespace MagicPairs.Cards
                 }
                 if (!skipJoker)
                 {
-                    var jokerSprite = Resources.Load<Sprite>("PrincessCards/joker");
+                    var jokerSprite = Resources.Load<Sprite>($"{folder}/joker");
                     if (jokerSprite == null)
                     {
-                        var jokerTex = Resources.Load<Texture2D>("PrincessCards/joker");
+                        var jokerTex = Resources.Load<Texture2D>($"{folder}/joker");
                         if (jokerTex != null)
                             jokerSprite = Sprite.Create(jokerTex, new Rect(0, 0, jokerTex.width, jokerTex.height), new Vector2(0.5f, 0.5f), 100f);
                     }
@@ -89,23 +90,26 @@ namespace MagicPairs.Cards
 
         private Sprite[] LoadPrincessSprites()
         {
-            // Try loading as Sprite first
-            var all = Resources.LoadAll<Sprite>("PrincessCards");
+            return LoadThemeSprites("PrincessCards");
+        }
+
+        private Sprite[] LoadThemeSprites(string folder)
+        {
+            var all = Resources.LoadAll<Sprite>(folder);
             var cards = new List<Sprite>();
             foreach (var s in all)
             {
-                if (!s.name.Contains("joker") && !s.name.Contains("back_card"))
+                if (!s.name.Contains("joker") && !s.name.Contains("back_card") && !s.name.Contains("back"))
                     cards.Add(s);
             }
 
-            // Fallback: load as Texture2D and create sprites
             if (cards.Count == 0)
             {
-                var textures = Resources.LoadAll<Texture2D>("PrincessCards");
+                var textures = Resources.LoadAll<Texture2D>(folder);
                 foreach (var tex in textures)
                 {
                     if (tex.name.Contains("joker")) continue;
-                    if (tex.name.Contains("back_card")) continue;
+                    if (tex.name.Contains("back")) continue;
                     var sprite = Sprite.Create(tex,
                         new Rect(0, 0, tex.width, tex.height),
                         new Vector2(0.5f, 0.5f), 100f);
