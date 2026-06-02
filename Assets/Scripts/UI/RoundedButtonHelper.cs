@@ -58,11 +58,13 @@ namespace MagicPairs.UI
                 for (int x = 0; x < width; x++)
                 {
                     float roundedAlpha = GetRoundedRectAlpha(x, y, width, height, radius);
-                    // Gradient: strong white at top, fading to transparent at ~55% height
                     float normalizedY = (float)y / height;
+                    // Two-layer shine: strong top highlight + subtle bottom rim
                     float gradientAlpha = 0f;
-                    if (normalizedY > 0.5f)
-                        gradientAlpha = Mathf.Lerp(0f, 0.35f, (normalizedY - 0.5f) / 0.5f);
+                    if (normalizedY > 0.55f)
+                        gradientAlpha = Mathf.Lerp(0f, 0.55f, (normalizedY - 0.55f) / 0.45f);
+                    else if (normalizedY < 0.15f)
+                        gradientAlpha = Mathf.Lerp(0.12f, 0f, normalizedY / 0.15f);
 
                     tex.SetPixel(x, y, new Color(1f, 1f, 1f, roundedAlpha * gradientAlpha));
                 }

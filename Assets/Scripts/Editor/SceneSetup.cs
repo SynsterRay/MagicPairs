@@ -505,19 +505,19 @@ namespace MagicPairs.Editor
             startPanelRect.offsetMax = Vector2.zero;
 
             var playBtn = CreateButton("PlayBtn", "Graj", startPanel.transform,
-                new Vector2(0.1f, 0.76f), new Vector2(0.9f, 0.96f));
+                new Vector2(0.2f, 0.76f), new Vector2(0.8f, 0.96f));
             playBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var optionsBtn = CreateButton("OptionsBtn", "Opcje", startPanel.transform,
-                new Vector2(0.1f, 0.52f), new Vector2(0.9f, 0.72f));
+                new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.72f));
             optionsBtn.GetComponent<Image>().color = new Color(0.3f, 0.5f, 0.8f, 1f);
 
             var leaderBtn = CreateButton("LeaderboardBtn", "Wyniki", startPanel.transform,
-                new Vector2(0.1f, 0.28f), new Vector2(0.9f, 0.48f));
+                new Vector2(0.2f, 0.28f), new Vector2(0.8f, 0.48f));
             leaderBtn.GetComponent<Image>().color = new Color(0.8f, 0.6f, 0.1f, 1f);
 
             var quitBtn = CreateButton("QuitBtn", "Wyjdź", startPanel.transform,
-                new Vector2(0.1f, 0.04f), new Vector2(0.9f, 0.24f));
+                new Vector2(0.2f, 0.04f), new Vector2(0.8f, 0.24f));
             quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
 
             // --- Start Leaderboard Panel ---
@@ -551,10 +551,10 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var langBtn = CreateButton("LanguageBtn", "Język", optionsPanel.transform,
-                new Vector2(0.1f, 0.56f), new Vector2(0.9f, 0.76f));
+                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
 
             var creditsBtn = CreateButton("CreditsBtn", "Autor", optionsPanel.transform,
-                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.5f));
+                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
             creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
 
             var optionsBackBtn = CreateButton("OptionsBackBtn", "←", optionsPanel.transform,
@@ -574,9 +574,9 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var plBtn = CreateButton("PolishBtn", "Polski", langPanel.transform,
-                new Vector2(0.1f, 0.56f), new Vector2(0.9f, 0.76f));
+                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
             var enBtn = CreateButton("EnglishBtn", "English", langPanel.transform,
-                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.5f));
+                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
 
             var langBackBtn = CreateButton("LangBackBtn", "←", langPanel.transform,
                 new Vector2(0.3f, -0.15f), new Vector2(0.7f, -0.02f));
@@ -614,15 +614,15 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var arcadeBtn = CreateButton("ArcadeBtn", "Arcade", gameTypePanel.transform,
-                new Vector2(0.1f, 0.56f), new Vector2(0.9f, 0.76f));
+                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
             arcadeBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 1f);
 
             var challengeBtn = CreateButton("ChallengeBtn", "Wyzwanie", gameTypePanel.transform,
-                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.5f));
+                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
             challengeBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 1f);
 
             var timeAttackBtn = CreateButton("TimeAttackBtn", "Na czas", gameTypePanel.transform,
-                new Vector2(0.1f, 0.04f), new Vector2(0.9f, 0.24f));
+                new Vector2(0.2f, 0.04f), new Vector2(0.8f, 0.24f));
             timeAttackBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.5f, 1f);
 
             var gameTypeBackBtn = CreateButton("GameTypeBackBtn", "←", gameTypePanel.transform,
@@ -644,7 +644,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.05f, 0.46f), new Vector2(0.95f, 0.63f));
 
             var challengeStartBtn = CreateButton("ChallengeStartBtn", "Start", challengeNamesPanel.transform,
-                new Vector2(0.1f, 0.14f), new Vector2(0.9f, 0.34f));
+                new Vector2(0.2f, 0.14f), new Vector2(0.8f, 0.34f));
             challengeStartBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var challengeNamesBackBtn = CreateButton("ChallengeNamesBackBtn", "←", challengeNamesPanel.transform,
@@ -664,9 +664,9 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
 
             var chColorsBtn = CreateButton("ChColorsBtn", "🎨 Kolory", challengeThemePanel.transform,
-                new Vector2(0.1f, 0.56f), new Vector2(0.9f, 0.76f));
+                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
             var chPrincessBtn = CreateButton("ChPrincessBtn", "👸 Księżniczki", challengeThemePanel.transform,
-                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.5f));
+                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
             chPrincessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
 
             var challengeThemeBackBtn = CreateButton("ChallengeThemeBackBtn", "←", challengeThemePanel.transform,
@@ -686,9 +686,9 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var twoPlayersBtn = CreateButton("TwoPlayersBtn", "2 Graczy", modePanel.transform,
-                new Vector2(0.1f, 0.56f), new Vector2(0.9f, 0.76f));
+                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
             var singlePlayerBtn = CreateButton("SinglePlayerBtn", "1 Gracz (vs AI)", modePanel.transform,
-                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.5f));
+                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
             singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
 
             var modeBackBtn = CreateButton("ModeBackBtn", "←", modePanel.transform,
@@ -747,9 +747,9 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
 
             var colorsBtn = CreateButton("ColorsBtn", "🎨 Kolory", themePanel.transform,
-                new Vector2(0.1f, 0.56f), new Vector2(0.9f, 0.76f));
+                new Vector2(0.2f, 0.56f), new Vector2(0.8f, 0.76f));
             var princessBtn = CreateButton("PrincessBtn", "👸 Księżniczki", themePanel.transform,
-                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.5f));
+                new Vector2(0.2f, 0.3f), new Vector2(0.8f, 0.5f));
             princessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
 
             var themeBackBtn = CreateButton("ThemeBackBtn", "←", themePanel.transform,
@@ -776,7 +776,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.05f, 0.32f), new Vector2(0.95f, 0.46f));
 
             var startBtn = CreateButton("StartBtn", "Start", namesPanel.transform,
-                new Vector2(0.1f, 0.06f), new Vector2(0.9f, 0.26f));
+                new Vector2(0.2f, 0.06f), new Vector2(0.8f, 0.26f));
             startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var namesBackBtn = CreateButton("NamesBackBtn", "←", namesPanel.transform,
@@ -889,7 +889,13 @@ namespace MagicPairs.Editor
             btnImg.color = new Color(0.2f, 0.5f, 0.9f, 1f);
             btnImg.sprite = UI.RoundedButtonHelper.GetRoundedSprite();
             btnImg.type = Image.Type.Sliced;
-            btn.AddComponent<Button>();
+            var button = btn.AddComponent<Button>();
+            var colors = button.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(1f, 1f, 1f, 0.85f);
+            colors.pressedColor = new Color(0.75f, 0.75f, 0.75f, 1f);
+            colors.fadeDuration = 0.1f;
+            button.colors = colors;
             var btnRect = btn.GetComponent<RectTransform>();
             btnRect.anchorMin = anchorMin;
             btnRect.anchorMax = anchorMax;

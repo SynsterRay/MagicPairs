@@ -437,13 +437,13 @@ namespace MagicPairs.UI
                 var rect = startButton.GetComponent<RectTransform>();
                 if (_singlePlayer)
                 {
-                    rect.anchorMin = new Vector2(0.1f, 0.23f);
-                    rect.anchorMax = new Vector2(0.9f, 0.43f);
+                    rect.anchorMin = new Vector2(0.2f, 0.23f);
+                    rect.anchorMax = new Vector2(0.8f, 0.43f);
                 }
                 else
                 {
-                    rect.anchorMin = new Vector2(0.1f, 0.06f);
-                    rect.anchorMax = new Vector2(0.9f, 0.26f);
+                    rect.anchorMin = new Vector2(0.2f, 0.06f);
+                    rect.anchorMax = new Vector2(0.8f, 0.26f);
                 }
             }
 
