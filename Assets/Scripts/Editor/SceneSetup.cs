@@ -489,6 +489,7 @@ namespace MagicPairs.Editor
             bgImg.sprite = bgSprite;
             bgImg.preserveAspect = false;
             bgImg.color = new Color(1f, 1f, 1f, 0.5f);
+            bgObj.AddComponent<UI.GameBackground>();
             var bgRect = bgObj.GetComponent<RectTransform>();
             bgRect.anchorMin = Vector2.zero;
             bgRect.anchorMax = new Vector2(1f, 0.85f);
