@@ -60,6 +60,7 @@ namespace MagicPairs.UI
         [SerializeField] private Text challengeThemeTitle;
         [SerializeField] private Button challengeColorsButton;
         [SerializeField] private Button challengePrincessButton;
+        [SerializeField] private Button challengeCarsButton;
         [SerializeField] private Button challengeThemeBackButton;
 
         [Header("Language Panel")]
@@ -148,6 +149,7 @@ namespace MagicPairs.UI
             challengeNamesBackButton?.onClick.AddListener(ShowChallengeThemePanel);
             challengeColorsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Colors));
             challengePrincessButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Princess));
+            challengeCarsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Cars));
             challengeThemeBackButton?.onClick.AddListener(ShowGameTypePanel);
 
             ShowStartPanel();
@@ -293,6 +295,8 @@ namespace MagicPairs.UI
                 challengeColorsButton.GetComponentInChildren<Text>().text = Localization.Get("themeColors");
             if (challengePrincessButton != null)
                 challengePrincessButton.GetComponentInChildren<Text>().text = Localization.Get("themePrincess");
+            if (challengeCarsButton != null)
+                challengeCarsButton.GetComponentInChildren<Text>().text = Localization.Get("themeCars");
         }
 
         private void SelectChallengeTheme(Core.CardTheme theme)
