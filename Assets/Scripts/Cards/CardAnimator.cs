@@ -75,16 +75,24 @@ namespace MagicPairs.Cards
                     sprObj.transform.SetParent(transform, false);
                     sprObj.transform.localPosition = new Vector3(0f, 0f, -0.01f);
                     _spriteRenderer = sprObj.AddComponent<SpriteRenderer>();
-                    _spriteRenderer.drawMode = SpriteDrawMode.Sliced;
                 }
             }
 
             _spriteRenderer.sprite = sprite;
             _spriteRenderer.color = Color.white;
-            _spriteRenderer.drawMode = SpriteDrawMode.Sliced;
-            // Force exact size = 1x1 in local space (parent is scaled to card size)
-            _spriteRenderer.size = new Vector2(1f, 1f);
-            _spriteRenderer.transform.localScale = Vector3.one;
+            _spriteRenderer.drawMode = SpriteDrawMode.Simple;
+            // Scale sprite to fill card (1x1 in local space, parent handles card dimensions)
+            if (sprite != null)
+            {
+                float ppu = sprite.pixelsPerUnit;
+                float sprW = sprite.rect.width / ppu;
+                float sprH = sprite.rect.height / ppu;
+                _spriteRenderer.transform.localScale = new Vector3(1f / sprW, 1f / sprH, 1f);
+            }
+            else
+            {
+                _spriteRenderer.transform.localScale = Vector3.one;
+            }
 
             if (_renderer != null) _renderer.enabled = false;
         }
