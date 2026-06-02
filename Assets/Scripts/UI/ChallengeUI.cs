@@ -107,6 +107,8 @@ namespace MagicPairs.UI
             go.transform.SetParent(parent, false);
             var img = go.AddComponent<Image>();
             img.color = new Color(0.2f, 0.2f, 0.3f, 0.9f);
+            img.sprite = RoundedButtonHelper.GetRoundedSprite();
+            img.type = Image.Type.Sliced;
             go.AddComponent<Button>();
             var r = go.GetComponent<RectTransform>();
             r.anchorMin = new Vector2(xMin, 0f);
@@ -114,11 +116,25 @@ namespace MagicPairs.UI
             r.offsetMin = Vector2.zero;
             r.offsetMax = Vector2.zero;
 
+            // Shine overlay
+            var shine = new GameObject("Shine");
+            shine.transform.SetParent(go.transform, false);
+            var shineImg = shine.AddComponent<Image>();
+            shineImg.sprite = RoundedButtonHelper.GetShineSprite();
+            shineImg.type = Image.Type.Sliced;
+            shineImg.color = Color.white;
+            shineImg.raycastTarget = false;
+            var shineRect = shine.GetComponent<RectTransform>();
+            shineRect.anchorMin = Vector2.zero;
+            shineRect.anchorMax = Vector2.one;
+            shineRect.offsetMin = Vector2.zero;
+            shineRect.offsetMax = Vector2.zero;
+
             var txtObj = new GameObject("Text");
             txtObj.transform.SetParent(go.transform, false);
             var txt = txtObj.AddComponent<Text>();
             txt.text = label;
-            txt.fontSize = 22;
+            txt.fontSize = 26;
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;

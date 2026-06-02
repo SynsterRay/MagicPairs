@@ -292,13 +292,13 @@ namespace MagicPairs.Editor
             var p1CollBtn = CreateButton("P1CollBtn", "Karty", canvas.transform,
                 new Vector2(0.0f, 0.85f), new Vector2(0.15f, 0.93f));
             p1CollBtn.GetComponent<Image>().color = new Color(0.3f, 0.6f, 0.9f, 1f);
-            p1CollBtn.GetComponentInChildren<Text>().fontSize = 18;
+            p1CollBtn.GetComponentInChildren<Text>().fontSize = 24;
             p1CollBtn.SetActive(false);
 
             var p2CollBtn = CreateButton("P2CollBtn", "Karty", canvas.transform,
                 new Vector2(0.85f, 0.85f), new Vector2(1.0f, 0.93f));
             p2CollBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.4f, 1f);
-            p2CollBtn.GetComponentInChildren<Text>().fontSize = 18;
+            p2CollBtn.GetComponentInChildren<Text>().fontSize = 24;
             p2CollBtn.SetActive(false);
 
             var ccComp = canvas.AddComponent<UI.CollectedCardsPanel>();
@@ -887,6 +887,8 @@ namespace MagicPairs.Editor
             btn.transform.SetParent(parent, false);
             var btnImg = btn.AddComponent<Image>();
             btnImg.color = new Color(0.2f, 0.5f, 0.9f, 1f);
+            btnImg.sprite = UI.RoundedButtonHelper.GetRoundedSprite();
+            btnImg.type = Image.Type.Sliced;
             btn.AddComponent<Button>();
             var btnRect = btn.GetComponent<RectTransform>();
             btnRect.anchorMin = anchorMin;
@@ -894,11 +896,25 @@ namespace MagicPairs.Editor
             btnRect.offsetMin = Vector2.zero;
             btnRect.offsetMax = Vector2.zero;
 
+            // Shine overlay (white gradient reflection)
+            var shine = new GameObject("Shine");
+            shine.transform.SetParent(btn.transform, false);
+            var shineImg = shine.AddComponent<Image>();
+            shineImg.sprite = UI.RoundedButtonHelper.GetShineSprite();
+            shineImg.type = Image.Type.Sliced;
+            shineImg.color = Color.white;
+            shineImg.raycastTarget = false;
+            var shineRect = shine.GetComponent<RectTransform>();
+            shineRect.anchorMin = Vector2.zero;
+            shineRect.anchorMax = Vector2.one;
+            shineRect.offsetMin = Vector2.zero;
+            shineRect.offsetMax = Vector2.zero;
+
             var txtObj = new GameObject("Text");
             txtObj.transform.SetParent(btn.transform, false);
             var txt = txtObj.AddComponent<Text>();
             txt.text = label;
-            txt.fontSize = 34;
+            txt.fontSize = 38;
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
