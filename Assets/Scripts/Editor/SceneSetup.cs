@@ -909,6 +909,7 @@ namespace MagicPairs.Editor
             btnImg.sprite = UI.RoundedButtonHelper.GetRoundedSprite();
             btnImg.type = Image.Type.Sliced;
             var button = btn.AddComponent<Button>();
+            button.navigation = new Navigation { mode = Navigation.Mode.None };
             var colors = button.colors;
             colors.normalColor = Color.white;
             colors.highlightedColor = new Color(1f, 1f, 1f, 0.85f);
