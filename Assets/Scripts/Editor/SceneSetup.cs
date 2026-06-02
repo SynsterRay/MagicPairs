@@ -290,13 +290,13 @@ namespace MagicPairs.Editor
 
             // Buttons to view collected cards (below score panel, left and right)
             var p1CollBtn = CreateButton("P1CollBtn", "Karty", canvas.transform,
-                new Vector2(0.0f, 0.85f), new Vector2(0.15f, 0.93f));
+                new Vector2(-0.01f, 0.85f), new Vector2(0.15f, 0.93f));
             p1CollBtn.GetComponent<Image>().color = new Color(0.3f, 0.6f, 0.9f, 1f);
             p1CollBtn.GetComponentInChildren<Text>().fontSize = 36;
             p1CollBtn.SetActive(false);
 
             var p2CollBtn = CreateButton("P2CollBtn", "Karty", canvas.transform,
-                new Vector2(0.85f, 0.85f), new Vector2(1.0f, 0.93f));
+                new Vector2(0.85f, 0.85f), new Vector2(1.01f, 0.93f));
             p2CollBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.4f, 1f);
             p2CollBtn.GetComponentInChildren<Text>().fontSize = 36;
             p2CollBtn.SetActive(false);
