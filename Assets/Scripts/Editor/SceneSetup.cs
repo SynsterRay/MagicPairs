@@ -887,6 +887,15 @@ namespace MagicPairs.Editor
             rect.anchorMax = anchorMax;
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
+
+            // Bevel effect: outline + shadow for 3D depth
+            var outline = go.AddComponent<Outline>();
+            outline.effectColor = new Color(0f, 0f, 0f, 0.3f);
+            outline.effectDistance = new Vector2(1.5f, -1.5f);
+            var shadow = go.AddComponent<Shadow>();
+            shadow.effectColor = new Color(1f, 1f, 1f, 0.5f);
+            shadow.effectDistance = new Vector2(-1f, 1f);
+
             return txt;
         }
 
@@ -940,6 +949,14 @@ namespace MagicPairs.Editor
             txtRect.anchorMax = Vector2.one;
             txtRect.offsetMin = Vector2.zero;
             txtRect.offsetMax = Vector2.zero;
+
+            // Bevel: dark shadow below + light highlight above
+            var txtShadow = txtObj.AddComponent<Shadow>();
+            txtShadow.effectColor = new Color(0f, 0f, 0f, 0.5f);
+            txtShadow.effectDistance = new Vector2(1.5f, -2f);
+            var txtOutline = txtObj.AddComponent<Outline>();
+            txtOutline.effectColor = new Color(1f, 1f, 1f, 0.25f);
+            txtOutline.effectDistance = new Vector2(-0.8f, 0.8f);
 
             return btn;
         }
