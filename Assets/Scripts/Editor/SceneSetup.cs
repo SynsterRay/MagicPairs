@@ -965,6 +965,10 @@ namespace MagicPairs.Editor
             var txtHighlight = txtObj.AddComponent<Shadow>();
             txtHighlight.effectColor = new Color(1f, 1f, 1f, 0.35f);
             txtHighlight.effectDistance = new Vector2(-1f, 1.5f);
+            // Inner bevel: dark outline simulates rounded edges going inward
+            var txtOutline = txtObj.AddComponent<Outline>();
+            txtOutline.effectColor = new Color(0.6f, 0.6f, 0.7f, 0.5f);
+            txtOutline.effectDistance = new Vector2(1f, 1f);
 
             return btn;
         }
