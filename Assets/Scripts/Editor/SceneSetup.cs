@@ -960,11 +960,11 @@ namespace MagicPairs.Editor
 
             // Bevel: dark shadow below + light highlight above
             var txtShadow = txtObj.AddComponent<Shadow>();
-            txtShadow.effectColor = new Color(0f, 0f, 0f, 0.6f);
-            txtShadow.effectDistance = new Vector2(2f, -2.5f);
+            txtShadow.effectColor = new Color(0f, 0f, 0f, 0.5f);
+            txtShadow.effectDistance = new Vector2(1.5f, -2f);
             var txtOutline = txtObj.AddComponent<Outline>();
-            txtOutline.effectColor = new Color(0.7f, 0.7f, 0.7f, 0.4f);
-            txtOutline.effectDistance = new Vector2(-1f, 1f);
+            txtOutline.effectColor = new Color(1f, 1f, 1f, 0.25f);
+            txtOutline.effectDistance = new Vector2(-0.8f, 0.8f);
 
             return btn;
         }
