@@ -64,7 +64,7 @@ namespace MagicPairs.UI
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = color;
-            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(0.3f, 0.45f);

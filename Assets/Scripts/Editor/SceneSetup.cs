@@ -860,6 +860,16 @@ namespace MagicPairs.Editor
             mmSo.ApplyModifiedProperties();
         }
 
+        private static Font _cachedFont;
+        private static Font GetGameFont()
+        {
+            if (_cachedFont == null)
+                _cachedFont = Resources.Load<Font>("Fonts/FredokaOne-Regular");
+            if (_cachedFont == null)
+                _cachedFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            return _cachedFont;
+        }
+
         private static Text CreateUIText(string name, string text, Transform parent,
             Vector2 anchorMin, Vector2 anchorMax, TextAnchor alignment, int fontSize)
         {
@@ -867,11 +877,11 @@ namespace MagicPairs.Editor
             go.transform.SetParent(parent, false);
             var txt = go.AddComponent<Text>();
             txt.text = text;
-            txt.fontSize = fontSize + 6;
+            txt.fontSize = (fontSize + 6) * 2;
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = alignment;
             txt.color = new Color(0.15f, 0.15f, 0.15f);
-            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = GetGameFont();
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = anchorMin;
             rect.anchorMax = anchorMax;
@@ -920,11 +930,11 @@ namespace MagicPairs.Editor
             txtObj.transform.SetParent(btn.transform, false);
             var txt = txtObj.AddComponent<Text>();
             txt.text = label;
-            txt.fontSize = 38;
+            txt.fontSize = 76;
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
-            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = GetGameFont();
             var txtRect = txtObj.GetComponent<RectTransform>();
             txtRect.anchorMin = Vector2.zero;
             txtRect.anchorMax = Vector2.one;
