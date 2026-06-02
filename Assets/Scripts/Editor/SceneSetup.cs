@@ -198,9 +198,9 @@ namespace MagicPairs.Editor
             scoreRect.offsetMax = Vector2.zero;
 
             var p1Score = CreateUIText("Player1Score", "Gracz 1: 0", scorePanel.transform,
-                new Vector2(0.15f, 0f), new Vector2(0.5f, 1f), TextAnchor.MiddleCenter, 32);
+                new Vector2(0.15f, 0f), new Vector2(0.5f, 1f), TextAnchor.MiddleCenter, 18);
             var p2Score = CreateUIText("Player2Score", "Gracz 2: 0", scorePanel.transform,
-                new Vector2(0.5f, 0f), new Vector2(0.85f, 1f), TextAnchor.MiddleCenter, 32);
+                new Vector2(0.5f, 0f), new Vector2(0.85f, 1f), TextAnchor.MiddleCenter, 18);
 
             var scoreDisplay = canvas.AddComponent<UI.ScoreDisplay>();
             var sdSo = new SerializedObject(scoreDisplay);
@@ -210,7 +210,7 @@ namespace MagicPairs.Editor
 
             // Turn Indicator
             var turnText = CreateUIText("TurnIndicator", "Tura: Gracz 1", canvas.transform,
-                new Vector2(0.2f, 0.78f), new Vector2(0.8f, 0.85f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0.2f, 0.78f), new Vector2(0.8f, 0.85f), TextAnchor.MiddleCenter, 18);
 
             // Pause/Menu Button (top right corner)
             var pauseBtn = CreateButton("PauseBtn", "✕", canvas.transform,
@@ -292,13 +292,13 @@ namespace MagicPairs.Editor
             var p1CollBtn = CreateButton("P1CollBtn", "Karty", canvas.transform,
                 new Vector2(0.0f, 0.85f), new Vector2(0.15f, 0.93f));
             p1CollBtn.GetComponent<Image>().color = new Color(0.3f, 0.6f, 0.9f, 1f);
-            p1CollBtn.GetComponentInChildren<Text>().fontSize = 24;
+            p1CollBtn.GetComponentInChildren<Text>().fontSize = 36;
             p1CollBtn.SetActive(false);
 
             var p2CollBtn = CreateButton("P2CollBtn", "Karty", canvas.transform,
                 new Vector2(0.85f, 0.85f), new Vector2(1.0f, 0.93f));
             p2CollBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.4f, 1f);
-            p2CollBtn.GetComponentInChildren<Text>().fontSize = 24;
+            p2CollBtn.GetComponentInChildren<Text>().fontSize = 36;
             p2CollBtn.SetActive(false);
 
             var ccComp = canvas.AddComponent<UI.CollectedCardsPanel>();
