@@ -355,11 +355,14 @@ namespace MagicPairs.Editor
             chScoreRect.offsetMax = Vector2.zero;
 
             var chLevelText = CreateUIText("ChLevelText", "Poziom 1", chScorePanel.transform,
-                new Vector2(0f, 0f), new Vector2(0.3f, 1f), TextAnchor.MiddleCenter, 20);
+                new Vector2(0f, 0f), new Vector2(0.38f, 1f), TextAnchor.MiddleCenter, 20);
+            chLevelText.resizeTextForBestFit = true;
+            chLevelText.resizeTextMinSize = 20;
+            chLevelText.resizeTextMaxSize = 52;
             var chScoreText = CreateUIText("ChScoreText", "0", chScorePanel.transform,
-                new Vector2(0.35f, 0f), new Vector2(0.7f, 1f), TextAnchor.MiddleCenter, 24);
+                new Vector2(0.4f, 0f), new Vector2(0.72f, 1f), TextAnchor.MiddleCenter, 24);
             var chStreakText = CreateUIText("ChStreakText", "", chScorePanel.transform,
-                new Vector2(0.72f, 0f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 22);
+                new Vector2(0.74f, 0f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 22);
             chStreakText.color = new Color(0.9f, 0.5f, 0f);
 
             // Level Complete panel
@@ -957,9 +960,14 @@ namespace MagicPairs.Editor
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
             txt.font = GetGameFont();
+            txt.resizeTextForBestFit = true;
+            txt.resizeTextMinSize = 28;
+            txt.resizeTextMaxSize = 76;
+            txt.horizontalOverflow = HorizontalWrapMode.Wrap;
+            txt.verticalOverflow = VerticalWrapMode.Truncate;
             var txtRect = txtObj.GetComponent<RectTransform>();
-            txtRect.anchorMin = Vector2.zero;
-            txtRect.anchorMax = Vector2.one;
+            txtRect.anchorMin = new Vector2(0.05f, 0f);
+            txtRect.anchorMax = new Vector2(0.95f, 1f);
             txtRect.offsetMin = Vector2.zero;
             txtRect.offsetMax = Vector2.zero;
 

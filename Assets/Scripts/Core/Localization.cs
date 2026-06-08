@@ -40,7 +40,7 @@ namespace MagicPairs.Core
             { "player1Name", new[] { "Imię Gracza 1", "Player 1 Name" } },
             { "player2Name", new[] { "Imię Gracza 2", "Player 2 Name" } },
             { "score", new[] { "{0}: {1}", "{0}: {1}" } },
-            { "mode1P", new[] { "1 Gracz (vs AI)", "1 Player (vs AI)" } },
+            { "mode1P", new[] { "1 Gracz", "1 Player (vs AI)" } },
             { "mode2P", new[] { "2 Graczy", "2 Players" } },
             { "themeColors", new[] { "🎨 Kolory", "🎨 Colors" } },
             { "themePrincess", new[] { "👸 Księżniczki", "👸 Princesses" } },
