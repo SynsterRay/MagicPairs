@@ -4,7 +4,7 @@
 
 A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS). Two players take turns flipping cards looking for matching pairs.
 
-## Project Status (2026-05-31)
+## Project Status (2026-06-08)
 
 ### Implemented
 
@@ -28,7 +28,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Main Menu | ✅ | Start screen → Options/Play → Arcade/Challenge → ... |
 | Options | ✅ | Panel with language selection and credits |
 | Localization | ✅ | Full PL/EN system — all buttons, panels, messages |
-| Card Themes | ✅ | Colors (classic) or Princesses (PNG images) |
+| Card Themes | ✅ | Colors (classic), Princesses (PNG), Cars (PNG) |
 | Difficulty Levels | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
 | Color Palette | ✅ | 15 distinct colors — supports Hard mode (14 pairs) |
 | Menu Navigation | ✅ | Back buttons ← on every step |
@@ -62,6 +62,9 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | v1.23 | 2026-05-29 | SFX, English docs, UI alignment fixes, null reference fixes |
 | v1.3 | 2026-05-31 | 15-color palette, Joker ☠ symbol, Safe Area, ads fix, second chance fix |
 | v1.31 | 2026-06-01 | Fix Android crash, remove custom Activity, unify menu layout |
+| v1.4 | 2026-06-02 | Cars theme, UI overhaul (Fredoka One font, rounded buttons, shine overlay, bevel text, dynamic backgrounds) |
+| v1.401 | 2026-06-08 | Fix button text overflow on mobile, remove (vs AI) from Polish, improve color palette |
+| v1.402 | 2026-06-08 | Fix button text not vertically centered on mobile |
 
 ## Architecture
 
@@ -230,6 +233,23 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 | piotrusDelay | 1.5s | Time to show Joker |
 
 ## Changelog
+
+### 2026-06-08
+- Fixed theme button text ("Samochody", "Księżniczki") not visible on phone — buttons now auto-scale with resizeTextForBestFit
+- Removed "(vs AI)" from Polish single-player arcade mode label
+- Fixed "Poziom 1" text wrapping/splitting on mobile in Challenge mode (widened area + best fit)
+- Replaced color palette with 15 maximally distinct colors (black, white, gray, maroon, dark green replace similar lime/gold/silver/teal/indigo)
+- Fixed button text not vertically centered — switched from Wrap to Overflow mode
+
+### 2026-06-02
+- Cars theme (14 PNG cards + joker + custom back card)
+- UI overhaul: Fredoka One font (bubbly, fairy-tale style)
+- Rounded buttons with procedural sliced sprite + white shine overlay
+- Button press feedback (color tint transition)
+- Bevel effect on text (dual Shadow — dark below + white above)
+- All font sizes doubled for mobile readability
+- Dynamic backgrounds per theme (cars = road, default = fairy tale)
+- Narrower menu buttons (60% width, cleaner layout)
 
 ### 2026-06-01
 - Fixed Android crash on launch — removed custom EdgeToEdgeActivity and AndroidManifest override
