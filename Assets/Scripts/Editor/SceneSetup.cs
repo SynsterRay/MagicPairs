@@ -963,11 +963,11 @@ namespace MagicPairs.Editor
             txt.resizeTextForBestFit = true;
             txt.resizeTextMinSize = 28;
             txt.resizeTextMaxSize = 76;
-            txt.horizontalOverflow = HorizontalWrapMode.Wrap;
-            txt.verticalOverflow = VerticalWrapMode.Truncate;
+            txt.horizontalOverflow = HorizontalWrapMode.Overflow;
+            txt.verticalOverflow = VerticalWrapMode.Overflow;
             var txtRect = txtObj.GetComponent<RectTransform>();
-            txtRect.anchorMin = new Vector2(0.05f, 0f);
-            txtRect.anchorMax = new Vector2(0.95f, 1f);
+            txtRect.anchorMin = Vector2.zero;
+            txtRect.anchorMax = Vector2.one;
             txtRect.offsetMin = Vector2.zero;
             txtRect.offsetMax = Vector2.zero;
 
