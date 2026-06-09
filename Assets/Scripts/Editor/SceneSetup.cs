@@ -621,17 +621,17 @@ namespace MagicPairs.Editor
             var gameTypeTitle = CreateUIText("GameTypeTitle", "Wybierz tryb gry", gameTypePanel.transform,
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
-            var arcadeBtn = CreateButton("ArcadeBtn", "Arcade", gameTypePanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
-            arcadeBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 1f);
-
             var challengeBtn = CreateButton("ChallengeBtn", "Wyzwanie", gameTypePanel.transform,
-                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
+                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
             challengeBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 1f);
 
             var timeAttackBtn = CreateButton("TimeAttackBtn", "Na czas", gameTypePanel.transform,
-                new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
+                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
             timeAttackBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.5f, 1f);
+
+            var arcadeBtn = CreateButton("ArcadeBtn", "Arcade", gameTypePanel.transform,
+                new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
+            arcadeBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 1f);
 
             var gameTypeBackBtn = CreateButton("GameTypeBackBtn", "←", gameTypePanel.transform,
                 new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
@@ -671,14 +671,14 @@ namespace MagicPairs.Editor
             var challengeThemeTitle = CreateUIText("ChallengeThemeTitle", "Wybierz typ kart", challengeThemePanel.transform,
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
 
-            var chColorsBtn = CreateButton("ChColorsBtn", "🎨 Kolory", challengeThemePanel.transform,
+            var chCarsBtn = CreateButton("ChCarsBtn", "🚗 Samochody", challengeThemePanel.transform,
                 new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
+            chCarsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
             var chPrincessBtn = CreateButton("ChPrincessBtn", "👸 Księżniczki", challengeThemePanel.transform,
                 new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
             chPrincessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
-            var chCarsBtn = CreateButton("ChCarsBtn", "🚗 Samochody", challengeThemePanel.transform,
+            var chColorsBtn = CreateButton("ChColorsBtn", "🎨 Kolory", challengeThemePanel.transform,
                 new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
-            chCarsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
 
             var challengeThemeBackBtn = CreateButton("ChallengeThemeBackBtn", "←", challengeThemePanel.transform,
                 new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
@@ -757,14 +757,14 @@ namespace MagicPairs.Editor
             var themeTitle = CreateUIText("ThemeTitle", "Wybierz typ kart", themePanel.transform,
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
 
-            var colorsBtn = CreateButton("ColorsBtn", "🎨 Kolory", themePanel.transform,
+            var carsBtn = CreateButton("CarsBtn", "🚗 Samochody", themePanel.transform,
                 new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
+            carsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
             var princessBtn = CreateButton("PrincessBtn", "👸 Księżniczki", themePanel.transform,
                 new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
             princessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
-            var carsBtn = CreateButton("CarsBtn", "🚗 Samochody", themePanel.transform,
+            var colorsBtn = CreateButton("ColorsBtn", "🎨 Kolory", themePanel.transform,
                 new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
-            carsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
 
             var themeBackBtn = CreateButton("ThemeBackBtn", "←", themePanel.transform,
                 new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
@@ -963,13 +963,13 @@ namespace MagicPairs.Editor
             txt.resizeTextForBestFit = true;
             txt.resizeTextMinSize = 28;
             txt.resizeTextMaxSize = 76;
-            txt.horizontalOverflow = HorizontalWrapMode.Overflow;
-            txt.verticalOverflow = VerticalWrapMode.Overflow;
+            txt.horizontalOverflow = HorizontalWrapMode.Wrap;
+            txt.verticalOverflow = VerticalWrapMode.Truncate;
             var txtRect = txtObj.GetComponent<RectTransform>();
             txtRect.anchorMin = Vector2.zero;
             txtRect.anchorMax = Vector2.one;
-            txtRect.offsetMin = Vector2.zero;
-            txtRect.offsetMax = Vector2.zero;
+            txtRect.offsetMin = new Vector2(10f, 4f);
+            txtRect.offsetMax = new Vector2(-10f, -4f);
 
             // Bevel: dark shadow below (depth) + light shadow above (highlight)
             var txtShadow = txtObj.AddComponent<Shadow>();
