@@ -88,11 +88,6 @@ namespace MagicPairs.Cards
             return deck;
         }
 
-        private Sprite[] LoadPrincessSprites()
-        {
-            return LoadThemeSprites("PrincessCards");
-        }
-
         private Sprite[] LoadThemeSprites(string folder)
         {
             var all = Resources.LoadAll<Sprite>(folder);

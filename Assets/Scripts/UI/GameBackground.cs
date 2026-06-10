@@ -7,6 +7,7 @@ namespace MagicPairs.UI
     public class GameBackground : MonoBehaviour
     {
         private Image _image;
+        private Sprite _currentSprite;
 
         private void Awake() => _image = GetComponent<Image>();
 
@@ -25,7 +26,16 @@ namespace MagicPairs.UI
 
             var tex = Resources.Load<Texture2D>(path);
             if (tex != null)
-                _image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+            {
+                if (_currentSprite != null) Destroy(_currentSprite);
+                _currentSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+                _image.sprite = _currentSprite;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_currentSprite != null) Destroy(_currentSprite);
         }
     }
 }

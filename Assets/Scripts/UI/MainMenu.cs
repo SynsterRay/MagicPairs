@@ -497,13 +497,13 @@ namespace MagicPairs.UI
         {
             IsSinglePlayer = _singlePlayer;
 
-            Player1Name = string.IsNullOrWhiteSpace(player1Input.text)
+            Player1Name = string.IsNullOrWhiteSpace(player1Input?.text)
                 ? Localization.Get("player1") : player1Input.text;
 
             if (_singlePlayer)
                 Player2Name = Localization.Get("computer");
             else
-                Player2Name = string.IsNullOrWhiteSpace(player2Input.text)
+                Player2Name = string.IsNullOrWhiteSpace(player2Input?.text)
                     ? Localization.Get("player2") : player2Input.text;
 
             // Save names for next time

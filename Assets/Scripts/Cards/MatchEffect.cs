@@ -5,7 +5,7 @@ namespace MagicPairs.Cards
 {
     public class MatchEffect : MonoBehaviour
     {
-        private static ParticleSystem _sharedEffect;
+        private static Material _particleMat;
 
         private void OnEnable() => GameEvents.OnPairMatched += PlayEffect;
         private void OnDisable() => GameEvents.OnPairMatched -= PlayEffect;
@@ -57,9 +57,11 @@ namespace MagicPairs.Cards
             sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 1f, 1f, 0f));
 
             var renderer = go.GetComponent<ParticleSystemRenderer>();
-            renderer.material = new Material(Shader.Find("Particles/Standard Unlit")
-                ?? Shader.Find("Universal Render Pipeline/Particles/Unlit")
-                ?? Shader.Find("Sprites/Default"));
+            if (_particleMat == null)
+                _particleMat = new Material(Shader.Find("Particles/Standard Unlit")
+                    ?? Shader.Find("Universal Render Pipeline/Particles/Unlit")
+                    ?? Shader.Find("Sprites/Default"));
+            renderer.material = _particleMat;
 
             ps.Play();
             Destroy(go, 1.5f);

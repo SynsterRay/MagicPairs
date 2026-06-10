@@ -25,6 +25,7 @@ namespace MagicPairs.Cards
         {
             GameEvents.OnGameStarted -= ResetCollections;
             GameEvents.OnPairMatched -= OnPairMatched;
+            StopAllCoroutines();
         }
 
         private void ResetCollections()

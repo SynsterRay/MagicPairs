@@ -37,6 +37,7 @@ namespace MagicPairs.GameFlow
             GameEvents.OnGameStarted -= OnGameStarted;
             ChallengeMode.OnLevelComplete -= OnLevelComplete;
             ChallengeMode.OnChallengeScoreChanged -= OnScoreChanged;
+            StopAllCoroutines();
         }
 
         private void OnGameStarted()
@@ -161,8 +162,8 @@ namespace MagicPairs.GameFlow
             var c2 = available[i2];
 
             // Flip them face-up briefly
-            c1.Flip();
-            c2.Flip();
+            c1.PeekReveal();
+            c2.PeekReveal();
 
             yield return new WaitForSeconds(1.0f);
 

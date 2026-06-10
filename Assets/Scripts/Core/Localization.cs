@@ -22,7 +22,8 @@ namespace MagicPairs.Core
 
         static Localization()
         {
-            _currentLanguage = (Language)UnityEngine.PlayerPrefs.GetInt(LangKey, (int)Language.English);
+            try { _currentLanguage = (Language)UnityEngine.PlayerPrefs.GetInt(LangKey, (int)Language.English); }
+            catch { _currentLanguage = Language.English; }
         }
 
         private static readonly Dictionary<string, string[]> Texts = new()

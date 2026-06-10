@@ -65,6 +65,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | v1.4 | 2026-06-02 | Cars theme, UI overhaul (Fredoka One font, rounded buttons, shine overlay, bevel text, dynamic backgrounds) |
 | v1.401 | 2026-06-08 | Fix button text overflow on mobile, remove (vs AI) from Polish, improve color palette |
 | v1.402 | 2026-06-08 | Fix button text not vertically centered on mobile |
+| v1.403 | 2026-06-09 | Reorder menu (Challenge>TimeAttack>Arcade, Cars>Princess>Colors), fix text overflow on mobile |
 
 ## Architecture
 
@@ -233,6 +234,11 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 | piotrusDelay | 1.5s | Time to show Joker |
 
 ## Changelog
+
+### 2026-06-09
+- Reorder game type buttons: Challenge (top) → Time Attack (middle) → Arcade (bottom)
+- Reorder card theme buttons: Cars (top) → Princesses (middle) → Colors (bottom)
+- Fix button text overflow on mobile — switched from HorizontalWrapMode.Overflow to Wrap with padding
 
 ### 2026-06-08
 - Fixed theme button text ("Samochody", "Księżniczki") not visible on phone — buttons now auto-scale with resizeTextForBestFit

@@ -69,6 +69,17 @@ namespace MagicPairs.Cards
             }, Data.faceSprite);
         }
 
+        /// <summary>Reveal card for peek power-up without triggering game logic.</summary>
+        public void PeekReveal()
+        {
+            if (!CanFlip) return;
+            State = CardState.Animating;
+            _animator.PlayFlip(Data.faceColor, () =>
+            {
+                State = CardState.FaceUp;
+            }, Data.faceSprite);
+        }
+
         public void FlipBack(Color backColor)
         {
             if (_animator == null || !_animator.isActiveAndEnabled) return;

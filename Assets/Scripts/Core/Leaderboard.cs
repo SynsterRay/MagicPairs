@@ -78,12 +78,6 @@ namespace MagicPairs.Core
             SaveTimeAttack();
         }
 
-        public static bool IsHighScore(int score)
-        {
-            Load();
-            return _data.entries.Count < MaxEntries || score > _data.entries[_data.entries.Count - 1].score;
-        }
-
         private static void Load()
         {
             if (_data != null) return;
