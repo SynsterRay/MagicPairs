@@ -78,6 +78,8 @@ namespace MagicPairs.Core
             { "timeAttack", new[] { "Na czas", "Time Attack" } },
             { "timeAttackWin", new[] { "Ukończono! Pozostało: {0:F1}s", "Complete! Time left: {0:F1}s" } },
             { "timeAttackLose", new[] { "Czas minął!", "Time's up!" } },
+            { "menuMusic", new[] { "Muzyka menu", "Menu Music" } },
+            { "gameMusic", new[] { "Muzyka w grze", "Game Music" } },
         };
 
         public static string Get(string key)

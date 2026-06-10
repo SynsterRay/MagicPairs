@@ -120,6 +120,7 @@ namespace MagicPairs.Editor
             gm.AddComponent<Players.ScoreTracker>();
             gm.AddComponent<Input.TouchInputHandler>();
             gm.AddComponent<Audio.SFXManager>();
+            gm.AddComponent<Audio.MusicManager>();
             gm.AddComponent<Ads.AdManager>();
 
             var cardGrid = gm.AddComponent<Cards.CardGrid>();
@@ -559,10 +560,18 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var langBtn = CreateButton("LanguageBtn", "Język", optionsPanel.transform,
-                new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.68f));
+                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
+
+            var menuMusicBtn = CreateButton("MenuMusicBtn", "Muzyka menu ✓", optionsPanel.transform,
+                new Vector2(0.2f, 0.46f), new Vector2(0.8f, 0.62f));
+            menuMusicBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.5f, 1f);
+
+            var gameMusicBtn = CreateButton("GameMusicBtn", "Muzyka w grze ✓", optionsPanel.transform,
+                new Vector2(0.2f, 0.28f), new Vector2(0.8f, 0.44f));
+            gameMusicBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.5f, 1f);
 
             var creditsBtn = CreateButton("CreditsBtn", "Autor", optionsPanel.transform,
-                new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.42f));
+                new Vector2(0.2f, 0.10f), new Vector2(0.8f, 0.26f));
             creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
 
             var optionsBackBtn = CreateButton("OptionsBackBtn", "←", optionsPanel.transform,
@@ -824,6 +833,10 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("languageButton").objectReferenceValue = langBtn.GetComponent<Button>();
             mmSo.FindProperty("languageButtonText").objectReferenceValue = langBtn.GetComponentInChildren<Text>();
             mmSo.FindProperty("optionsBackButton").objectReferenceValue = optionsBackBtn.GetComponent<Button>();
+            mmSo.FindProperty("menuMusicToggle").objectReferenceValue = menuMusicBtn.GetComponent<Button>();
+            mmSo.FindProperty("menuMusicToggleText").objectReferenceValue = menuMusicBtn.GetComponentInChildren<Text>();
+            mmSo.FindProperty("gameMusicToggle").objectReferenceValue = gameMusicBtn.GetComponent<Button>();
+            mmSo.FindProperty("gameMusicToggleText").objectReferenceValue = gameMusicBtn.GetComponentInChildren<Text>();
             mmSo.FindProperty("languageTitle").objectReferenceValue = langTitle;
             mmSo.FindProperty("polishButton").objectReferenceValue = plBtn.GetComponent<Button>();
             mmSo.FindProperty("englishButton").objectReferenceValue = enBtn.GetComponent<Button>();

@@ -38,6 +38,10 @@ namespace MagicPairs.UI
         [SerializeField] private Text languageButtonText;
         [SerializeField] private Button creditsButton;
         [SerializeField] private Button optionsBackButton;
+        [SerializeField] private Button menuMusicToggle;
+        [SerializeField] private Text menuMusicToggleText;
+        [SerializeField] private Button gameMusicToggle;
+        [SerializeField] private Text gameMusicToggleText;
 
         [Header("Game Type Panel")]
         [SerializeField] private Text gameTypeTitle;
@@ -124,6 +128,8 @@ namespace MagicPairs.UI
             languageBackButton?.onClick.AddListener(ShowOptionsPanel);
             polishButton?.onClick.AddListener(() => SelectLanguage(Language.Polish));
             englishButton?.onClick.AddListener(() => SelectLanguage(Language.English));
+            menuMusicToggle?.onClick.AddListener(ToggleMenuMusic);
+            gameMusicToggle?.onClick.AddListener(ToggleGameMusic);
             arcadeButton?.onClick.AddListener(SelectArcade);
             challengeButton?.onClick.AddListener(SelectChallenge);
             timeAttackButton?.onClick.AddListener(SelectTimeAttack);
@@ -229,6 +235,27 @@ namespace MagicPairs.UI
             if (languageButtonText != null) languageButtonText.text = Localization.Get("languageOption");
             if (creditsButton != null)
                 creditsButton.GetComponentInChildren<Text>().text = Localization.Get("credits");
+            UpdateMusicToggleTexts();
+        }
+
+        private void ToggleMenuMusic()
+        {
+            Audio.MusicManager.MenuMusicOn = !Audio.MusicManager.MenuMusicOn;
+            UpdateMusicToggleTexts();
+        }
+
+        private void ToggleGameMusic()
+        {
+            Audio.MusicManager.GameMusicOn = !Audio.MusicManager.GameMusicOn;
+            UpdateMusicToggleTexts();
+        }
+
+        private void UpdateMusicToggleTexts()
+        {
+            if (menuMusicToggleText != null)
+                menuMusicToggleText.text = Localization.Get("menuMusic") + (Audio.MusicManager.MenuMusicOn ? " ✓" : " ✗");
+            if (gameMusicToggleText != null)
+                gameMusicToggleText.text = Localization.Get("gameMusic") + (Audio.MusicManager.GameMusicOn ? " ✓" : " ✗");
         }
 
         private void ShowLanguagePanel()
@@ -522,6 +549,8 @@ namespace MagicPairs.UI
         public void ReturnToMenu()
         {
             ShowStartPanel();
+            var music = FindAnyObjectByType<Audio.MusicManager>();
+            music?.PlayMenuMusic();
         }
     }
 }
