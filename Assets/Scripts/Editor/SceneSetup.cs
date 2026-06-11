@@ -122,6 +122,7 @@ namespace MagicPairs.Editor
             gm.AddComponent<Audio.SFXManager>();
             gm.AddComponent<Audio.MusicManager>();
             gm.AddComponent<Ads.AdManager>();
+            gm.AddComponent<Core.GPGSManager>();
 
             var cardGrid = gm.AddComponent<Cards.CardGrid>();
             gm.AddComponent<Cards.PairCollector>();

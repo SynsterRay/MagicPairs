@@ -1,0 +1,9 @@
+lastUpgrade=20100
+proj.pluginVersion=2.1.0
+proj.AppId=433474733253
+and.BundleId=com.Mateusz_Bajak.MagicPairs
+proj.classDir=Assets
+proj.ConstantsClassName=GPGSIds
+and.ResourceData=%3cresources%3e%0d%0a%3cstring+name%3d%22app_id%22%3e433474733253%3c%2fstring%3e%0d%0a%3cstring+name%3d%22package_name%22%3ecom.Mateusz_Bajak.MagicPairs%3c%2fstring%3e%0d%0a%3cstring+name%3d%22leaderboard_challenge_high_score%22%3eCgkIxYnu6M4MEAIQAQ%3c%2fstring%3e%0d%0a%3c%2fresources%3e
+and.ClientId=433474733253-vti7mu3abs7q4ulf7vq9eefi2m51h21f.apps.googleusercontent.com
+android.SetupDone=true

@@ -237,6 +237,7 @@ namespace MagicPairs.UI
             int level = _challengeMode != null ? _challengeMode.CurrentLevel : 1;
 
             Leaderboard.AddEntry(MainMenu.Player1Name, finalScore, level);
+            GPGSManager.Instance?.PostChallengeScore(finalScore);
 
             if (challengeOverPanel != null) challengeOverPanel.SetActive(true);
             if (finalScoreText != null)

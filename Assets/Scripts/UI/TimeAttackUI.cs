@@ -174,6 +174,7 @@ namespace MagicPairs.UI
 
             string diff = MainMenu.SelectedDifficulty.ToString();
             Leaderboard.AddTimeAttackEntry(MainMenu.Player1Name, timeLeft, diff);
+            GPGSManager.Instance?.PostTimeAttackScore(timeLeft);
         }
 
         private void ShowLose()
