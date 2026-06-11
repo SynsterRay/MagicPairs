@@ -81,6 +81,8 @@ namespace MagicPairs.Core
             { "timeAttackLose", new[] { "Czas minął!", "Time's up!" } },
             { "menuMusic", new[] { "Muzyka menu", "Menu Music" } },
             { "gameMusic", new[] { "Muzyka w grze", "Game Music" } },
+            { "globalScores", new[] { "Globalne wyniki", "Global Scores" } },
+            { "localScores", new[] { "Lokalne wyniki", "Local Scores" } },
         };
 
         public static string Get(string key)

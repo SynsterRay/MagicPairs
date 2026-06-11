@@ -195,6 +195,90 @@ namespace MagicPairs.UI
 
         private void ShowStartLeaderboard()
         {
+            var gpgs = Core.GPGSManager.Instance;
+            if (gpgs != null && gpgs.IsAuthenticated)
+            {
+                // Show choice: Global vs Local
+                HideAllPanels();
+                if (startLeaderboardPanel != null) startLeaderboardPanel.SetActive(true);
+                if (startLeaderboardText != null)
+                    startLeaderboardText.text = "";
+                ShowLeaderboardChoice();
+                return;
+            }
+
+            // Not authenticated — show local directly
+            ShowLocalLeaderboard();
+        }
+
+        private GameObject _leaderChoicePanel;
+
+        private void ShowLeaderboardChoice()
+        {
+            if (_leaderChoicePanel != null) { _leaderChoicePanel.SetActive(true); return; }
+
+            _leaderChoicePanel = new GameObject("LeaderChoicePanel");
+            _leaderChoicePanel.transform.SetParent(startLeaderboardPanel.transform, false);
+            var rect = _leaderChoicePanel.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.1f, 0.3f);
+            rect.anchorMax = new Vector2(0.9f, 0.7f);
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            var globalBtn = CreateChoiceButton("GlobalBtn", Localization.Get("globalScores"), _leaderChoicePanel.transform,
+                new Vector2(0.05f, 0.55f), new Vector2(0.95f, 0.95f), new Color(0.8f, 0.6f, 0.1f, 1f));
+            globalBtn.onClick.AddListener(() =>
+            {
+                _leaderChoicePanel.SetActive(false);
+                Core.GPGSManager.Instance?.ShowLeaderboard();
+            });
+
+            var localBtn = CreateChoiceButton("LocalBtn", Localization.Get("localScores"), _leaderChoicePanel.transform,
+                new Vector2(0.05f, 0.05f), new Vector2(0.95f, 0.45f), new Color(0.3f, 0.5f, 0.8f, 1f));
+            localBtn.onClick.AddListener(() =>
+            {
+                _leaderChoicePanel.SetActive(false);
+                ShowLocalLeaderboard();
+            });
+        }
+
+        private Button CreateChoiceButton(string name, string label, Transform parent, Vector2 anchorMin, Vector2 anchorMax, Color color)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            var img = go.AddComponent<Image>();
+            img.color = color;
+            img.sprite = RoundedButtonHelper.GetRoundedSprite();
+            img.type = Image.Type.Sliced;
+            var btn = go.AddComponent<Button>();
+            var r = go.GetComponent<RectTransform>();
+            r.anchorMin = anchorMin;
+            r.anchorMax = anchorMax;
+            r.offsetMin = Vector2.zero;
+            r.offsetMax = Vector2.zero;
+
+            var txtObj = new GameObject("Text");
+            txtObj.transform.SetParent(go.transform, false);
+            var txt = txtObj.AddComponent<Text>();
+            txt.text = label;
+            txt.fontSize = 52;
+            txt.fontStyle = FontStyle.Bold;
+            txt.alignment = TextAnchor.MiddleCenter;
+            txt.color = Color.white;
+            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.resizeTextForBestFit = true;
+            txt.resizeTextMinSize = 28;
+            txt.resizeTextMaxSize = 52;
+            var tr = txtObj.GetComponent<RectTransform>();
+            tr.anchorMin = Vector2.zero;
+            tr.anchorMax = Vector2.one;
+            tr.offsetMin = new Vector2(10f, 4f);
+            tr.offsetMax = new Vector2(-10f, -4f);
+            return btn;
+        }
+
+        private void ShowLocalLeaderboard()
+        {
             HideAllPanels();
             if (startLeaderboardPanel != null) startLeaderboardPanel.SetActive(true);
             if (startLeaderboardText == null) return;
