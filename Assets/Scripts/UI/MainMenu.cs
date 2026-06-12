@@ -213,8 +213,8 @@ namespace MagicPairs.UI
                     img.type = Image.Type.Sliced;
                     var btn = _achievementsBtn.AddComponent<Button>();
                     var rect = _achievementsBtn.GetComponent<RectTransform>();
-                    rect.anchorMin = new Vector2(0.2f, -0.2f);
-                    rect.anchorMax = new Vector2(0.8f, 0f);
+                    rect.anchorMin = new Vector2(0.2f, 0.04f);
+                    rect.anchorMax = new Vector2(0.8f, 0.24f);
                     rect.offsetMin = Vector2.zero;
                     rect.offsetMax = Vector2.zero;
 
@@ -237,6 +237,14 @@ namespace MagicPairs.UI
                     tr.offsetMax = new Vector2(-10f, -4f);
 
                     btn.onClick.AddListener(() => Core.GPGSManager.Instance?.ShowAchievements());
+
+                    // Move Quit button down to make room
+                    if (quitButton != null)
+                    {
+                        var quitRect = quitButton.GetComponent<RectTransform>();
+                        quitRect.anchorMin = new Vector2(0.2f, -0.2f);
+                        quitRect.anchorMax = new Vector2(0.8f, 0f);
+                    }
                 }
             }
 
