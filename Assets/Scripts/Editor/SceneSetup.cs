@@ -123,6 +123,7 @@ namespace MagicPairs.Editor
             gm.AddComponent<Audio.MusicManager>();
             gm.AddComponent<Ads.AdManager>();
             gm.AddComponent<Core.GPGSManager>();
+            gm.AddComponent<Core.AchievementTracker>();
 
             var cardGrid = gm.AddComponent<Cards.CardGrid>();
             gm.AddComponent<Cards.PairCollector>();
