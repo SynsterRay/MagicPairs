@@ -230,6 +230,7 @@ namespace MagicPairs.UI
             globalBtn.onClick.AddListener(() =>
             {
                 _leaderChoicePanel.SetActive(false);
+                ShowStartPanel();
                 Core.GPGSManager.Instance?.ShowLeaderboard();
             });
 
