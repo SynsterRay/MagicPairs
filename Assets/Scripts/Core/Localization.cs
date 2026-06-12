@@ -85,6 +85,9 @@ namespace MagicPairs.Core
             { "localScores", new[] { "Lokalne wyniki", "Local Scores" } },
             { "adPowerUp", new[] { "Bonus", "Bonus" } },
             { "adNotReady", new[] { "Niedostępne", "Not ready" } },
+            { "dailyBonus", new[] { "Codzienna nagroda!", "Daily Bonus!" } },
+            { "dailyStreak", new[] { "Seria: {0} dni", "Streak: {0} days" } },
+            { "claim", new[] { "Odbierz", "Claim" } },
         };
 
         public static string Get(string key)

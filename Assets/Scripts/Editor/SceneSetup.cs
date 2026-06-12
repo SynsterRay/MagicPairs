@@ -458,6 +458,7 @@ namespace MagicPairs.Editor
             // Score Popup (floating +points animation)
             canvas.AddComponent<UI.ScorePopup>();
             canvas.AddComponent<UI.TimeAttackUI>();
+            canvas.AddComponent<UI.DailyBonus>();
 
             // Main Menu Panel
             var menuPanel = new GameObject("MenuPanel");
