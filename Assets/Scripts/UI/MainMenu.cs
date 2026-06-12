@@ -466,6 +466,10 @@ namespace MagicPairs.UI
             SetThemeButtonSprite(challengeCarsButton, "CarCards");
             SetThemeButtonSprite(challengePrincessButton, "PrincessCards");
             SetThemeButtonLabel(challengeColorsButton, Localization.Get("themeColors"));
+            StyleAsCard(challengeCarsButton, new Vector2(0.02f, 0.15f), new Vector2(0.32f, 0.8f));
+            StyleAsCard(challengePrincessButton, new Vector2(0.35f, 0.15f), new Vector2(0.65f, 0.8f));
+            StyleAsCard(challengeColorsButton, new Vector2(0.68f, 0.15f), new Vector2(0.98f, 0.8f));
+            EnsureLockedCards(challengeThemePanel.transform);
         }
 
         private void SelectChallengeTheme(Core.CardTheme theme)
@@ -547,6 +551,10 @@ namespace MagicPairs.UI
             SetThemeButtonSprite(carsThemeButton, "CarCards");
             SetThemeButtonSprite(princessThemeButton, "PrincessCards");
             SetThemeButtonLabel(colorsThemeButton, Localization.Get("themeColors"));
+            StyleAsCard(carsThemeButton, new Vector2(0.02f, 0.15f), new Vector2(0.32f, 0.8f));
+            StyleAsCard(princessThemeButton, new Vector2(0.35f, 0.15f), new Vector2(0.65f, 0.8f));
+            StyleAsCard(colorsThemeButton, new Vector2(0.68f, 0.15f), new Vector2(0.98f, 0.8f));
+            EnsureLockedCards(themePanel.transform);
         }
 
         private void SelectTheme(Core.CardTheme theme)
@@ -594,8 +602,58 @@ namespace MagicPairs.UI
             img.sprite = RoundedButtonHelper.GetRoundedSprite();
             img.type = Image.Type.Sliced;
             img.preserveAspect = false;
+            img.color = new Color(0.1f, 0.4f, 0.9f, 1f); // Blue card for Colors theme
             var txt = button.GetComponentInChildren<Text>();
             if (txt != null) txt.text = label;
+        }
+
+        private void StyleAsCard(Button button, Vector2 anchorMin, Vector2 anchorMax)
+        {
+            if (button == null) return;
+            var rect = button.GetComponent<RectTransform>();
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
+        private void EnsureLockedCards(Transform parent)
+        {
+            // Add locked placeholder cards if not already created
+            if (parent.Find("LockedCard1") != null) return;
+
+            for (int i = 1; i <= 2; i++)
+            {
+                var locked = new GameObject($"LockedCard{i}");
+                locked.transform.SetParent(parent, false);
+                var img = locked.AddComponent<Image>();
+                img.color = new Color(0.5f, 0.5f, 0.5f, 0.7f);
+                img.sprite = RoundedButtonHelper.GetRoundedSprite();
+                img.type = Image.Type.Sliced;
+                var rect = locked.GetComponent<RectTransform>();
+                float xStart = i == 1 ? 0.02f : 0.35f;
+                float xEnd = i == 1 ? 0.32f : 0.65f;
+                rect.anchorMin = new Vector2(xStart, -0.55f);
+                rect.anchorMax = new Vector2(xEnd, 0.1f);
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+
+                // Question mark
+                var txtObj = new GameObject("Text");
+                txtObj.transform.SetParent(locked.transform, false);
+                var txt = txtObj.AddComponent<Text>();
+                txt.text = "?";
+                txt.fontSize = 72;
+                txt.fontStyle = FontStyle.Bold;
+                txt.alignment = TextAnchor.MiddleCenter;
+                txt.color = new Color(0.3f, 0.3f, 0.3f, 0.8f);
+                txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                var tr = txtObj.GetComponent<RectTransform>();
+                tr.anchorMin = Vector2.zero;
+                tr.anchorMax = Vector2.one;
+                tr.offsetMin = Vector2.zero;
+                tr.offsetMax = Vector2.zero;
+            }
         }
 
         private void ApplyDifficulty(Difficulty diff)
