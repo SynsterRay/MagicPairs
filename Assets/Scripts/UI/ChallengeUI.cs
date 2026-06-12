@@ -30,9 +30,11 @@ namespace MagicPairs.UI
         private Button _peekBtn;
         private Button _shuffleBtn;
         private Button _freezeBtn;
+        private Button _adPowerUpBtn;
         private Text _peekText;
         private Text _shuffleText;
         private Text _freezeText;
+        private Text _adPowerUpText;
 
         // Cached references
         private PowerUpManager _powerUpManager;
@@ -81,25 +83,29 @@ namespace MagicPairs.UI
             _powerUpPanel = new GameObject("PowerUpPanel");
             _powerUpPanel.transform.SetParent(canvas.transform, false);
             var rect = _powerUpPanel.AddComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.05f, 0.015f);
-            rect.anchorMax = new Vector2(0.95f, 0.065f);
+            rect.anchorMin = new Vector2(0.02f, 0.93f);
+            rect.anchorMax = new Vector2(0.86f, 0.99f);
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
 
-            _peekBtn = CreatePowerUpButton("🔍", 0f, 0.3f, _powerUpPanel.transform);
+            _peekBtn = CreatePowerUpButton("🔍", 0f, 0.23f, _powerUpPanel.transform);
             _peekBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 0.9f);
-            _shuffleBtn = CreatePowerUpButton("🔄", 0.35f, 0.65f, _powerUpPanel.transform);
+            _shuffleBtn = CreatePowerUpButton("🔄", 0.25f, 0.48f, _powerUpPanel.transform);
             _shuffleBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 0.9f);
-            _freezeBtn = CreatePowerUpButton("❄️", 0.7f, 1f, _powerUpPanel.transform);
+            _freezeBtn = CreatePowerUpButton("❄️", 0.5f, 0.73f, _powerUpPanel.transform);
             _freezeBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.8f, 0.9f);
+            _adPowerUpBtn = CreatePowerUpButton("▶+", 0.75f, 1f, _powerUpPanel.transform);
+            _adPowerUpBtn.GetComponent<Image>().color = new Color(0.2f, 0.7f, 0.3f, 0.9f);
 
             _peekText = _peekBtn.GetComponentInChildren<Text>();
             _shuffleText = _shuffleBtn.GetComponentInChildren<Text>();
             _freezeText = _freezeBtn.GetComponentInChildren<Text>();
+            _adPowerUpText = _adPowerUpBtn.GetComponentInChildren<Text>();
 
             _peekBtn.onClick.AddListener(OnPeek);
             _shuffleBtn.onClick.AddListener(OnShuffle);
             _freezeBtn.onClick.AddListener(OnFreeze);
+            _adPowerUpBtn.onClick.AddListener(OnAdPowerUp);
 
             _powerUpPanel.SetActive(false);
         }
@@ -166,6 +172,37 @@ namespace MagicPairs.UI
             _powerUpManager?.UseFreeze();
         }
 
+        private void OnAdPowerUp()
+        {
+            if (_adManager == null || !_adManager.IsRewardedReady)
+            {
+                ShowAdNotReadyFeedback();
+                return;
+            }
+
+            _adManager.ShowRewarded(() =>
+            {
+                if (_powerUpManager == null) return;
+                var type = (PowerUpType)Random.Range(0, 3);
+                _powerUpManager.AddPowerUp(type);
+            }, ShowAdNotReadyFeedback);
+        }
+
+        private void ShowAdNotReadyFeedback()
+        {
+            if (_adPowerUpText != null)
+            {
+                _adPowerUpText.text = Localization.Get("adNotReady");
+                Invoke(nameof(RestoreAdButtonText), 2f);
+            }
+        }
+
+        private void RestoreAdButtonText()
+        {
+            if (_adPowerUpText != null)
+                _adPowerUpText.text = $"▶ {Localization.Get("adPowerUp")}";
+        }
+
         private void UpdatePowerUpUI()
         {
             if (_powerUpManager == null || _powerUpPanel == null) return;
@@ -173,6 +210,7 @@ namespace MagicPairs.UI
             if (_peekText != null) _peekText.text = $"{Localization.Get("peek")} ({_powerUpManager.PeekCount})";
             if (_shuffleText != null) _shuffleText.text = $"{Localization.Get("shuffle")} ({_powerUpManager.ShuffleCount})";
             if (_freezeText != null) _freezeText.text = $"{Localization.Get("freeze")} ({_powerUpManager.FreezeCount})";
+            if (_adPowerUpText != null) _adPowerUpText.text = $"▶ {Localization.Get("adPowerUp")}";
 
             if (_peekBtn != null) _peekBtn.interactable = _powerUpManager.PeekCount > 0;
             if (_shuffleBtn != null) _shuffleBtn.interactable = _powerUpManager.ShuffleCount > 0;
@@ -263,6 +301,10 @@ namespace MagicPairs.UI
 
                 // Continue the game — restart current level (not next!)
                 _challengeMode?.RestartCurrentLevel();
+            }, () =>
+            {
+                // Ad not ready — hide button, show feedback
+                if (secondChanceButton != null) secondChanceButton.gameObject.SetActive(false);
             });
         }
 
@@ -280,7 +322,7 @@ namespace MagicPairs.UI
         private void OnReturnToMenu()
         {
             HideAll();
-            _adManager?.TryShowInterstitialBetweenGames();
+            _adManager?.TryShowInterstitialAfterGame();
             var menu = FindAnyObjectByType<MainMenu>();
             menu?.ReturnToMenu();
         }

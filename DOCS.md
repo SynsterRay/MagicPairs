@@ -38,11 +38,12 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Sound Effects | ✅ | Card flip, pair match, mismatch, joker, level complete, button click |
 | Touch Input | ✅ | Touch and mouse support |
 | Safe Area | ✅ | UI adapts to notches and rounded corners on mobile |
-| Ads (AdMob) | ✅ | Interstitial (between games) + Rewarded (second chance) |
+| Ads (AdMob) | ✅ | Banner (adaptive, bottom) + Interstitial (after completed games) + Rewarded (second chance, power-up bonus) |
 | Second Chance | ✅ | Watch rewarded ad to restart current level after game over |
 | Power-ups | ✅ | Peek, Shuffle, Freeze — earned every 3 levels or at streak x5 |
 | Time Attack | ✅ | Solo mode — find all pairs before time runs out, no Joker |
 | Player Name Persistence | ✅ | Names saved in PlayerPrefs, pre-filled on next game |
+| Google Play Games | ✅ | Sign-in, global leaderboard (Challenge + Time Attack) |
 
 ### Not Yet Implemented
 
@@ -66,6 +67,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | v1.401 | 2026-06-08 | Fix button text overflow on mobile, remove (vs AI) from Polish, improve color palette |
 | v1.402 | 2026-06-08 | Fix button text not vertically centered on mobile |
 | v1.403 | 2026-06-09 | Reorder menu (Challenge>TimeAttack>Arcade, Cars>Princess>Colors), fix text overflow on mobile |
+| v1.406 | 2026-06-11 | Google Play Games Services — global leaderboard, global/local scores choice |
 
 ## Architecture
 
@@ -234,6 +236,23 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 | piotrusDelay | 1.5s | Time to show Joker |
 
 ## Changelog
+
+### 2026-06-12
+- Ad monetization overhaul:
+  - Added adaptive banner ad (bottom of screen, always visible)
+  - Persistent interstitial counter (survives app restart via PlayerPrefs)
+  - Rewarded ad button in Challenge power-up bar — watch ad to get random power-up
+  - ShowRewarded now has failure callback — UI shows "Not ready" feedback
+  - Second Chance button hides when ad fails instead of doing nothing
+  - Interstitial only shown after completed games (not on mid-game quit)
+  - Production Ad Unit ID placeholders (TODO: replace with real IDs)
+- New localization keys: adPowerUp, adNotReady (PL/EN)
+
+### 2026-06-11
+- Google Play Games Services v2.1.0 integration
+- Global leaderboard for Challenge and Time Attack modes
+- Menu: global/local scores choice when signed in to Google Play
+- GPGSManager singleton handles sign-in, score posting, and native leaderboard UI
 
 ### 2026-06-09
 - Reorder game type buttons: Challenge (top) → Time Attack (middle) → Arcade (bottom)

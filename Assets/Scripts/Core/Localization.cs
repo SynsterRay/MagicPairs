@@ -83,6 +83,8 @@ namespace MagicPairs.Core
             { "gameMusic", new[] { "Muzyka w grze", "Game Music" } },
             { "globalScores", new[] { "Globalne wyniki", "Global Scores" } },
             { "localScores", new[] { "Lokalne wyniki", "Local Scores" } },
+            { "adPowerUp", new[] { "Bonus", "Bonus" } },
+            { "adNotReady", new[] { "Niedostępne", "Not ready" } },
         };
 
         public static string Get(string key)

@@ -7,41 +7,77 @@ namespace MagicPairs.Ads
     public class AdManager : MonoBehaviour
     {
 #if UNITY_ANDROID
-        private const string InterstitialId = "ca-app-pub-3940256099942544/1033173712";
-        private const string RewardedId = "ca-app-pub-3940256099942544/5224354917";
+        // TODO: Replace with your real AdMob unit IDs from https://apps.admob.com
+        private const string InterstitialId = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX";
+        private const string RewardedId = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX";
+        private const string BannerId = "ca-app-pub-4975261609017200/4058928414";
+        // Test IDs (uncomment for development):
+        // private const string InterstitialId = "ca-app-pub-3940256099942544/1033173712";
+        // private const string RewardedId = "ca-app-pub-3940256099942544/5224354917";
+        // private const string BannerId = "ca-app-pub-3940256099942544/9214589741";
 #else
         private const string InterstitialId = "unused";
         private const string RewardedId = "unused";
+        private const string BannerId = "unused";
 #endif
+
+        private const string GamesPlayedKey = "MagicPairs_GamesPlayed";
+        private const int GamesBeforeAd = 2;
 
         private InterstitialAd _interstitialAd;
         private RewardedAd _rewardedAd;
+        private BannerView _bannerView;
         private int _gamesPlayed;
-        private const int GamesBeforeAd = 2;
 
         private System.Action _onRewardEarned;
+        private System.Action _onRewardFailed;
 
         public bool IsRewardedReady => _rewardedAd != null && _rewardedAd.CanShowAd();
 
-        /// <summary>Call before starting a new game. Shows interstitial if due.</summary>
-        public void TryShowInterstitialBetweenGames()
+        /// <summary>Call after a COMPLETED game. Shows interstitial if due.</summary>
+        public void TryShowInterstitialAfterGame()
         {
             _gamesPlayed++;
+            PlayerPrefs.SetInt(GamesPlayedKey, _gamesPlayed);
+            PlayerPrefs.Save();
             if (_gamesPlayed >= GamesBeforeAd)
             {
                 _gamesPlayed = 0;
+                PlayerPrefs.SetInt(GamesPlayedKey, 0);
+                PlayerPrefs.Save();
                 ShowInterstitial();
             }
         }
 
+        // Keep old name for backward compat (calls from existing code)
+        public void TryShowInterstitialBetweenGames() => TryShowInterstitialAfterGame();
+
         private void Start()
         {
+            _gamesPlayed = PlayerPrefs.GetInt(GamesPlayedKey, 0);
+
             MobileAds.Initialize(status =>
             {
                 Debug.Log("[AdManager] AdMob initialized");
                 LoadInterstitial();
                 LoadRewarded();
+                ShowBanner();
             });
+        }
+
+        // --- Banner ---
+
+        public void ShowBanner()
+        {
+            if (_bannerView != null) { _bannerView.Show(); return; }
+
+            _bannerView = new BannerView(BannerId, AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth), AdPosition.Bottom);
+            _bannerView.LoadAd(new AdRequest());
+        }
+
+        public void HideBanner()
+        {
+            _bannerView?.Hide();
         }
 
         // --- Interstitial ---
@@ -84,7 +120,8 @@ namespace MagicPairs.Ads
             });
         }
 
-        public void ShowRewarded(System.Action onReward)
+        /// <summary>Shows rewarded ad. onReward called on success, onFailed if ad not available.</summary>
+        public void ShowRewarded(System.Action onReward, System.Action onFailed = null)
         {
             if (_rewardedAd != null && _rewardedAd.CanShowAd())
             {
@@ -95,12 +132,17 @@ namespace MagicPairs.Ads
                     _onRewardEarned = null;
                 });
             }
+            else
+            {
+                onFailed?.Invoke();
+            }
         }
 
         private void OnDestroy()
         {
             _interstitialAd?.Destroy();
             _rewardedAd?.Destroy();
+            _bannerView?.Destroy();
         }
     }
 }
