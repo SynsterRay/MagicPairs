@@ -633,8 +633,8 @@ namespace MagicPairs.UI
                 var rect = locked.GetComponent<RectTransform>();
                 float xStart = i == 1 ? 0.02f : 0.35f;
                 float xEnd = i == 1 ? 0.32f : 0.65f;
-                rect.anchorMin = new Vector2(xStart, -0.55f);
-                rect.anchorMax = new Vector2(xEnd, 0.1f);
+                rect.anchorMin = new Vector2(xStart, -0.1f);
+                rect.anchorMax = new Vector2(xEnd, 0.3f);
                 rect.offsetMin = Vector2.zero;
                 rect.offsetMax = Vector2.zero;
 
