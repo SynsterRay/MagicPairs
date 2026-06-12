@@ -65,6 +65,7 @@ namespace MagicPairs.GameFlow
                 _timeRemaining = 0f;
                 _running = false;
                 OnTimeUp?.Invoke();
+                Core.GPGSManager.Instance?.EventTimeAttackTimeout();
             }
         }
 

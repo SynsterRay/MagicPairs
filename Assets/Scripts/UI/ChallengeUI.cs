@@ -185,6 +185,7 @@ namespace MagicPairs.UI
                 if (_powerUpManager == null) return;
                 var type = (PowerUpType)Random.Range(0, 3);
                 _powerUpManager.AddPowerUp(type);
+                GPGSManager.Instance?.EventRewardedAd();
             }, ShowAdNotReadyFeedback);
         }
 
@@ -301,6 +302,8 @@ namespace MagicPairs.UI
 
                 // Continue the game — restart current level (not next!)
                 _challengeMode?.RestartCurrentLevel();
+                GPGSManager.Instance?.EventSecondChance();
+                GPGSManager.Instance?.EventRewardedAd();
             }, () =>
             {
                 // Ad not ready — hide button, show feedback

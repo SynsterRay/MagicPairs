@@ -98,6 +98,7 @@ namespace MagicPairs.GameFlow
             if (_challenge == null || _challenge.CurrentPlayerIndex != 0) return false;
             _peekCount--;
             OnPowerUpsChanged?.Invoke();
+            Core.GPGSManager.Instance?.EventPowerUpUsed();
             StartCoroutine(PeekCoroutine());
             return true;
         }
@@ -108,6 +109,7 @@ namespace MagicPairs.GameFlow
             if (_challenge == null || _challenge.CurrentPlayerIndex != 0) return false;
             _shuffleCount--;
             OnPowerUpsChanged?.Invoke();
+            Core.GPGSManager.Instance?.EventPowerUpUsed();
             ShuffleCards();
             return true;
         }
@@ -119,6 +121,8 @@ namespace MagicPairs.GameFlow
             _freezeCount--;
             _freezeActive = true;
             OnPowerUpsChanged?.Invoke();
+            Core.GPGSManager.Instance?.EventFreezeUsed();
+            Core.GPGSManager.Instance?.EventPowerUpUsed();
             return true;
         }
 

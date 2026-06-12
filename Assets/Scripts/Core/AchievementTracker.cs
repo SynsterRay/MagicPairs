@@ -47,6 +47,10 @@ namespace MagicPairs.Core
 
             // Incremental: game played
             GPGSManager.Instance?.IncrementGamePlayed();
+
+            // Events
+            GPGSManager.Instance?.EventGameStarted();
+            GPGSManager.Instance?.EventThemeSwitch();
         }
 
         private void OnPairMatched(int playerIndex, int colorIndex)
@@ -58,12 +62,19 @@ namespace MagicPairs.Core
 
             // Incremental: pairs found
             GPGSManager.Instance?.IncrementPairFound();
+
+            // Event
+            GPGSManager.Instance?.EventPairFound();
+            GPGSManager.Instance?.EventCardFlipped();
         }
 
         private void OnMismatch()
         {
             _hadMismatchThisLevel = true;
             _mismatchesThisLevel++;
+
+            // Event
+            GPGSManager.Instance?.EventMismatch();
         }
 
         private void OnJoker(int playerIndex)
@@ -73,15 +84,22 @@ namespace MagicPairs.Core
 
             // Incremental: Joker Magnet
             GPGSManager.Instance?.IncrementJokerHit();
+
+            // Event
+            GPGSManager.Instance?.EventJokerHit();
         }
 
         private void OnGameOver(int winnerIndex)
         {
+            // Event: game completed
+            GPGSManager.Instance?.EventGameCompleted();
+
             // Memory Master: win Arcade game
             if (!MainMenu.IsChallengeMode && !MainMenu.IsTimeAttackMode && winnerIndex == 0)
             {
                 GPGSManager.Instance?.UnlockMemoryMaster();
                 GPGSManager.Instance?.IncrementWin();
+                GPGSManager.Instance?.EventArcadeWin();
             }
 
             // Joker Survivor: hit joker 5+ times and still win
@@ -93,14 +111,20 @@ namespace MagicPairs.Core
         {
             // Streak x5
             if (streak >= 5)
+            {
                 GPGSManager.Instance?.UnlockStreakX5();
+                GPGSManager.Instance?.EventStreakX5();
+            }
         }
 
         private void OnLevelComplete(int level)
         {
             // Perfect Level: no mismatches this level
             if (!_hadMismatchThisLevel)
+            {
                 GPGSManager.Instance?.UnlockPerfectLevel();
+                GPGSManager.Instance?.EventPerfectLevel();
+            }
 
             // Reset for next level
             _hadMismatchThisLevel = false;
@@ -113,6 +137,9 @@ namespace MagicPairs.Core
             // Incremental
             GPGSManager.Instance?.IncrementLevelComplete();
             GPGSManager.Instance?.IncrementWin();
+
+            // Event
+            GPGSManager.Instance?.EventLevelCompleted();
         }
 
         private void OnTimeAttackComplete(float timeLeft)
@@ -126,6 +153,9 @@ namespace MagicPairs.Core
                 GPGSManager.Instance?.UnlockSpeedDemon();
 
             GPGSManager.Instance?.IncrementWin();
+
+            // Event
+            GPGSManager.Instance?.EventTimeAttackWin();
         }
 
         private void TrackThemePlayed()

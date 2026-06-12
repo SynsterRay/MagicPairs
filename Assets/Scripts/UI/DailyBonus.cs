@@ -142,6 +142,8 @@ namespace MagicPairs.UI
                     powerUp.AddPowerUp(_todayReward);
             }
 
+            GPGSManager.Instance?.EventDailyBonus();
+
             if (_popup != null) Destroy(_popup);
         }
 

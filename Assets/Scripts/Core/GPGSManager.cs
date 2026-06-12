@@ -109,6 +109,56 @@ namespace MagicPairs.Core
         public void IncrementWin() => Increment(AchWinner, 1);
         public void IncrementJokerHit() => Increment(AchJokerMagnet, 1);
 
+        // --- Events ---
+
+        private const string EvtPairsFound = "CglxYnu6M4MEAIQew";
+        private const string EvtGamesStarted = "CglxYnu6M4MEAIQFA";
+        private const string EvtGamesCompleted = "CglxYnu6M4MEAIQFQ";
+        private const string EvtChallengeFailed = "CglxYnu6M4MEAIQFg";
+        private const string EvtJokerHits = "CglxYnu6M4MEAIQFw";
+        private const string EvtMismatches = "CglxYnu6M4MEAIQGA";
+        private const string EvtLevelsCompleted = "CglxYnu6M4MEAIQGQ";
+        private const string EvtStreakX5 = "CglxYnu6M4MEAIQGg";
+        private const string EvtRewardedAds = "CglxYnu6M4MEAIQGw";
+        private const string EvtTimeAttackTimeouts = "CglxYnu6M4MEAIQHA";
+        private const string EvtArcadeWins = "CglxYnu6M4MEAIQHQ";
+        private const string EvtCardsFlipped = "CglxYnu6M4MEAIQHg";
+        private const string EvtDailyBonus = "CglxYnu6M4MEAIQHw";
+        private const string EvtSecondChance = "CglxYnu6M4MEAIQIA";
+        private const string EvtPerfectLevels = "CglxYnu6M4MEAIQIQ";
+        private const string EvtFreezeUsed = "CglxYnu6M4MEAIQIg";
+        private const string EvtThemeSwitches = "CglxYnu6M4MEAIQIw";
+        private const string EvtPowerUpsUsed = "CglxYnu6M4MEAIQJA";
+        private const string EvtTimeAttackWins = "CglxYnu6M4MEAIQJQ";
+        private const string EvtTotalScore = "CglxYnu6M4MEAIQJg";
+
+        public void EventPairFound() => SubmitEvent(EvtPairsFound, 1);
+        public void EventGameStarted() => SubmitEvent(EvtGamesStarted, 1);
+        public void EventGameCompleted() => SubmitEvent(EvtGamesCompleted, 1);
+        public void EventChallengeFailed() => SubmitEvent(EvtChallengeFailed, 1);
+        public void EventJokerHit() => SubmitEvent(EvtJokerHits, 1);
+        public void EventMismatch() => SubmitEvent(EvtMismatches, 1);
+        public void EventLevelCompleted() => SubmitEvent(EvtLevelsCompleted, 1);
+        public void EventStreakX5() => SubmitEvent(EvtStreakX5, 1);
+        public void EventRewardedAd() => SubmitEvent(EvtRewardedAds, 1);
+        public void EventTimeAttackTimeout() => SubmitEvent(EvtTimeAttackTimeouts, 1);
+        public void EventArcadeWin() => SubmitEvent(EvtArcadeWins, 1);
+        public void EventCardFlipped() => SubmitEvent(EvtCardsFlipped, 1);
+        public void EventDailyBonus() => SubmitEvent(EvtDailyBonus, 1);
+        public void EventSecondChance() => SubmitEvent(EvtSecondChance, 1);
+        public void EventPerfectLevel() => SubmitEvent(EvtPerfectLevels, 1);
+        public void EventFreezeUsed() => SubmitEvent(EvtFreezeUsed, 1);
+        public void EventThemeSwitch() => SubmitEvent(EvtThemeSwitches, 1);
+        public void EventPowerUpUsed() => SubmitEvent(EvtPowerUpsUsed, 1);
+        public void EventTimeAttackWin() => SubmitEvent(EvtTimeAttackWins, 1);
+        public void EventTotalScore(int amount) => SubmitEvent(EvtTotalScore, amount);
+
+        private void SubmitEvent(string eventId, int count)
+        {
+            if (!IsAuthenticated) return;
+            PlayGamesPlatform.Instance.Events.IncrementEvent(eventId, (uint)count);
+        }
+
         // --- Helpers ---
 
         private void Unlock(string id)
