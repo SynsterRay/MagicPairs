@@ -463,12 +463,9 @@ namespace MagicPairs.UI
             if (challengeThemePanel != null) challengeThemePanel.SetActive(true);
             if (challengeThemeTitle != null)
                 challengeThemeTitle.text = Localization.Get("chooseTheme");
-            if (challengeColorsButton != null)
-                challengeColorsButton.GetComponentInChildren<Text>().text = Localization.Get("themeColors");
-            if (challengePrincessButton != null)
-                challengePrincessButton.GetComponentInChildren<Text>().text = Localization.Get("themePrincess");
-            if (challengeCarsButton != null)
-                challengeCarsButton.GetComponentInChildren<Text>().text = Localization.Get("themeCars");
+            SetThemeButtonSprite(challengeCarsButton, "CarCards");
+            SetThemeButtonSprite(challengePrincessButton, "PrincessCards");
+            SetThemeButtonLabel(challengeColorsButton, Localization.Get("themeColors"));
         }
 
         private void SelectChallengeTheme(Core.CardTheme theme)
@@ -547,12 +544,9 @@ namespace MagicPairs.UI
             if (themePanel != null) themePanel.SetActive(true);
             if (themeTitle != null)
                 themeTitle.text = Localization.Get("chooseTheme");
-            if (colorsThemeButton != null)
-                colorsThemeButton.GetComponentInChildren<Text>().text = Localization.Get("themeColors");
-            if (princessThemeButton != null)
-                princessThemeButton.GetComponentInChildren<Text>().text = Localization.Get("themePrincess");
-            if (carsThemeButton != null)
-                carsThemeButton.GetComponentInChildren<Text>().text = Localization.Get("themeCars");
+            SetThemeButtonSprite(carsThemeButton, "CarCards");
+            SetThemeButtonSprite(princessThemeButton, "PrincessCards");
+            SetThemeButtonLabel(colorsThemeButton, Localization.Get("themeColors"));
         }
 
         private void SelectTheme(Core.CardTheme theme)
@@ -560,6 +554,48 @@ namespace MagicPairs.UI
             var config = GameManager.Instance.Config;
             if (config != null) config.theme = theme;
             ShowNamesPanel();
+        }
+
+        private void SetThemeButtonSprite(Button button, string folder)
+        {
+            if (button == null) return;
+            var sprites = Resources.LoadAll<Sprite>(folder);
+            Sprite card = null;
+            foreach (var s in sprites)
+            {
+                if (!s.name.Contains("joker") && !s.name.Contains("back"))
+                { card = s; break; }
+            }
+            if (card == null)
+            {
+                var textures = Resources.LoadAll<Texture2D>(folder);
+                foreach (var tex in textures)
+                {
+                    if (tex.name.Contains("joker") || tex.name.Contains("back")) continue;
+                    card = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+                    break;
+                }
+            }
+            if (card == null) return;
+
+            var img = button.GetComponent<Image>();
+            img.sprite = card;
+            img.color = Color.white;
+            img.preserveAspect = true;
+            // Hide text
+            var txt = button.GetComponentInChildren<Text>();
+            if (txt != null) txt.text = "";
+        }
+
+        private void SetThemeButtonLabel(Button button, string label)
+        {
+            if (button == null) return;
+            var img = button.GetComponent<Image>();
+            img.sprite = RoundedButtonHelper.GetRoundedSprite();
+            img.type = Image.Type.Sliced;
+            img.preserveAspect = false;
+            var txt = button.GetComponentInChildren<Text>();
+            if (txt != null) txt.text = label;
         }
 
         private void ApplyDifficulty(Difficulty diff)
