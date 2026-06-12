@@ -466,9 +466,9 @@ namespace MagicPairs.UI
             SetThemeButtonSprite(challengeCarsButton, "CarCards");
             SetThemeButtonSprite(challengePrincessButton, "PrincessCards");
             SetThemeButtonLabel(challengeColorsButton, Localization.Get("themeColors"));
-            StyleAsCard(challengeCarsButton, new Vector2(0.02f, 0.25f), new Vector2(0.32f, 0.8f));
-            StyleAsCard(challengePrincessButton, new Vector2(0.35f, 0.25f), new Vector2(0.65f, 0.8f));
-            StyleAsCard(challengeColorsButton, new Vector2(0.68f, 0.25f), new Vector2(0.98f, 0.8f));
+            StyleAsCard(challengeCarsButton, new Vector2(0.02f, 0.35f), new Vector2(0.32f, 0.8f));
+            StyleAsCard(challengePrincessButton, new Vector2(0.35f, 0.35f), new Vector2(0.65f, 0.8f));
+            StyleAsCard(challengeColorsButton, new Vector2(0.68f, 0.35f), new Vector2(0.98f, 0.8f));
             EnsureLockedCards(challengeThemePanel.transform);
         }
 
@@ -551,9 +551,9 @@ namespace MagicPairs.UI
             SetThemeButtonSprite(carsThemeButton, "CarCards");
             SetThemeButtonSprite(princessThemeButton, "PrincessCards");
             SetThemeButtonLabel(colorsThemeButton, Localization.Get("themeColors"));
-            StyleAsCard(carsThemeButton, new Vector2(0.02f, 0.25f), new Vector2(0.32f, 0.8f));
-            StyleAsCard(princessThemeButton, new Vector2(0.35f, 0.25f), new Vector2(0.65f, 0.8f));
-            StyleAsCard(colorsThemeButton, new Vector2(0.68f, 0.25f), new Vector2(0.98f, 0.8f));
+            StyleAsCard(carsThemeButton, new Vector2(0.02f, 0.35f), new Vector2(0.32f, 0.8f));
+            StyleAsCard(princessThemeButton, new Vector2(0.35f, 0.35f), new Vector2(0.65f, 0.8f));
+            StyleAsCard(colorsThemeButton, new Vector2(0.68f, 0.35f), new Vector2(0.98f, 0.8f));
             EnsureLockedCards(themePanel.transform);
         }
 
