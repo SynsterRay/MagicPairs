@@ -46,12 +46,15 @@ namespace MagicPairs.Core
             SignIn();
         }
 
+        public static event System.Action OnAuthChanged;
+
         public void SignIn()
         {
             PlayGamesPlatform.Instance.Authenticate(status =>
             {
                 IsAuthenticated = status == SignInStatus.Success;
                 Debug.Log($"[GPGS] Sign in: {status}");
+                OnAuthChanged?.Invoke();
             });
         }
 
