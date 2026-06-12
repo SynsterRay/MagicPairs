@@ -11,7 +11,7 @@ namespace MagicPairs.GameFlow
         public int CurrentPlayerIndex { get; private set; }
 
         [SerializeField] private float aiThinkDelay = 1.0f;
-        [SerializeField] [Range(0f, 1f)] private float baseAiMemory = 0.3f;
+        [SerializeField] [Range(0f, 1f)] private float baseAiMemory = 0.4f;
 
         private CardController _firstPick;
         private bool _waitingForResult;
@@ -122,9 +122,9 @@ namespace MagicPairs.GameFlow
             _totalPairs = _config.PairCount;
             _pairsFound = 0;
 
-            // AI scales: +4% per cycle, smooth progression
-            // Cycle 0: 30%, Cycle 1: 34%, Cycle 2: 38%... max 90%
-            _currentAiMemory = Mathf.Min(0.90f, baseAiMemory + cycle * 0.04f);
+            // AI scales: grows with level, steeper early then flattens
+            // Level 1: 40%, Level 5: 52%, Level 10: 62%, Level 15: 70%... max 90%
+            _currentAiMemory = Mathf.Min(0.90f, baseAiMemory + (_currentLevel - 1) * 0.03f);
         }
 
         private void GetGridSize(int totalCards, out int rows, out int cols)
