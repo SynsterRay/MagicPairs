@@ -129,9 +129,9 @@ namespace MagicPairs.GameFlow
 
         private void GetGridSize(int totalCards, out int rows, out int cols)
         {
-            // Find grid where rows*cols == totalCards (totalCards is always odd: pairs*2+1)
-            if (totalCards <= 5) { rows = 1; cols = totalCards; }
-            else if (totalCards <= 7) { rows = 2; cols = (totalCards + 1) / 2; }
+            // Find grid where rows*cols >= totalCards, optimized for larger cards
+            if (totalCards <= 5) { rows = 2; cols = 3; }
+            else if (totalCards <= 7) { rows = 2; cols = 4; }
             else if (totalCards <= 9) { rows = 3; cols = 3; }
             else if (totalCards <= 12) { rows = 3; cols = 4; }
             else if (totalCards <= 15) { rows = 3; cols = 5; }
