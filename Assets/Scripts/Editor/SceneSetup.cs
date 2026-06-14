@@ -124,6 +124,7 @@ namespace MagicPairs.Editor
             gm.AddComponent<Ads.AdManager>();
             gm.AddComponent<Core.GPGSManager>();
             gm.AddComponent<Core.AchievementTracker>();
+            gm.AddComponent<Core.IAPManager>();
 
             var cardGrid = gm.AddComponent<Cards.CardGrid>();
             gm.AddComponent<Cards.PairCollector>();
@@ -531,23 +532,23 @@ namespace MagicPairs.Editor
             startPanelRect.offsetMax = Vector2.zero;
 
             var playBtn = CreateButton("PlayBtn", "Graj", startPanel.transform,
-                new Vector2(0.2f, 0.76f), new Vector2(0.8f, 0.96f));
+                new Vector2(0.2f, 0.83f), new Vector2(0.8f, 0.98f));
             playBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var shopBtn = CreateButton("ShopBtn", "🪙 Sklep", startPanel.transform,
-                new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.72f));
+                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.79f));
             shopBtn.GetComponent<Image>().color = new Color(0.9f, 0.7f, 0.1f, 1f);
 
             var optionsBtn = CreateButton("OptionsBtn", "Opcje", startPanel.transform,
-                new Vector2(0.2f, 0.28f), new Vector2(0.8f, 0.48f));
+                new Vector2(0.2f, 0.45f), new Vector2(0.8f, 0.60f));
             optionsBtn.GetComponent<Image>().color = new Color(0.3f, 0.5f, 0.8f, 1f);
 
             var leaderBtn = CreateButton("LeaderboardBtn", "Wyniki", startPanel.transform,
-                new Vector2(0.2f, 0.04f), new Vector2(0.8f, 0.24f));
+                new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.41f));
             leaderBtn.GetComponent<Image>().color = new Color(0.8f, 0.6f, 0.1f, 1f);
 
             var quitBtn = CreateButton("QuitBtn", "Wyjdź", startPanel.transform,
-                new Vector2(0.2f, -0.20f), new Vector2(0.8f, 0.0f));
+                new Vector2(0.2f, 0.07f), new Vector2(0.8f, 0.22f));
             quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
 
             // --- Start Leaderboard Panel ---

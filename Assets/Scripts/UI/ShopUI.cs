@@ -196,6 +196,23 @@ namespace MagicPairs.UI
                 statusRect.offsetMin = Vector2.zero;
                 statusRect.offsetMax = Vector2.zero;
             }
+            else if (item.type == ShopItemType.CardTheme)
+            {
+                // Card themes locked until graphics are ready
+                var statusObj = new GameObject("Status");
+                statusObj.transform.SetParent(row.transform, false);
+                var statusTxt = statusObj.AddComponent<Text>();
+                statusTxt.text = "🔒";
+                statusTxt.fontSize = 28;
+                statusTxt.alignment = TextAnchor.MiddleCenter;
+                statusTxt.color = new Color(0.5f, 0.5f, 0.5f);
+                statusTxt.font = UIFactory.GetFont();
+                var statusRect = statusObj.GetComponent<RectTransform>();
+                statusRect.anchorMin = new Vector2(0.7f, 0.15f);
+                statusRect.anchorMax = new Vector2(0.95f, 0.85f);
+                statusRect.offsetMin = Vector2.zero;
+                statusRect.offsetMax = Vector2.zero;
+            }
             else
             {
                 var buyBtn = CreateBuyButton(row.transform, $"🪙 {item.coinPrice}");
@@ -320,9 +337,21 @@ namespace MagicPairs.UI
 
         private void OnBuyCoinPack(ShopItem item)
         {
-            // TODO: Integrate with Unity IAP
-            // For now, show placeholder message
-            Debug.Log($"[Shop] IAP purchase: {item.iapProductId} for {item.quantity} coins");
+            var iap = Core.IAPManager.Instance;
+            if (iap == null || !iap.IsInitialized || string.IsNullOrEmpty(item.iapProductId))
+            {
+                Debug.LogWarning("[Shop] IAP not ready");
+                return;
+            }
+
+            iap.BuyProduct(item.iapProductId, success =>
+            {
+                if (success)
+                {
+                    UpdateCoinsDisplay(PlayerWallet.Coins);
+                    PopulateItems();
+                }
+            });
         }
 
         private void RestoreCoinsText()
@@ -359,6 +388,12 @@ namespace MagicPairs.UI
 
         private string GetCoinPackPrice(ShopItem item)
         {
+            var iap = Core.IAPManager.Instance;
+            if (iap != null && iap.IsInitialized)
+            {
+                var price = iap.GetLocalizedPrice(item.iapProductId);
+                if (!string.IsNullOrEmpty(price)) return price;
+            }
             return item.quantity switch
             {
                 100 => "$0.99",
