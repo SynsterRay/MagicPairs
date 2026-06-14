@@ -131,8 +131,8 @@ namespace MagicPairs.Cards
             var cam = UnityEngine.Camera.main;
             float aspect = cam != null ? cam.aspect : 9f / 16f;
 
-            // Available area: full width, 85% height (top 15% = UI bar)
-            float screenAspect = aspect / 0.85f;
+            // Available area: full width, 82% height (top 18% = UI bar)
+            float screenAspect = aspect / 0.82f;
 
             // Find best rows x cols for this screen
             FindBestGrid(cardCount, screenAspect, out int rows, out int cols);
@@ -143,7 +143,7 @@ namespace MagicPairs.Cards
 
             // Start with ortho=5 to calculate available world space
             float ortho = 5f;
-            float availH = ortho * 2f * 0.85f;
+            float availH = ortho * 2f * 0.82f;
             float availW = ortho * 2f * aspect;
 
             // Max card size that fits
@@ -163,14 +163,14 @@ namespace MagicPairs.Cards
             // Fit camera
             if (cam != null)
             {
-                float neededH = (totalHeight + spacing * 2) / (2f * 0.85f);
+                float neededH = (totalHeight + spacing * 2) / (2f * 0.82f);
                 float neededW = (totalWidth + spacing * 2) / (2f * aspect);
                 cam.orthographicSize = Mathf.Max(neededH, neededW);
                 ortho = cam.orthographicSize;
             }
 
             // Center grid below UI
-            float gridCenterY = -ortho * 0.15f;
+            float gridCenterY = -ortho * 0.18f;
             Vector3 origin = new(-totalWidth * 0.5f, gridCenterY + totalHeight * 0.5f, 0f);
             Vector3 dealFrom = new(0f, gridCenterY + totalHeight * 0.5f + 2f, 0f);
 

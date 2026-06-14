@@ -161,7 +161,8 @@ namespace MagicPairs.Audio
         private void OnGameStarted()
         {
             StopMenuMusic();
-            PlayGameMusic();
+            if (!_gamePlaying)
+                PlayGameMusic();
         }
 
         public void PlayMenuMusic()

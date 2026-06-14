@@ -187,7 +187,7 @@ namespace MagicPairs.Editor
             var topBarImg = topBar.AddComponent<Image>();
             topBarImg.color = Color.white;
             var topBarRect = topBar.GetComponent<RectTransform>();
-            topBarRect.anchorMin = new Vector2(0f, 0.85f);
+            topBarRect.anchorMin = new Vector2(0f, 0.82f);
             topBarRect.anchorMax = new Vector2(1f, 0.93f);
             topBarRect.offsetMin = Vector2.zero;
             topBarRect.offsetMax = Vector2.zero;
@@ -195,7 +195,7 @@ namespace MagicPairs.Editor
             var scorePanel = new GameObject("ScorePanel");
             scorePanel.transform.SetParent(topBar.transform, false);
             var scoreRect = scorePanel.AddComponent<RectTransform>();
-            scoreRect.anchorMin = new Vector2(0f, 0f);
+            scoreRect.anchorMin = new Vector2(0f, 0.3f);
             scoreRect.anchorMax = new Vector2(1f, 1f);
             scoreRect.offsetMin = Vector2.zero;
             scoreRect.offsetMax = Vector2.zero;
@@ -212,8 +212,20 @@ namespace MagicPairs.Editor
             sdSo.ApplyModifiedProperties();
 
             // Turn Indicator
-            var turnText = CreateUIText("TurnIndicator", "Tura: Gracz 1", canvas.transform,
-                new Vector2(0.2f, 0.78f), new Vector2(0.8f, 0.85f), TextAnchor.MiddleCenter, 18);
+            // Gray turn bar — bottom strip of TopBar (background for turn indicator)
+            var turnBar = new GameObject("TurnBar");
+            turnBar.transform.SetParent(topBar.transform, false);
+            var turnBarImg = turnBar.AddComponent<Image>();
+            turnBarImg.color = new Color(0.88f, 0.88f, 0.90f, 1f);
+            var turnBarRect = turnBar.GetComponent<RectTransform>();
+            turnBarRect.anchorMin = new Vector2(0f, 0f);
+            turnBarRect.anchorMax = new Vector2(1f, 0.3f);
+            turnBarRect.offsetMin = Vector2.zero;
+            turnBarRect.offsetMax = Vector2.zero;
+
+            // Turn Indicator — bottom of white TopBar, below scores
+            var turnText = CreateUIText("TurnIndicator", "Tura: Gracz 1", topBar.transform,
+                new Vector2(0.2f, 0f), new Vector2(0.8f, 0.3f), TextAnchor.MiddleCenter, 14);
 
             // Pause/Menu Button (top right corner)
             var pauseBtn = CreateButton("PauseBtn", "✕", canvas.transform,
@@ -295,13 +307,13 @@ namespace MagicPairs.Editor
 
             // Buttons to view collected cards (below score panel, left and right)
             var p1CollBtn = CreateButton("P1CollBtn", "Karty", canvas.transform,
-                new Vector2(-0.01f, 0.85f), new Vector2(0.15f, 0.93f));
+                new Vector2(-0.01f, 0.82f), new Vector2(0.15f, 0.93f));
             p1CollBtn.GetComponent<Image>().color = new Color(0.3f, 0.6f, 0.9f, 1f);
             p1CollBtn.GetComponentInChildren<Text>().fontSize = 36;
             p1CollBtn.SetActive(false);
 
             var p2CollBtn = CreateButton("P2CollBtn", "Karty", canvas.transform,
-                new Vector2(0.85f, 0.85f), new Vector2(1.01f, 0.93f));
+                new Vector2(0.85f, 0.82f), new Vector2(1.01f, 0.93f));
             p2CollBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.4f, 1f);
             p2CollBtn.GetComponentInChildren<Text>().fontSize = 36;
             p2CollBtn.SetActive(false);
@@ -352,7 +364,7 @@ namespace MagicPairs.Editor
             var chScorePanel = new GameObject("ChallengeScorePanel");
             chScorePanel.transform.SetParent(canvas.transform, false);
             var chScoreRect = chScorePanel.AddComponent<RectTransform>();
-            chScoreRect.anchorMin = new Vector2(0.15f, 0.85f);
+            chScoreRect.anchorMin = new Vector2(0.15f, 0.82f);
             chScoreRect.anchorMax = new Vector2(0.85f, 0.93f);
             chScoreRect.offsetMin = Vector2.zero;
             chScoreRect.offsetMax = Vector2.zero;
