@@ -345,14 +345,14 @@ namespace MagicPairs.UI
             {
                 ShopItemType.CardTheme => item.id switch
                 {
-                    "theme_animals" => "🐾 Animals",
-                    "theme_dinos" => "🦕 Dinosaurs",
-                    "theme_space" => "🚀 Space",
+                    "theme_animals" => Localization.CurrentLanguage == Language.Polish ? "Zwierzęta" : "Animals",
+                    "theme_dinos" => Localization.CurrentLanguage == Language.Polish ? "Dinozaury" : "Dinosaurs",
+                    "theme_space" => Localization.CurrentLanguage == Language.Polish ? "Kosmos" : "Space",
                     _ => item.id
                 },
-                ShopItemType.PowerUpPeek => $"🔍 {Localization.Get("peek")} x{item.quantity}",
-                ShopItemType.PowerUpShuffle => $"🔄 {Localization.Get("shuffle")} x{item.quantity}",
-                ShopItemType.PowerUpFreeze => $"❄️ {Localization.Get("freeze")} x{item.quantity}",
+                ShopItemType.PowerUpPeek => $"{Localization.Get("peek")} x{item.quantity}",
+                ShopItemType.PowerUpShuffle => $"{Localization.Get("shuffle")} x{item.quantity}",
+                ShopItemType.PowerUpFreeze => $"{Localization.Get("freeze")} x{item.quantity}",
                 _ => item.id
             };
         }
