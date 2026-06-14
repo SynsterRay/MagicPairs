@@ -472,6 +472,7 @@ namespace MagicPairs.Editor
             canvas.AddComponent<UI.TimeAttackUI>();
             canvas.AddComponent<UI.DailyBonus>();
             canvas.AddComponent<UI.ShopUI>();
+            canvas.AddComponent<UI.CoinPopup>();
 
             // Main Menu Panel
             var menuPanel = new GameObject("MenuPanel");
