@@ -218,6 +218,12 @@ namespace MagicPairs.UI
             if (optionsButtonText != null) optionsButtonText.text = Localization.Get("options");
             if (leaderboardButtonText != null) leaderboardButtonText.text = Localization.Get("scores");
             if (quitButton != null) quitButton.GetComponentInChildren<Text>().text = Localization.Get("quit");
+            var shopBtnObj = startPanel?.transform.Find("ShopBtn");
+            if (shopBtnObj != null)
+            {
+                var txt = shopBtnObj.GetComponentInChildren<Text>();
+                if (txt != null) txt.text = $"🪙 {Localization.Get("shop")}";
+            }
         }
 
         private void UpdateAchievementsButton()

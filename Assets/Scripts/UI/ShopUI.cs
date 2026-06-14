@@ -59,22 +59,23 @@ namespace MagicPairs.UI
                 new Vector2(0.6f, 0.88f), new Vector2(0.95f, 0.96f), TextAnchor.MiddleRight, 28);
             _coinsText.color = new Color(0.8f, 0.6f, 0.1f);
 
-            // Scroll content
+            // Scroll content area
             var scrollArea = new GameObject("ScrollArea");
             scrollArea.transform.SetParent(_panel.transform, false);
-            var scrollRect = scrollArea.AddComponent<RectTransform>();
-            scrollRect.anchorMin = new Vector2(0.05f, 0.12f);
-            scrollRect.anchorMax = new Vector2(0.95f, 0.86f);
-            scrollRect.offsetMin = Vector2.zero;
-            scrollRect.offsetMax = Vector2.zero;
+            var scrollAreaRect = scrollArea.AddComponent<RectTransform>();
+            scrollAreaRect.anchorMin = new Vector2(0.03f, 0.12f);
+            scrollAreaRect.anchorMax = new Vector2(0.97f, 0.87f);
+            scrollAreaRect.offsetMin = Vector2.zero;
+            scrollAreaRect.offsetMax = Vector2.zero;
+            scrollArea.AddComponent<RectMask2D>();
 
             _content = new GameObject("Content").transform;
             _content.SetParent(scrollArea.transform, false);
             var contentRect = _content.gameObject.AddComponent<RectTransform>();
-            contentRect.anchorMin = Vector2.zero;
-            contentRect.anchorMax = Vector2.one;
-            contentRect.offsetMin = Vector2.zero;
-            contentRect.offsetMax = Vector2.zero;
+            contentRect.anchorMin = new Vector2(0f, 1f);
+            contentRect.anchorMax = new Vector2(1f, 1f);
+            contentRect.pivot = new Vector2(0.5f, 1f);
+            contentRect.sizeDelta = new Vector2(0f, 0f);
             var layout = _content.gameObject.AddComponent<VerticalLayoutGroup>();
             layout.spacing = 12f;
             layout.padding = new RectOffset(10, 10, 10, 10);
@@ -82,6 +83,12 @@ namespace MagicPairs.UI
             layout.childForceExpandHeight = false;
             var fitter = _content.gameObject.AddComponent<ContentSizeFitter>();
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var scroll = scrollArea.AddComponent<ScrollRect>();
+            scroll.content = contentRect;
+            scroll.vertical = true;
+            scroll.horizontal = false;
+            scroll.movementType = ScrollRect.MovementType.Elastic;
 
             // Back button
             var backBtn = UIFactory.CreateButton("ShopBackBtn", "←", _panel.transform,
