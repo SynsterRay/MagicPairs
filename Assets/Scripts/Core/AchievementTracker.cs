@@ -57,6 +57,9 @@ namespace MagicPairs.Core
         {
             if (playerIndex != 0) return; // Only human player
 
+            // Coins: 2 per pair found
+            PlayerWallet.Add(2);
+
             // First Pair
             GPGSManager.Instance?.UnlockFirstPair();
 

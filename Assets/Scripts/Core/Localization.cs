@@ -88,6 +88,11 @@ namespace MagicPairs.Core
             { "dailyBonus", new[] { "Codzienna nagroda!", "Daily Bonus!" } },
             { "dailyStreak", new[] { "Seria: {0} dni", "Streak: {0} days" } },
             { "claim", new[] { "Odbierz", "Claim" } },
+            { "coins", new[] { "Monety", "Coins" } },
+            { "shop", new[] { "Sklep", "Shop" } },
+            { "buy", new[] { "Kup", "Buy" } },
+            { "notEnough", new[] { "Za mało monet", "Not enough coins" } },
+            { "purchased", new[] { "Kupiono!", "Purchased!" } },
         };
 
         public static string Get(string key)

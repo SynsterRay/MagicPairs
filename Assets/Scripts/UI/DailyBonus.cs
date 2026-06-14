@@ -133,6 +133,10 @@ namespace MagicPairs.UI
             PlayerPrefs.SetInt(StreakKey, _streak);
             PlayerPrefs.Save();
 
+            // Grant coins: 10 × streak day (10, 20, 30... max 70)
+            int coinReward = Mathf.Min(_streak * 10, 70);
+            PlayerWallet.Add(coinReward);
+
             // Grant power-up(s)
             var powerUp = FindAnyObjectByType<PowerUpManager>();
             if (powerUp != null)
