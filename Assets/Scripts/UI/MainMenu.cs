@@ -123,6 +123,7 @@ namespace MagicPairs.UI
             quitButton?.onClick.AddListener(() => Application.Quit());
             creditsButton?.onClick.AddListener(ShowCredits);
             creditsBackButton?.onClick.AddListener(ShowOptionsPanel);
+            WireShopButton();
             optionsBackButton?.onClick.AddListener(ShowStartPanel);
             languageButton?.onClick.AddListener(ShowLanguagePanel);
             languageBackButton?.onClick.AddListener(ShowOptionsPanel);
@@ -187,6 +188,19 @@ namespace MagicPairs.UI
             if (challengeNamesPanel != null) challengeNamesPanel.SetActive(false);
             if (challengeThemePanel != null) challengeThemePanel.SetActive(false);
             if (startLeaderboardPanel != null) startLeaderboardPanel.SetActive(false);
+        }
+
+        private void WireShopButton()
+        {
+            var shopBtnObj = startPanel?.transform.Find("ShopBtn");
+            if (shopBtnObj == null) return;
+            var btn = shopBtnObj.GetComponent<Button>();
+            btn?.onClick.AddListener(() =>
+            {
+                if (menuPanel != null) menuPanel.SetActive(false);
+                var shop = FindAnyObjectByType<ShopUI>();
+                shop?.Show(() => ShowStartPanel());
+            });
         }
 
         private void ShowStartPanel()

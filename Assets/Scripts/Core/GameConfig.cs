@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MagicPairs.Core
 {
-    public enum CardTheme { Colors, Princess, Cars }
+    public enum CardTheme { Colors, Princess, Cars, Animals, Dinos, Space }
 
     [CreateAssetMenu(fileName = "GameConfig", menuName = "MagicPairs/Game Config")]
     public class GameConfig : ScriptableObject

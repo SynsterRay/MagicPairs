@@ -471,6 +471,7 @@ namespace MagicPairs.Editor
             canvas.AddComponent<UI.ScorePopup>();
             canvas.AddComponent<UI.TimeAttackUI>();
             canvas.AddComponent<UI.DailyBonus>();
+            canvas.AddComponent<UI.ShopUI>();
 
             // Main Menu Panel
             var menuPanel = new GameObject("MenuPanel");
@@ -532,16 +533,20 @@ namespace MagicPairs.Editor
                 new Vector2(0.2f, 0.76f), new Vector2(0.8f, 0.96f));
             playBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
-            var optionsBtn = CreateButton("OptionsBtn", "Opcje", startPanel.transform,
+            var shopBtn = CreateButton("ShopBtn", "🪙 Sklep", startPanel.transform,
                 new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.72f));
+            shopBtn.GetComponent<Image>().color = new Color(0.9f, 0.7f, 0.1f, 1f);
+
+            var optionsBtn = CreateButton("OptionsBtn", "Opcje", startPanel.transform,
+                new Vector2(0.2f, 0.28f), new Vector2(0.8f, 0.48f));
             optionsBtn.GetComponent<Image>().color = new Color(0.3f, 0.5f, 0.8f, 1f);
 
             var leaderBtn = CreateButton("LeaderboardBtn", "Wyniki", startPanel.transform,
-                new Vector2(0.2f, 0.28f), new Vector2(0.8f, 0.48f));
+                new Vector2(0.2f, 0.04f), new Vector2(0.8f, 0.24f));
             leaderBtn.GetComponent<Image>().color = new Color(0.8f, 0.6f, 0.1f, 1f);
 
             var quitBtn = CreateButton("QuitBtn", "Wyjdź", startPanel.transform,
-                new Vector2(0.2f, 0.04f), new Vector2(0.8f, 0.24f));
+                new Vector2(0.2f, -0.20f), new Vector2(0.8f, 0.0f));
             quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
 
             // --- Start Leaderboard Panel ---
