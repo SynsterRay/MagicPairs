@@ -127,51 +127,110 @@ namespace MagicPairs.Cards
 
         private void SpawnCards(List<CardData> deck)
         {
-            float totalWidth = _config.gridCols * (_config.cardWidth + _config.cardSpacing) - _config.cardSpacing;
-            float totalHeight = _config.gridRows * (_config.cardHeight + _config.cardSpacing) - _config.cardSpacing;
-
-            // Adjust camera to fit grid, accounting for UI bar taking top 15% of screen
+            int cardCount = deck.Count;
             var cam = UnityEngine.Camera.main;
+            float aspect = cam != null ? cam.aspect : 9f / 16f;
+
+            // Available area: full width, 85% height (top 15% = UI bar)
+            float screenAspect = aspect / 0.85f;
+
+            // Find best rows x cols for this screen
+            FindBestGrid(cardCount, screenAspect, out int rows, out int cols);
+
+            // Card aspect ratio 1:1.4
+            float cardAspect = 1f / 1.4f;
+            float spacing = 0.12f;
+
+            // Start with ortho=5 to calculate available world space
+            float ortho = 5f;
+            float availH = ortho * 2f * 0.85f;
+            float availW = ortho * 2f * aspect;
+
+            // Max card size that fits
+            float maxW = (availW - spacing * (cols + 1)) / cols;
+            float maxH = (availH - spacing * (rows + 1)) / rows;
+
+            float cardW, cardH;
+            if (maxW / cardAspect <= maxH)
+            { cardW = maxW; cardH = cardW / cardAspect; }
+            else
+            { cardH = maxH; cardW = cardH * cardAspect; }
+
+            // Total grid size
+            float totalWidth = cols * cardW + (cols - 1) * spacing;
+            float totalHeight = rows * cardH + (rows - 1) * spacing;
+
+            // Fit camera
             if (cam != null)
             {
-                float visibleHeight = totalHeight + 1f; // padding
-                float visibleWidth = totalWidth + 1f;
-                // UI takes top 15%, so game area is 85% of screen
-                float neededOrthoForHeight = visibleHeight / (2f * 0.85f);
-                float neededOrthoForWidth = visibleWidth / (2f * cam.aspect);
-                cam.orthographicSize = Mathf.Max(neededOrthoForHeight, neededOrthoForWidth);
+                float neededH = (totalHeight + spacing * 2) / (2f * 0.85f);
+                float neededW = (totalWidth + spacing * 2) / (2f * aspect);
+                cam.orthographicSize = Mathf.Max(neededH, neededW);
+                ortho = cam.orthographicSize;
             }
 
-            // Offset grid down so it's centered in the visible game area (below UI bar)
-            float ortho = cam != null ? cam.orthographicSize : 5f;
-            float gridCenterY = -ortho * 0.15f; // shift down by 15% of view
-
+            // Center grid below UI
+            float gridCenterY = -ortho * 0.15f;
             Vector3 origin = new(-totalWidth * 0.5f, gridCenterY + totalHeight * 0.5f, 0f);
             Vector3 dealFrom = new(0f, gridCenterY + totalHeight * 0.5f + 2f, 0f);
 
             int index = 0;
-            for (int row = 0; row < _config.gridRows; row++)
+            for (int row = 0; row < rows; row++)
             {
-                for (int col = 0; col < _config.gridCols; col++)
+                for (int col = 0; col < cols; col++)
                 {
-                    if (index >= deck.Count) return;
+                    if (index >= cardCount) break;
 
-                    float x = origin.x + col * (_config.cardWidth + _config.cardSpacing) + _config.cardWidth * 0.5f;
-                    float y = origin.y - row * (_config.cardHeight + _config.cardSpacing) - _config.cardHeight * 0.5f;
+                    float x = origin.x + col * (cardW + spacing) + cardW * 0.5f;
+                    float y = origin.y - row * (cardH + spacing) - cardH * 0.5f;
                     Vector3 targetPos = new(x, y, 0f);
 
                     var go = Instantiate(cardPrefab, dealFrom, Quaternion.identity, transform);
                     go.name = $"Card_{row}_{col}";
+                    go.transform.localScale = new Vector3(cardW, cardH, 1f);
 
                     var controller = go.GetComponent<CardController>();
                     controller.Initialize(deck[index], _config.cardBackColor);
 
                     var animator = go.GetComponent<CardAnimator>();
-                    float delay = index * 0.05f;
-                    animator.PlayDealAnimation(dealFrom, targetPos, delay);
+                    animator.PlayDealAnimation(dealFrom, targetPos, index * 0.05f);
 
                     _cards.Add(controller);
                     index++;
+                }
+            }
+        }
+
+        private void FindBestGrid(int cardCount, float areaAspect, out int bestRows, out int bestCols)
+        {
+            bestRows = 1;
+            bestCols = cardCount;
+            float bestScore = 0f;
+            float cardAspect = 1f / 1.4f;
+
+            for (int r = 1; r <= cardCount; r++)
+            {
+                int c = Mathf.CeilToInt((float)cardCount / r);
+
+                float maxW = 1f / c;
+                float maxH = 1f / r;
+
+                float w, h;
+                if (maxW / cardAspect <= maxH)
+                { w = maxW; h = w / cardAspect; }
+                else
+                { h = maxH; w = h * cardAspect; }
+
+                float gridAspect = (c * w) / (r * h);
+                float aspectFit = 1f - Mathf.Abs(gridAspect - areaAspect) / Mathf.Max(gridAspect, areaAspect);
+                float waste = 1f - (float)cardCount / (r * c);
+                float score = w * h * aspectFit * (1f - waste * 0.5f);
+
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    bestRows = r;
+                    bestCols = c;
                 }
             }
         }

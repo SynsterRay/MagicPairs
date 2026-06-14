@@ -7,9 +7,8 @@ namespace MagicPairs.Ads
     public class AdManager : MonoBehaviour
     {
 #if UNITY_ANDROID
-        // TODO: Replace with your real AdMob unit IDs from https://apps.admob.com
-        private const string InterstitialId = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX";
-        private const string RewardedId = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX";
+        private const string InterstitialId = "ca-app-pub-4975261609017200/2340336848";
+        private const string RewardedId = "ca-app-pub-4975261609017200/2467799124";
         private const string BannerId = "ca-app-pub-4975261609017200/4058928414";
         // Test IDs (uncomment for development):
         // private const string InterstitialId = "ca-app-pub-3940256099942544/1033173712";
