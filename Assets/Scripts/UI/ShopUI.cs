@@ -23,7 +23,9 @@ namespace MagicPairs.UI
 
         public void Show(System.Action onBack)
         {
+            if (!_panel) { _panel = null; _content = null; }
             if (_panel == null) CreatePanel(onBack);
+            if (_panel == null) return;
             _panel.SetActive(true);
             UpdateCoinsDisplay(PlayerWallet.Coins);
             PopulateItems();
@@ -31,7 +33,7 @@ namespace MagicPairs.UI
 
         public void Hide()
         {
-            if (_panel != null) _panel.SetActive(false);
+            if (_panel) _panel.SetActive(false);
         }
 
         private void CreatePanel(System.Action onBack)
@@ -60,28 +62,29 @@ namespace MagicPairs.UI
             _coinsText.color = new Color(0.8f, 0.6f, 0.1f);
 
             // Scroll content area
-            var scrollArea = new GameObject("ScrollArea");
+            var scrollArea = new GameObject("ScrollArea", typeof(RectTransform));
             scrollArea.transform.SetParent(_panel.transform, false);
-            var scrollAreaRect = scrollArea.AddComponent<RectTransform>();
+            var scrollAreaRect = scrollArea.GetComponent<RectTransform>();
             scrollAreaRect.anchorMin = new Vector2(0.03f, 0.12f);
             scrollAreaRect.anchorMax = new Vector2(0.97f, 0.87f);
             scrollAreaRect.offsetMin = Vector2.zero;
             scrollAreaRect.offsetMax = Vector2.zero;
             scrollArea.AddComponent<RectMask2D>();
 
-            _content = new GameObject("Content").transform;
-            _content.SetParent(scrollArea.transform, false);
-            var contentRect = _content.gameObject.AddComponent<RectTransform>();
+            var contentGo = new GameObject("Content", typeof(RectTransform));
+            contentGo.transform.SetParent(scrollArea.transform, false);
+            _content = contentGo.transform;
+            var contentRect = contentGo.GetComponent<RectTransform>();
             contentRect.anchorMin = new Vector2(0f, 1f);
             contentRect.anchorMax = new Vector2(1f, 1f);
             contentRect.pivot = new Vector2(0.5f, 1f);
             contentRect.sizeDelta = new Vector2(0f, 0f);
-            var layout = _content.gameObject.AddComponent<VerticalLayoutGroup>();
+            var layout = contentGo.AddComponent<VerticalLayoutGroup>();
             layout.spacing = 12f;
             layout.padding = new RectOffset(10, 10, 10, 10);
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = false;
-            var fitter = _content.gameObject.AddComponent<ContentSizeFitter>();
+            var fitter = contentGo.AddComponent<ContentSizeFitter>();
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var scroll = scrollArea.AddComponent<ScrollRect>();
@@ -100,8 +103,11 @@ namespace MagicPairs.UI
         private void PopulateItems()
         {
             // Clear old items
+            var toDestroy = new System.Collections.Generic.List<GameObject>();
             foreach (Transform child in _content)
-                Destroy(child.gameObject);
+                toDestroy.Add(child.gameObject);
+            foreach (var go in toDestroy)
+                Destroy(go);
 
             // Section: Card Themes
             CreateSectionHeader(Localization.Get("chooseTheme"));
@@ -209,23 +215,50 @@ namespace MagicPairs.UI
             rowImg.sprite = RoundedButtonHelper.GetRoundedSprite();
             rowImg.type = Image.Type.Sliced;
 
+            // Coin graphic (spinning gold disc)
+            var coinObj = new GameObject("CoinIcon");
+            coinObj.transform.SetParent(row.transform, false);
+            var coinImg = coinObj.AddComponent<Image>();
+            coinImg.color = new Color(1f, 0.82f, 0.1f);
+            coinImg.sprite = RoundedButtonHelper.GetRoundedSprite();
+            coinImg.type = Image.Type.Sliced;
+            var coinRect = coinObj.GetComponent<RectTransform>();
+            coinRect.anchorMin = new Vector2(0.03f, 0.15f);
+            coinRect.anchorMax = new Vector2(0.12f, 0.85f);
+            coinRect.offsetMin = Vector2.zero;
+            coinRect.offsetMax = Vector2.zero;
+
+            // Inner coin detail
+            var coinInner = new GameObject("Inner");
+            coinInner.transform.SetParent(coinObj.transform, false);
+            var innerRect = coinInner.AddComponent<RectTransform>();
+            innerRect.anchorMin = new Vector2(0.2f, 0.2f);
+            innerRect.anchorMax = new Vector2(0.8f, 0.8f);
+            innerRect.offsetMin = Vector2.zero;
+            innerRect.offsetMax = Vector2.zero;
+            var innerImg = coinInner.AddComponent<Image>();
+            innerImg.color = new Color(0.85f, 0.65f, 0f);
+            innerImg.sprite = RoundedButtonHelper.GetRoundedSprite();
+            innerImg.type = Image.Type.Sliced;
+            innerImg.raycastTarget = false;
+
             // Name
             var nameObj = new GameObject("Name");
             nameObj.transform.SetParent(row.transform, false);
             var nameTxt = nameObj.AddComponent<Text>();
-            nameTxt.text = $"🪙 {item.quantity} {Localization.Get("coins")}";
+            nameTxt.text = $"{item.quantity} {Localization.Get("coins")}";
             nameTxt.fontSize = 24;
             nameTxt.fontStyle = FontStyle.Bold;
             nameTxt.alignment = TextAnchor.MiddleLeft;
             nameTxt.color = new Color(0.2f, 0.2f, 0.2f);
             nameTxt.font = UIFactory.GetFont();
             var nameRect = nameObj.GetComponent<RectTransform>();
-            nameRect.anchorMin = new Vector2(0.05f, 0f);
+            nameRect.anchorMin = new Vector2(0.14f, 0f);
             nameRect.anchorMax = new Vector2(0.55f, 1f);
             nameRect.offsetMin = Vector2.zero;
             nameRect.offsetMax = Vector2.zero;
 
-            // IAP button (placeholder — shows price text)
+            // IAP button
             var buyBtn = CreateBuyButton(row.transform, GetCoinPackPrice(item));
             buyBtn.onClick.AddListener(() => OnBuyCoinPack(item));
         }
