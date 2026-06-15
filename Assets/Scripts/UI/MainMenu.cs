@@ -499,9 +499,9 @@ namespace MagicPairs.UI
             SetThemeButtonSprite(challengeCarsButton, "CarCards");
             SetThemeButtonSprite(challengePrincessButton, "PrincessCards");
             SetThemeButtonLabel(challengeColorsButton, Localization.Get("themeColors"));
-            StyleAsCard(challengeCarsButton, new Vector2(0.02f, 0.4f), new Vector2(0.32f, 0.75f));
-            StyleAsCard(challengePrincessButton, new Vector2(0.35f, 0.4f), new Vector2(0.65f, 0.75f));
-            StyleAsCard(challengeColorsButton, new Vector2(0.68f, 0.4f), new Vector2(0.98f, 0.75f));
+            StyleAsCard(challengeCarsButton, new Vector2(0.02f, 0.45f), new Vector2(0.32f, 0.80f));
+            StyleAsCard(challengePrincessButton, new Vector2(0.35f, 0.45f), new Vector2(0.65f, 0.80f));
+            StyleAsCard(challengeColorsButton, new Vector2(0.68f, 0.45f), new Vector2(0.98f, 0.80f));
             EnsureLockedCards(challengeThemePanel.transform);
         }
 
@@ -584,9 +584,9 @@ namespace MagicPairs.UI
             SetThemeButtonSprite(carsThemeButton, "CarCards");
             SetThemeButtonSprite(princessThemeButton, "PrincessCards");
             SetThemeButtonLabel(colorsThemeButton, Localization.Get("themeColors"));
-            StyleAsCard(carsThemeButton, new Vector2(0.02f, 0.4f), new Vector2(0.32f, 0.75f));
-            StyleAsCard(princessThemeButton, new Vector2(0.35f, 0.4f), new Vector2(0.65f, 0.75f));
-            StyleAsCard(colorsThemeButton, new Vector2(0.68f, 0.4f), new Vector2(0.98f, 0.75f));
+            StyleAsCard(carsThemeButton, new Vector2(0.02f, 0.45f), new Vector2(0.32f, 0.80f));
+            StyleAsCard(princessThemeButton, new Vector2(0.35f, 0.45f), new Vector2(0.65f, 0.80f));
+            StyleAsCard(colorsThemeButton, new Vector2(0.68f, 0.45f), new Vector2(0.98f, 0.80f));
             EnsureLockedCards(themePanel.transform);
         }
 
@@ -665,8 +665,8 @@ namespace MagicPairs.UI
                 var rect = locked.GetComponent<RectTransform>();
                 float xStart = i == 1 ? 0.02f : 0.35f;
                 float xEnd = i == 1 ? 0.32f : 0.65f;
-                rect.anchorMin = new Vector2(xStart, 0.05f);
-                rect.anchorMax = new Vector2(xEnd, 0.35f);
+                rect.anchorMin = new Vector2(xStart, 0.10f);
+                rect.anchorMax = new Vector2(xEnd, 0.42f);
                 rect.offsetMin = Vector2.zero;
                 rect.offsetMax = Vector2.zero;
 
