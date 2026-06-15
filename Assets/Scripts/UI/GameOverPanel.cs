@@ -10,6 +10,7 @@ namespace MagicPairs.UI
         [SerializeField] private Text resultText;
         [SerializeField] private Button playAgainButton;
         [SerializeField] private Text playAgainText;
+        [SerializeField] private Button menuButton;
 
         private void OnEnable()
         {
@@ -26,6 +27,7 @@ namespace MagicPairs.UI
         private void Start()
         {
             playAgainButton?.onClick.AddListener(OnPlayAgain);
+            menuButton?.onClick.AddListener(OnMenu);
             Hide();
         }
 
@@ -36,6 +38,8 @@ namespace MagicPairs.UI
             panel.SetActive(true);
             if (playAgainText != null)
                 playAgainText.text = Localization.Get("playAgain");
+            if (menuButton != null)
+                menuButton.GetComponentInChildren<Text>().text = "Menu";
             if (resultText != null)
             {
                 if (winnerIndex == -1)
@@ -58,6 +62,15 @@ namespace MagicPairs.UI
             var adManager = FindAnyObjectByType<Ads.AdManager>();
             adManager?.TryShowInterstitialBetweenGames();
             GameManager.Instance.StartGame();
+        }
+
+        private void OnMenu()
+        {
+            Hide();
+            var adManager = FindAnyObjectByType<Ads.AdManager>();
+            adManager?.TryShowInterstitialAfterGame();
+            var menu = FindAnyObjectByType<MainMenu>();
+            menu?.ReturnToMenu();
         }
     }
 }

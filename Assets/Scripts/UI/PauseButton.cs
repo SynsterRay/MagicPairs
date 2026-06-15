@@ -35,6 +35,7 @@ namespace MagicPairs.UI
         private void OnGameStarted()
         {
             if (pauseButton != null) pauseButton.gameObject.SetActive(true);
+            if (confirmPanel != null) confirmPanel.SetActive(false);
         }
 
         private void OnGameOver(int _)

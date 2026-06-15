@@ -49,12 +49,22 @@ namespace MagicPairs.GameFlow
             // Reset on new game (not on next level)
             if (_challenge.CurrentLevel == 1)
             {
-                _peekCount = 1; // Start with 1 peek
-                _shuffleCount = 0;
-                _freezeCount = 0;
+                _peekCount = 1 + ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpPeek);
+                _shuffleCount = ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpShuffle);
+                _freezeCount = ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpFreeze);
             }
             _freezeActive = false;
             OnPowerUpsChanged?.Invoke();
+        }
+
+        private int ConsumeAllStoredPowerUps(Core.ShopItemType type)
+        {
+            int stored = Core.ShopCatalog.GetStoredPowerUps(type);
+            if (stored <= 0) return 0;
+            string key = $"MagicPairs_Shop_{type}";
+            UnityEngine.PlayerPrefs.SetInt(key, 0);
+            UnityEngine.PlayerPrefs.Save();
+            return stored;
         }
 
         private void OnLevelComplete(int level)

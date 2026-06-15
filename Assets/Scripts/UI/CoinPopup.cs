@@ -73,7 +73,7 @@ namespace MagicPairs.UI
             var txtObj = new GameObject("Text");
             txtObj.transform.SetParent(go.transform, false);
             var txt = txtObj.AddComponent<Text>();
-            txt.text = $"+{amount}";
+            txt.text = $"🪙 +{amount}";
             txt.fontSize = 48;
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;

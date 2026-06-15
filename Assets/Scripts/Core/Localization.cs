@@ -93,6 +93,7 @@ namespace MagicPairs.Core
             { "buy", new[] { "Kup", "Buy" } },
             { "notEnough", new[] { "Za mało monet", "Not enough coins" } },
             { "purchased", new[] { "Kupiono!", "Purchased!" } },
+            { "achievements", new[] { "🏆 Osiągnięcia", "🏆 Achievements" } },
         };
 
         public static string Get(string key)

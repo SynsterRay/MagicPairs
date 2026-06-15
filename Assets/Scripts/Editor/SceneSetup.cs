@@ -350,7 +350,12 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 42);
 
             var playAgainBtn = CreateButton("PlayAgainBtn", "Zagraj ponownie", goPanel.transform,
-                new Vector2(0.2f, 0.1f), new Vector2(0.8f, 0.4f));
+                new Vector2(0.55f, 0.1f), new Vector2(0.95f, 0.4f));
+            playAgainBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
+
+            var goMenuBtn = CreateButton("MenuBtn", "Menu", goPanel.transform,
+                new Vector2(0.05f, 0.1f), new Vector2(0.45f, 0.4f));
+            goMenuBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             var gameOverPanel = canvas.AddComponent<UI.GameOverPanel>();
             var gopSo = new SerializedObject(gameOverPanel);
@@ -358,6 +363,7 @@ namespace MagicPairs.Editor
             gopSo.FindProperty("resultText").objectReferenceValue = resultText;
             gopSo.FindProperty("playAgainButton").objectReferenceValue = playAgainBtn.GetComponent<Button>();
             gopSo.FindProperty("playAgainText").objectReferenceValue = playAgainBtn.GetComponentInChildren<Text>();
+            gopSo.FindProperty("menuButton").objectReferenceValue = goMenuBtn.GetComponent<Button>();
             gopSo.ApplyModifiedProperties();
 
             // --- Challenge UI ---
@@ -597,7 +603,7 @@ namespace MagicPairs.Editor
             creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
 
             var optionsBackBtn = CreateButton("OptionsBackBtn", "←", optionsPanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             optionsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Language Panel ---
@@ -618,7 +624,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.42f));
 
             var langBackBtn = CreateButton("LangBackBtn", "←", langPanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             langBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Credits Panel ---
@@ -637,7 +643,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.65f), TextAnchor.MiddleCenter, 28);
 
             var creditsBackBtn = CreateButton("CreditsBackBtn", "←", creditsPanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             creditsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Game Type Panel ---
@@ -665,7 +671,7 @@ namespace MagicPairs.Editor
             arcadeBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 1f);
 
             var gameTypeBackBtn = CreateButton("GameTypeBackBtn", "←", gameTypePanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             gameTypeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Challenge Names Panel ---
@@ -687,7 +693,7 @@ namespace MagicPairs.Editor
             challengeStartBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var challengeNamesBackBtn = CreateButton("ChallengeNamesBackBtn", "←", challengeNamesPanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             challengeNamesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Challenge Theme Panel ---
@@ -712,7 +718,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
 
             var challengeThemeBackBtn = CreateButton("ChallengeThemeBackBtn", "←", challengeThemePanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             challengeThemeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Mode Panel ---
@@ -734,7 +740,7 @@ namespace MagicPairs.Editor
             singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
 
             var modeBackBtn = CreateButton("ModeBackBtn", "←", modePanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             modeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Difficulty Panel ---
@@ -773,7 +779,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.7f, 0.18f), new Vector2(0.95f, 0.3f), TextAnchor.MiddleCenter, 20);
 
             var diffBackBtn = CreateButton("DiffBackBtn", "←", diffPanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             diffBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Theme Panel ---
@@ -798,7 +804,7 @@ namespace MagicPairs.Editor
                 new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
 
             var themeBackBtn = CreateButton("ThemeBackBtn", "←", themePanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             themeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Names Panel ---
@@ -825,7 +831,7 @@ namespace MagicPairs.Editor
             startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             var namesBackBtn = CreateButton("NamesBackBtn", "←", namesPanel.transform,
-                new Vector2(0.3f, -0.18f), new Vector2(0.7f, 0.0f));
+                new Vector2(0.3f, -0.05f), new Vector2(0.7f, 0.13f));
             namesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // Wire MainMenu

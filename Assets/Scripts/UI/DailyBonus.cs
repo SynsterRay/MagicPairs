@@ -93,10 +93,12 @@ namespace MagicPairs.UI
                 _ => ""
             };
             int rewardCount = _streak >= 7 ? 2 : 1;
+            int coinReward = Mathf.Min(_streak * 10, 70);
             string rewardDisplay = rewardCount > 1 ? $"{rewardName} x{rewardCount}" : rewardName;
+            rewardDisplay += $"\n🪙 +{coinReward}";
 
             _rewardText = CreateText("Reward", rewardDisplay, panel.transform,
-                new Vector2(0.1f, 0.4f), new Vector2(0.9f, 0.7f), 36);
+                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.7f), 34);
             _rewardText.color = new Color(0.1f, 0.5f, 0.2f);
 
             // Streak info
@@ -137,14 +139,22 @@ namespace MagicPairs.UI
             int coinReward = Mathf.Min(_streak * 10, 70);
             PlayerWallet.Add(coinReward);
 
-            // Grant power-up(s)
-            var powerUp = FindAnyObjectByType<PowerUpManager>();
-            if (powerUp != null)
+            // Grant power-up(s) — store in PlayerPrefs so they persist until Challenge starts
+            int count = _streak >= 7 ? 2 : 1;
+            for (int i = 0; i < count; i++)
             {
-                int count = _streak >= 7 ? 2 : 1;
-                for (int i = 0; i < count; i++)
-                    powerUp.AddPowerUp(_todayReward);
+                var storeType = _todayReward switch
+                {
+                    PowerUpType.Peek => Core.ShopItemType.PowerUpPeek,
+                    PowerUpType.Shuffle => Core.ShopItemType.PowerUpShuffle,
+                    PowerUpType.Freeze => Core.ShopItemType.PowerUpFreeze,
+                    _ => Core.ShopItemType.PowerUpPeek
+                };
+                string key = $"MagicPairs_Shop_{storeType}";
+                int current = PlayerPrefs.GetInt(key, 0);
+                PlayerPrefs.SetInt(key, current + 1);
             }
+            PlayerPrefs.Save();
 
             GPGSManager.Instance?.EventDailyBonus();
 
