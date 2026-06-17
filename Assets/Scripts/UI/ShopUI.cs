@@ -151,13 +151,13 @@ namespace MagicPairs.UI
             var go = new GameObject("Header");
             go.transform.SetParent(_content, false);
             var le = go.AddComponent<LayoutElement>();
-            le.preferredHeight = 50f;
+            le.preferredHeight = 60f;
             var txt = go.AddComponent<Text>();
             txt.text = text;
-            txt.fontSize = 28;
+            txt.fontSize = 36;
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
-            txt.color = new Color(0.3f, 0.3f, 0.3f);
+            txt.color = new Color(0.3f, 0.1f, 0.5f);
             txt.font = UIFactory.GetFont();
         }
 
@@ -166,14 +166,14 @@ namespace MagicPairs.UI
             var row = new GameObject("Row");
             row.transform.SetParent(_content, false);
             var le = row.AddComponent<LayoutElement>();
-            le.preferredHeight = 250f;
+            le.preferredHeight = 300f;
 
             int count = items.Count;
             for (int i = 0; i < count; i++)
             {
                 var item = items[i];
-                float xMin = (float)i / count + 0.02f;
-                float xMax = (float)(i + 1) / count - 0.02f;
+                float xMin = (float)i / count + 0.01f;
+                float xMax = (float)(i + 1) / count - 0.01f;
 
                 // Icon as button (top 70%)
                 string iconName = GetItemIcon(item);
@@ -186,8 +186,8 @@ namespace MagicPairs.UI
                 var btn = iconObj.AddComponent<Button>();
                 btn.transition = Selectable.Transition.None;
                 var iconRect = iconObj.GetComponent<RectTransform>();
-                iconRect.anchorMin = new Vector2(xMin + 0.01f, 0.30f);
-                iconRect.anchorMax = new Vector2(xMax - 0.01f, 0.95f);
+                iconRect.anchorMin = new Vector2(xMin + 0.02f, 0.35f);
+                iconRect.anchorMax = new Vector2(xMax - 0.02f, 1.0f);
                 iconRect.offsetMin = Vector2.zero;
                 iconRect.offsetMax = Vector2.zero;
 
@@ -205,52 +205,66 @@ namespace MagicPairs.UI
                 nameObj.transform.SetParent(row.transform, false);
                 var nameTxt = nameObj.AddComponent<Text>();
                 nameTxt.text = displayName;
-                nameTxt.fontSize = 20;
+                nameTxt.fontSize = 24;
                 nameTxt.fontStyle = FontStyle.Bold;
-                nameTxt.alignment = TextAnchor.UpperCenter;
+                nameTxt.alignment = TextAnchor.MiddleCenter;
                 nameTxt.color = new Color(0.2f, 0.2f, 0.2f);
                 nameTxt.font = UIFactory.GetFont();
                 nameTxt.resizeTextForBestFit = true;
-                nameTxt.resizeTextMinSize = 14;
-                nameTxt.resizeTextMaxSize = 20;
+                nameTxt.resizeTextMinSize = 16;
+                nameTxt.resizeTextMaxSize = 24;
                 var nameRect = nameObj.GetComponent<RectTransform>();
-                nameRect.anchorMin = new Vector2(xMin, 0.12f);
-                nameRect.anchorMax = new Vector2(xMax, 0.32f);
+                nameRect.anchorMin = new Vector2(xMin, 0.15f);
+                nameRect.anchorMax = new Vector2(xMax, 0.35f);
                 nameRect.offsetMin = Vector2.zero;
                 nameRect.offsetMax = Vector2.zero;
 
-                // Price / status
+                // Price tag
                 string priceText = GetPriceLabel(item);
                 var priceObj = new GameObject("Price_" + i);
                 priceObj.transform.SetParent(row.transform, false);
-                var priceTxt = priceObj.AddComponent<Text>();
-                priceTxt.text = priceText;
-                priceTxt.fontSize = 18;
-                priceTxt.fontStyle = FontStyle.Bold;
-                priceTxt.alignment = TextAnchor.UpperCenter;
-                priceTxt.color = new Color(0.4f, 0.4f, 0.4f);
-                priceTxt.font = UIFactory.GetFont();
-                priceTxt.supportRichText = true;
+                var priceBg = priceObj.AddComponent<Image>();
+                priceBg.color = new Color(0.1f, 0.7f, 0.3f, 1f);
+                priceBg.sprite = RoundedButtonHelper.GetRoundedSprite();
+                priceBg.type = Image.Type.Sliced;
                 var priceRect = priceObj.GetComponent<RectTransform>();
-                priceRect.anchorMin = new Vector2(xMin, 0.0f);
-                priceRect.anchorMax = new Vector2(xMax, 0.14f);
+                priceRect.anchorMin = new Vector2(xMin + 0.01f, 0.0f);
+                priceRect.anchorMax = new Vector2(xMax - 0.01f, 0.15f);
                 priceRect.offsetMin = Vector2.zero;
                 priceRect.offsetMax = Vector2.zero;
+
+                var priceTxtObj = new GameObject("PriceText");
+                priceTxtObj.transform.SetParent(priceObj.transform, false);
+                var priceTxt = priceTxtObj.AddComponent<Text>();
+                priceTxt.text = priceText;
+                priceTxt.fontSize = 20;
+                priceTxt.fontStyle = FontStyle.Bold;
+                priceTxt.alignment = TextAnchor.MiddleCenter;
+                priceTxt.color = Color.white;
+                priceTxt.font = UIFactory.GetFont();
+                priceTxt.resizeTextForBestFit = true;
+                priceTxt.resizeTextMinSize = 12;
+                priceTxt.resizeTextMaxSize = 20;
+                var ptr = priceTxtObj.GetComponent<RectTransform>();
+                ptr.anchorMin = Vector2.zero;
+                ptr.anchorMax = Vector2.one;
+                ptr.offsetMin = new Vector2(4f, 2f);
+                ptr.offsetMax = new Vector2(-4f, -2f);
             }
         }
 
         private string GetPriceLabel(ShopItem item)
         {
             bool owned = item.type == ShopItemType.CardTheme && item.theme.HasValue && ShopCatalog.IsThemeUnlocked(item.theme.Value);
-            if (owned) return "<color=#2BAF2B>✓</color>";
+            if (owned) return "✓";
             if (item.type == ShopItemType.CardTheme) return "🔒";
             if (item.type == ShopItemType.CoinPack)
             {
                 string price = GetCoinPackPrice(item);
                 string discount = item.quantity switch
                 {
-                    500 => "\n<color=#2BAF2B>20% OFF</color>",
-                    1500 => "\n<color=#2BAF2B>40% OFF</color>",
+                    500 => " • 20% OFF",
+                    1500 => " • 40% OFF",
                     _ => ""
                 };
                 return price + discount;
