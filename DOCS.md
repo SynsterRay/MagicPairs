@@ -237,7 +237,7 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 
 ## Changelog
 
-### 2026-06-17 (v1.41)
+### 2026-06-17 (v1.602)
 - Complete UI overhaul: all text buttons replaced with icon sprites
 - Start panel: 3-column grid (Play top, Shop/Scores/Options, Achievements/Quit)
 - Achievements icon button (bottom-left, only when GPGS authenticated)
