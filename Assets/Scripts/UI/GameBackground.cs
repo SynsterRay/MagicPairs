@@ -38,6 +38,8 @@ namespace MagicPairs.UI
                 return;
             }
 
+            Debug.Log($"[GameBackground] Loading: {path}, canvas={_canvas != null}");
+
             var tex = Resources.Load<Texture2D>(path);
             if (tex == null)
             {
