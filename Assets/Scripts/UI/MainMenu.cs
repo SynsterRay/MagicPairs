@@ -171,7 +171,13 @@ namespace MagicPairs.UI
         private void OnGPGSAuthChanged()
         {
             if (startPanel != null && startPanel.activeSelf)
+            {
                 UpdateAchievementsButton();
+                var gpgs = Core.GPGSManager.Instance;
+                bool authenticated = gpgs != null && gpgs.IsAuthenticated;
+                if (leaderboardButton != null)
+                    leaderboardButton.gameObject.SetActive(authenticated);
+            }
         }
 
         private void HideAllPanels()
@@ -210,6 +216,12 @@ namespace MagicPairs.UI
             if (startPanel != null) startPanel.SetActive(true);
             UpdateStartPanelTexts();
             UpdateAchievementsButton();
+
+            // Show scores button only if authenticated to GPGS
+            var gpgs = Core.GPGSManager.Instance;
+            bool authenticated = gpgs != null && gpgs.IsAuthenticated;
+            if (leaderboardButton != null)
+                leaderboardButton.gameObject.SetActive(authenticated);
         }
 
         private void UpdateStartPanelTexts()
@@ -217,7 +229,11 @@ namespace MagicPairs.UI
             if (playButtonText != null) playButtonText.text = Localization.Get("play");
             if (optionsButtonText != null) optionsButtonText.text = Localization.Get("options");
             if (leaderboardButtonText != null) leaderboardButtonText.text = Localization.Get("scores");
-            if (quitButton != null) quitButton.GetComponentInChildren<Text>().text = Localization.Get("quit");
+            if (quitButton != null)
+            {
+                var quitTxt = quitButton.GetComponentInChildren<Text>();
+                if (quitTxt != null) quitTxt.text = Localization.Get("quit");
+            }
             var shopBtnObj = startPanel?.transform.Find("ShopBtn");
             if (shopBtnObj != null)
             {
@@ -290,16 +306,11 @@ namespace MagicPairs.UI
             var gpgs = Core.GPGSManager.Instance;
             if (gpgs != null && gpgs.IsAuthenticated)
             {
-                // Show choice: Global vs Local
-                HideAllPanels();
-                if (startLeaderboardPanel != null) startLeaderboardPanel.SetActive(true);
-                if (startLeaderboardText != null)
-                    startLeaderboardText.text = "";
-                ShowLeaderboardChoice();
+                gpgs.ShowLeaderboard();
                 return;
             }
 
-            // Not authenticated — show local directly
+            // Not authenticated — show local scores as fallback
             ShowLocalLeaderboard();
         }
 
@@ -412,7 +423,10 @@ namespace MagicPairs.UI
             if (optionsTitle != null) optionsTitle.text = Localization.Get("options");
             if (languageButtonText != null) languageButtonText.text = Localization.Get("languageOption");
             if (creditsButton != null)
-                creditsButton.GetComponentInChildren<Text>().text = Localization.Get("credits");
+            {
+                var creditsTxt = creditsButton.GetComponentInChildren<Text>();
+                if (creditsTxt != null) creditsTxt.text = Localization.Get("credits");
+            }
             UpdateMusicToggleTexts();
         }
 
@@ -434,6 +448,20 @@ namespace MagicPairs.UI
                 menuMusicToggleText.text = Localization.Get("menuMusic") + (Audio.MusicManager.MenuMusicOn ? " ✓" : " ✗");
             if (gameMusicToggleText != null)
                 gameMusicToggleText.text = Localization.Get("gameMusic") + (Audio.MusicManager.GameMusicOn ? " ✓" : " ✗");
+
+            // Swap icon sprites for on/off state
+            if (menuMusicToggle != null)
+            {
+                var img = menuMusicToggle.GetComponent<Image>();
+                var sprite = UIIcons.Get(Audio.MusicManager.MenuMusicOn ? "music" : "sound off");
+                if (img != null && sprite != null) img.sprite = sprite;
+            }
+            if (gameMusicToggle != null)
+            {
+                var img = gameMusicToggle.GetComponent<Image>();
+                var sprite = UIIcons.Get(Audio.MusicManager.GameMusicOn ? "sound on" : "sound off");
+                if (img != null && sprite != null) img.sprite = sprite;
+            }
         }
 
         private void ShowLanguagePanel()
@@ -496,13 +524,6 @@ namespace MagicPairs.UI
             if (challengeThemePanel != null) challengeThemePanel.SetActive(true);
             if (challengeThemeTitle != null)
                 challengeThemeTitle.text = Localization.Get("chooseTheme");
-            SetThemeButtonSprite(challengeCarsButton, "CarCards");
-            SetThemeButtonSprite(challengePrincessButton, "PrincessCards");
-            SetThemeButtonLabel(challengeColorsButton, Localization.Get("themeColors"));
-            StyleAsCard(challengeCarsButton, new Vector2(0.02f, 0.45f), new Vector2(0.32f, 0.80f));
-            StyleAsCard(challengePrincessButton, new Vector2(0.35f, 0.45f), new Vector2(0.65f, 0.80f));
-            StyleAsCard(challengeColorsButton, new Vector2(0.68f, 0.45f), new Vector2(0.98f, 0.80f));
-            EnsureLockedCards(challengeThemePanel.transform);
         }
 
         private void SelectChallengeTheme(Core.CardTheme theme)
@@ -510,7 +531,7 @@ namespace MagicPairs.UI
             var config = GameManager.Instance.Config;
             if (config != null) config.theme = theme;
             _singlePlayer = true;
-            ShowNamesPanel();
+            StartGameDirectly();
         }
 
         private void ShowChallengeNamesPanel()
@@ -543,7 +564,7 @@ namespace MagicPairs.UI
             }
 
             if (menuPanel != null) menuPanel.SetActive(false);
-            GameManager.Instance.StartGame();
+            ShowLoadingAndStart();
         }
 
         private void ShowModePanel()
@@ -581,20 +602,44 @@ namespace MagicPairs.UI
             if (themePanel != null) themePanel.SetActive(true);
             if (themeTitle != null)
                 themeTitle.text = Localization.Get("chooseTheme");
-            SetThemeButtonSprite(carsThemeButton, "CarCards");
-            SetThemeButtonSprite(princessThemeButton, "PrincessCards");
-            SetThemeButtonLabel(colorsThemeButton, Localization.Get("themeColors"));
-            StyleAsCard(carsThemeButton, new Vector2(0.02f, 0.45f), new Vector2(0.32f, 0.80f));
-            StyleAsCard(princessThemeButton, new Vector2(0.35f, 0.45f), new Vector2(0.65f, 0.80f));
-            StyleAsCard(colorsThemeButton, new Vector2(0.68f, 0.45f), new Vector2(0.98f, 0.80f));
-            EnsureLockedCards(themePanel.transform);
         }
 
         private void SelectTheme(Core.CardTheme theme)
         {
             var config = GameManager.Instance.Config;
             if (config != null) config.theme = theme;
-            ShowNamesPanel();
+            StartGameDirectly();
+        }
+
+        private void SetIconLabel(Button button, string label)
+        {
+            if (button == null) return;
+            var existing = button.transform.Find("Label");
+            Text txt;
+            if (existing != null)
+            {
+                txt = existing.GetComponent<Text>();
+            }
+            else
+            {
+                var go = new GameObject("Label");
+                go.transform.SetParent(button.transform, false);
+                txt = go.AddComponent<Text>();
+                txt.fontSize = 28;
+                txt.fontStyle = FontStyle.Bold;
+                txt.alignment = TextAnchor.MiddleCenter;
+                txt.color = new Color(0.3f, 0.1f, 0.5f);
+                txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                txt.resizeTextForBestFit = true;
+                txt.resizeTextMinSize = 14;
+                txt.resizeTextMaxSize = 28;
+                var r = go.GetComponent<RectTransform>();
+                r.anchorMin = new Vector2(0f, -0.3f);
+                r.anchorMax = new Vector2(1f, 0f);
+                r.offsetMin = Vector2.zero;
+                r.offsetMax = Vector2.zero;
+            }
+            txt.text = label;
         }
 
         private void SetThemeButtonSprite(Button button, string folder)
@@ -814,7 +859,57 @@ namespace MagicPairs.UI
             }
 
             if (menuPanel != null) menuPanel.SetActive(false);
-            GameManager.Instance.StartGame();
+            ShowLoadingAndStart();
+        }
+
+        private void StartGameDirectly()
+        {
+            IsSinglePlayer = _singlePlayer;
+            var gpgs = Core.GPGSManager.Instance;
+            if (gpgs != null && gpgs.IsAuthenticated)
+                Player1Name = Social.localUser.userName;
+            else
+                Player1Name = Localization.Get("player1");
+            Player2Name = _singlePlayer ? Localization.Get("computer") : Localization.Get("player2");
+
+            var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
+            var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
+            var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
+            var timeAttack = FindAnyObjectByType<GameFlow.TimeAttackMode>(FindObjectsInactive.Include);
+
+            if (IsTimeAttackMode)
+            {
+                if (local != null) local.enabled = false;
+                if (single != null) single.enabled = false;
+                if (challenge != null) challenge.enabled = false;
+                if (timeAttack != null) timeAttack.enabled = true;
+            }
+            else if (IsChallengeMode)
+            {
+                if (local != null) local.enabled = false;
+                if (single != null) single.enabled = false;
+                if (challenge != null) { challenge.enabled = true; challenge.StartGame(); }
+                if (timeAttack != null) timeAttack.enabled = false;
+            }
+            else
+            {
+                if (local != null) local.enabled = !_singlePlayer;
+                if (single != null) single.enabled = _singlePlayer;
+                if (challenge != null) challenge.enabled = false;
+                if (timeAttack != null) timeAttack.enabled = false;
+            }
+
+            if (menuPanel != null) menuPanel.SetActive(false);
+            ShowLoadingAndStart();
+        }
+
+        private void ShowLoadingAndStart()
+        {
+            var loading = FindAnyObjectByType<LoadingScreen>();
+            if (loading != null)
+                loading.Show(0.6f, () => GameManager.Instance.StartGame());
+            else
+                GameManager.Instance.StartGame();
         }
 
         public void ReturnToMenu()

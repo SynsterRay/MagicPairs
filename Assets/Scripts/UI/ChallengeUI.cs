@@ -88,14 +88,10 @@ namespace MagicPairs.UI
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
 
-            _peekBtn = CreatePowerUpButton("🔍", 0f, 0.23f, _powerUpPanel.transform);
-            _peekBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 0.9f);
-            _shuffleBtn = CreatePowerUpButton("🔄", 0.25f, 0.48f, _powerUpPanel.transform);
-            _shuffleBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 0.9f);
-            _freezeBtn = CreatePowerUpButton("❄️", 0.5f, 0.73f, _powerUpPanel.transform);
-            _freezeBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.8f, 0.9f);
-            _adPowerUpBtn = CreatePowerUpButton("▶+", 0.75f, 1f, _powerUpPanel.transform);
-            _adPowerUpBtn.GetComponent<Image>().color = new Color(0.2f, 0.7f, 0.3f, 0.9f);
+            _peekBtn = CreatePowerUpButton("peek", 0f, 0.23f, _powerUpPanel.transform);
+            _shuffleBtn = CreatePowerUpButton("shuffle", 0.25f, 0.48f, _powerUpPanel.transform);
+            _freezeBtn = CreatePowerUpButton("freeze", 0.5f, 0.73f, _powerUpPanel.transform);
+            _adPowerUpBtn = CreatePowerUpButton("add reward", 0.75f, 1f, _powerUpPanel.transform);
 
             _peekText = _peekBtn.GetComponentInChildren<Text>();
             _shuffleText = _shuffleBtn.GetComponentInChildren<Text>();
@@ -110,14 +106,18 @@ namespace MagicPairs.UI
             _powerUpPanel.SetActive(false);
         }
 
-        private Button CreatePowerUpButton(string label, float xMin, float xMax, Transform parent)
+        private Button CreatePowerUpButton(string iconName, float xMin, float xMax, Transform parent)
         {
-            var go = new GameObject(label);
+            var go = new GameObject(iconName);
             go.transform.SetParent(parent, false);
             var img = go.AddComponent<Image>();
-            img.color = new Color(0.2f, 0.2f, 0.3f, 0.9f);
-            img.sprite = RoundedButtonHelper.GetRoundedSprite();
-            img.type = Image.Type.Sliced;
+            var sprite = UIIcons.Get(iconName);
+            if (sprite != null)
+            {
+                img.sprite = sprite;
+                img.preserveAspect = true;
+            }
+            img.color = Color.white;
             go.AddComponent<Button>();
             var r = go.GetComponent<RectTransform>();
             r.anchorMin = new Vector2(xMin, 0f);
@@ -125,27 +125,14 @@ namespace MagicPairs.UI
             r.offsetMin = Vector2.zero;
             r.offsetMax = Vector2.zero;
 
-            // Shine overlay
-            var shine = new GameObject("Shine");
-            shine.transform.SetParent(go.transform, false);
-            var shineImg = shine.AddComponent<Image>();
-            shineImg.sprite = RoundedButtonHelper.GetShineSprite();
-            shineImg.type = Image.Type.Sliced;
-            shineImg.color = Color.white;
-            shineImg.raycastTarget = false;
-            var shineRect = shine.GetComponent<RectTransform>();
-            shineRect.anchorMin = Vector2.zero;
-            shineRect.anchorMax = Vector2.one;
-            shineRect.offsetMin = Vector2.zero;
-            shineRect.offsetMax = Vector2.zero;
-
+            // Count text (small badge at bottom)
             var txtObj = new GameObject("Text");
             txtObj.transform.SetParent(go.transform, false);
             var txt = txtObj.AddComponent<Text>();
-            txt.text = label;
-            txt.fontSize = 32;
+            txt.text = "";
+            txt.fontSize = 24;
             txt.fontStyle = FontStyle.Bold;
-            txt.alignment = TextAnchor.MiddleCenter;
+            txt.alignment = TextAnchor.LowerCenter;
             txt.color = Color.white;
             txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             var tr = txtObj.GetComponent<RectTransform>();
@@ -213,9 +200,9 @@ namespace MagicPairs.UI
             if (_freezeText != null) _freezeText.text = $"{Localization.Get("freeze")} ({_powerUpManager.FreezeCount})";
             if (_adPowerUpText != null) _adPowerUpText.text = $"▶ {Localization.Get("adPowerUp")}";
 
-            if (_peekBtn != null) _peekBtn.interactable = _powerUpManager.PeekCount > 0;
-            if (_shuffleBtn != null) _shuffleBtn.interactable = _powerUpManager.ShuffleCount > 0;
-            if (_freezeBtn != null) _freezeBtn.interactable = _powerUpManager.FreezeCount > 0;
+            if (_peekBtn != null) _peekBtn.interactable = true;
+            if (_shuffleBtn != null) _shuffleBtn.interactable = true;
+            if (_freezeBtn != null) _freezeBtn.interactable = true;
         }
 
         private void OnGameStarted()
@@ -227,11 +214,20 @@ namespace MagicPairs.UI
             if (_powerUpPanel != null) _powerUpPanel.SetActive(true);
 
             if (nextLevelButton != null)
-                nextLevelButton.GetComponentInChildren<Text>().text = Localization.Get("next");
+            {
+                var txt = nextLevelButton.GetComponentInChildren<Text>();
+                if (txt != null) txt.text = Localization.Get("next");
+            }
             if (challengeMenuButton != null)
-                challengeMenuButton.GetComponentInChildren<Text>().text = "Menu";
+            {
+                var txt = challengeMenuButton.GetComponentInChildren<Text>();
+                if (txt != null) txt.text = "Menu";
+            }
             if (showLeaderboardButton != null)
-                showLeaderboardButton.GetComponentInChildren<Text>().text = Localization.Get("scores");
+            {
+                var txt = showLeaderboardButton.GetComponentInChildren<Text>();
+                if (txt != null) txt.text = Localization.Get("scores");
+            }
 
             UpdatePowerUpUI();
         }

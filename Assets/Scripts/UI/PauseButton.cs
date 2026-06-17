@@ -54,9 +54,15 @@ namespace MagicPairs.UI
                     t.text = Localization.Get("backToMenu");
             }
             if (yesButton != null)
-                yesButton.GetComponentInChildren<Text>().text = Localization.Get("yes");
+            {
+                var t = yesButton.GetComponentInChildren<Text>();
+                if (t != null) t.text = Localization.Get("yes");
+            }
             if (noButton != null)
-                noButton.GetComponentInChildren<Text>().text = Localization.Get("no");
+            {
+                var t = noButton.GetComponentInChildren<Text>();
+                if (t != null) t.text = Localization.Get("no");
+            }
         }
 
         private void HideConfirm()

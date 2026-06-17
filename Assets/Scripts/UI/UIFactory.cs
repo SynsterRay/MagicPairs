@@ -108,5 +108,31 @@ namespace MagicPairs.UI
             rect.offsetMax = Vector2.zero;
             return go;
         }
+
+        /// <summary>Creates a button using an icon sprite image. No background — the icon IS the button.</summary>
+        public static Button CreateIconButton(string name, string iconName, Transform parent,
+            Vector2 anchorMin, Vector2 anchorMax)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            var img = go.AddComponent<Image>();
+            var sprite = UIIcons.Get(iconName);
+            if (sprite != null)
+            {
+                img.sprite = sprite;
+                img.preserveAspect = true;
+            }
+            img.color = Color.white;
+            img.raycastTarget = true;
+            var btn = go.AddComponent<Button>();
+            // No color tint — use None transition to avoid gray border on hover
+            btn.transition = Selectable.Transition.None;
+            var rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            return btn;
+        }
     }
 }

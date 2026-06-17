@@ -46,6 +46,7 @@ namespace MagicPairs.Core
             { "themeColors", new[] { "🎨 Kolory", "🎨 Colors" } },
             { "themePrincess", new[] { "👸 Księżniczki", "👸 Princesses" } },
             { "themeCars", new[] { "🚗 Samochody", "🚗 Cars" } },
+            { "themeWaterWorld", new[] { "🐬 Wodny Świat", "🐬 Water World" } },
             { "chooseTheme", new[] { "Wybierz typ kart", "Choose card type" } },
             { "cards", new[] { "Karty", "Cards" } },
             { "play", new[] { "Graj", "Play" } },

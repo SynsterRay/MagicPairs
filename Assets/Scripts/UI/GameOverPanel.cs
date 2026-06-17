@@ -39,7 +39,10 @@ namespace MagicPairs.UI
             if (playAgainText != null)
                 playAgainText.text = Localization.Get("playAgain");
             if (menuButton != null)
-                menuButton.GetComponentInChildren<Text>().text = "Menu";
+            {
+                var t = menuButton.GetComponentInChildren<Text>();
+                if (t != null) t.text = "Menu";
+            }
             if (resultText != null)
             {
                 if (winnerIndex == -1)

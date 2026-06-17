@@ -41,12 +41,14 @@ namespace MagicPairs.UI
             if (player1Button != null)
             {
                 player1Button.gameObject.SetActive(!hideButtons);
-                player1Button.GetComponentInChildren<Text>().text = Localization.Get("cards");
+                var p1Txt = player1Button.GetComponentInChildren<Text>();
+                if (p1Txt != null) p1Txt.text = Localization.Get("cards");
             }
             if (player2Button != null)
             {
                 player2Button.gameObject.SetActive(!hideButtons);
-                player2Button.GetComponentInChildren<Text>().text = Localization.Get("cards");
+                var p2Txt = player2Button.GetComponentInChildren<Text>();
+                if (p2Txt != null) p2Txt.text = Localization.Get("cards");
             }
             Close();
         }
@@ -82,7 +84,10 @@ namespace MagicPairs.UI
                     : Localization.Get("pairs", name, pairCount);
 
             if (closeButton != null)
-                closeButton.GetComponentInChildren<Text>().text = Localization.Get("close");
+            {
+                var closeTxt = closeButton.GetComponentInChildren<Text>();
+                if (closeTxt != null) closeTxt.text = Localization.Get("close");
+            }
 
             // Clear old slots
             var oldSlots = new System.Collections.Generic.List<GameObject>();

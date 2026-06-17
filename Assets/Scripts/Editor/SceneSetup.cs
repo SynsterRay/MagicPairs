@@ -101,7 +101,8 @@ namespace MagicPairs.Editor
                 cam.orthographicSize = 5f;
                 cam.transform.position = new Vector3(0f, 0f, -10f);
                 cam.transform.rotation = Quaternion.identity;
-                cam.backgroundColor = new Color(0.12f, 0.12f, 0.18f);
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = Color.white;
             }
 
             CreateGameConfig();
@@ -161,6 +162,7 @@ namespace MagicPairs.Editor
             AssetDatabase.CreateAsset(config, path);
         }
 
+
         private static void CreateUI()
         {
             var canvas = new GameObject("Canvas");
@@ -172,7 +174,7 @@ namespace MagicPairs.Editor
             scaler.matchWidthOrHeight = 1f;
             canvas.AddComponent<GraphicRaycaster>();
 
-            // Safe Area wrapper — all UI goes inside this
+            // Safe Area wrapper
             var safeArea = new GameObject("SafeArea");
             safeArea.transform.SetParent(canvas.transform, false);
             var safeRect = safeArea.AddComponent<RectTransform>();
@@ -212,33 +214,30 @@ namespace MagicPairs.Editor
             sdSo.FindProperty("player2ScoreText").objectReferenceValue = p2Score;
             sdSo.ApplyModifiedProperties();
 
-            // Turn Indicator
-            // Gray turn bar — bottom strip of TopBar (background for turn indicator)
+            // Turn bar
             var turnBar = new GameObject("TurnBar");
             turnBar.transform.SetParent(topBar.transform, false);
             var turnBarImg = turnBar.AddComponent<Image>();
-            turnBarImg.color = new Color(0.88f, 0.88f, 0.90f, 1f);
+            turnBarImg.color = new Color(1f, 1f, 1f, 1f);
             var turnBarRect = turnBar.GetComponent<RectTransform>();
             turnBarRect.anchorMin = new Vector2(0f, 0f);
             turnBarRect.anchorMax = new Vector2(1f, 0.3f);
             turnBarRect.offsetMin = Vector2.zero;
             turnBarRect.offsetMax = Vector2.zero;
 
-            // Turn Indicator — bottom of white TopBar, below scores
             var turnText = CreateUIText("TurnIndicator", "Tura: Gracz 1", topBar.transform,
-                new Vector2(0.2f, 0f), new Vector2(0.8f, 0.3f), TextAnchor.MiddleCenter, 14);
+                new Vector2(0.2f, 0f), new Vector2(0.8f, 0.3f), TextAnchor.MiddleCenter, 18);
 
-            // Pause/Menu Button (top right corner)
-            var pauseBtn = CreateButton("PauseBtn", "✕", canvas.transform,
+            // Pause Button
+            var pauseBtn = CreateIconBtn("PauseBtn", "close", canvas.transform,
                 new Vector2(0.88f, 0.93f), new Vector2(0.98f, 0.99f));
-            pauseBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.2f, 0.9f);
             pauseBtn.SetActive(false);
 
             // Confirm panel
             var confirmPanel = new GameObject("ConfirmPanel");
             confirmPanel.transform.SetParent(canvas.transform, false);
             var cpImg = confirmPanel.AddComponent<Image>();
-            cpImg.color = new Color(0f, 0f, 0f, 0.65f);
+            cpImg.color = new Color(1f, 1f, 1f, 1f);
             cpImg.sprite = UI.RoundedButtonHelper.GetRoundedSprite();
             cpImg.type = Image.Type.Sliced;
             var cpRect = confirmPanel.GetComponent<RectTransform>();
@@ -249,15 +248,13 @@ namespace MagicPairs.Editor
 
             var confirmText = CreateUIText("ConfirmText", "Wróć do menu?", confirmPanel.transform,
                 new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 28);
-            confirmText.color = Color.white;
+            confirmText.color = new Color(0.3f, 0.1f, 0.5f);
 
-            var yesBtn = CreateButton("YesBtn", "Tak", confirmPanel.transform,
+            var yesBtn = CreateIconBtn("YesBtn", "yes", confirmPanel.transform,
                 new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.45f));
-            yesBtn.GetComponent<Image>().color = new Color(0.2f, 0.7f, 0.2f, 1f);
 
-            var noBtn = CreateButton("NoBtn", "Nie", confirmPanel.transform,
+            var noBtn = CreateIconBtn("NoBtn", "no", confirmPanel.transform,
                 new Vector2(0.55f, 0.1f), new Vector2(0.9f, 0.45f));
-            noBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.2f, 1f);
 
             var pauseComp = canvas.AddComponent<UI.PauseButton>();
             var pauseSo = new SerializedObject(pauseComp);
@@ -267,7 +264,7 @@ namespace MagicPairs.Editor
             pauseSo.FindProperty("noButton").objectReferenceValue = noBtn.GetComponent<Button>();
             pauseSo.ApplyModifiedProperties();
 
-            // Collected Cards Panel (overlay when clicking collected pairs)
+            // Collected Cards Panel
             var ccPanel = new GameObject("CollectedCardsPanel");
             ccPanel.transform.SetParent(canvas.transform, false);
             var ccImg = ccPanel.AddComponent<Image>();
@@ -282,11 +279,9 @@ namespace MagicPairs.Editor
             var ccTitle = CreateUIText("CCTitle", "Zebrane pary", ccPanel.transform,
                 new Vector2(0.05f, 0.88f), new Vector2(0.95f, 0.98f), TextAnchor.MiddleCenter, 28);
 
-            var ccCloseBtn = CreateButton("CCCloseBtn", "Zamknij", ccPanel.transform,
+            var ccCloseBtn = CreateIconBtn("CCCloseBtn", "close", ccPanel.transform,
                 new Vector2(0.3f, 0.02f), new Vector2(0.7f, 0.1f));
-            ccCloseBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
-            // Scroll content area
             var ccContent = new GameObject("CCContent");
             ccContent.transform.SetParent(ccPanel.transform, false);
             var ccContentRect = ccContent.AddComponent<RectTransform>();
@@ -299,24 +294,18 @@ namespace MagicPairs.Editor
             grid2.spacing = new Vector2(15f, 15f);
             grid2.childAlignment = TextAnchor.UpperCenter;
 
-            // Card slot prefab (for displaying collected cards)
             var ccSlot = new GameObject("CardSlot");
             ccSlot.transform.SetParent(canvas.transform, false);
             var slotImg = ccSlot.AddComponent<Image>();
             slotImg.color = Color.white;
             ccSlot.SetActive(false);
 
-            // Buttons to view collected cards (below score panel, left and right)
-            var p1CollBtn = CreateButton("P1CollBtn", "Karty", canvas.transform,
+            var p1CollBtn = CreateIconBtn("P1CollBtn", "cards", canvas.transform,
                 new Vector2(-0.01f, 0.82f), new Vector2(0.15f, 0.93f));
-            p1CollBtn.GetComponent<Image>().color = new Color(0.3f, 0.6f, 0.9f, 1f);
-            p1CollBtn.GetComponentInChildren<Text>().fontSize = 36;
             p1CollBtn.SetActive(false);
 
-            var p2CollBtn = CreateButton("P2CollBtn", "Karty", canvas.transform,
+            var p2CollBtn = CreateIconBtn("P2CollBtn", "cards", canvas.transform,
                 new Vector2(0.85f, 0.82f), new Vector2(1.01f, 0.93f));
-            p2CollBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.4f, 1f);
-            p2CollBtn.GetComponentInChildren<Text>().fontSize = 36;
             p2CollBtn.SetActive(false);
 
             var ccComp = canvas.AddComponent<UI.CollectedCardsPanel>();
@@ -339,7 +328,7 @@ namespace MagicPairs.Editor
             var goPanel = new GameObject("GameOverPanel");
             goPanel.transform.SetParent(canvas.transform, false);
             var goPanelImg = goPanel.AddComponent<Image>();
-            goPanelImg.color = new Color(1f, 1f, 1f, 0.95f);
+            goPanelImg.color = new Color(1f, 1f, 1f, 1f);
             var goPanelRect = goPanel.GetComponent<RectTransform>();
             goPanelRect.anchorMin = new Vector2(0.1f, 0.3f);
             goPanelRect.anchorMax = new Vector2(0.9f, 0.7f);
@@ -349,13 +338,11 @@ namespace MagicPairs.Editor
             var resultText = CreateUIText("ResultText", "Wygrywa!", goPanel.transform,
                 new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 42);
 
-            var playAgainBtn = CreateButton("PlayAgainBtn", "Zagraj ponownie", goPanel.transform,
+            var playAgainBtn = CreateIconBtn("PlayAgainBtn", "play", goPanel.transform,
                 new Vector2(0.55f, 0.1f), new Vector2(0.95f, 0.4f));
-            playAgainBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
-            var goMenuBtn = CreateButton("MenuBtn", "Menu", goPanel.transform,
+            var goMenuBtn = CreateIconBtn("GoMenuBtn", "back", goPanel.transform,
                 new Vector2(0.05f, 0.1f), new Vector2(0.45f, 0.4f));
-            goMenuBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             var gameOverPanel = canvas.AddComponent<UI.GameOverPanel>();
             var gopSo = new SerializedObject(gameOverPanel);
@@ -366,8 +353,8 @@ namespace MagicPairs.Editor
             gopSo.FindProperty("menuButton").objectReferenceValue = goMenuBtn.GetComponent<Button>();
             gopSo.ApplyModifiedProperties();
 
+
             // --- Challenge UI ---
-            // Score panel (top center, replaces score display in challenge mode)
             var chScorePanel = new GameObject("ChallengeScorePanel");
             chScorePanel.transform.SetParent(canvas.transform, false);
             var chScoreRect = chScorePanel.AddComponent<RectTransform>();
@@ -404,9 +391,8 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 28);
             lvlCompleteText.color = Color.white;
 
-            var nextLvlBtn = CreateButton("NextLvlBtn", "Dalej", lvlCompletePanel.transform,
+            var nextLvlBtn = CreateIconBtn("NextLvlBtn", "play", lvlCompletePanel.transform,
                 new Vector2(0.2f, 0.1f), new Vector2(0.8f, 0.4f));
-            nextLvlBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
             // Challenge Over panel
             var chOverPanel = new GameObject("ChallengeOverPanel");
@@ -423,17 +409,14 @@ namespace MagicPairs.Editor
                 new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 30);
             chFinalScoreText.color = Color.white;
 
-            var chMenuBtn = CreateButton("ChMenuBtn", "Menu", chOverPanel.transform,
+            var chMenuBtn = CreateIconBtn("ChMenuBtn", "back", chOverPanel.transform,
                 new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.4f));
 
-            var chLeaderBtn = CreateButton("ChLeaderBtn", "Wyniki", chOverPanel.transform,
+            var chLeaderBtn = CreateIconBtn("ChLeaderBtn", "scores", chOverPanel.transform,
                 new Vector2(0.55f, 0.1f), new Vector2(0.9f, 0.4f));
-            chLeaderBtn.GetComponent<Image>().color = new Color(0.8f, 0.6f, 0.1f, 1f);
 
-            var secondChanceBtn = CreateButton("SecondChanceBtn", "▶ Second Chance", chOverPanel.transform,
+            var secondChanceBtn = CreateIconBtn("SecondChanceBtn", "add reward", chOverPanel.transform,
                 new Vector2(0.15f, 0.42f), new Vector2(0.85f, 0.55f));
-            secondChanceBtn.GetComponent<Image>().color = new Color(0.2f, 0.7f, 0.3f, 1f);
-            secondChanceBtn.GetComponentInChildren<Text>().fontSize = 24;
             secondChanceBtn.SetActive(false);
 
             // Leaderboard panel
@@ -450,9 +433,8 @@ namespace MagicPairs.Editor
             var leaderText = CreateUIText("LeaderText", "", leaderPanel.transform,
                 new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.85f), TextAnchor.UpperLeft, 22);
 
-            var leaderBackBtn = CreateButton("LeaderBackBtn", "←", leaderPanel.transform,
+            var leaderBackBtn = CreateIconBtn("LeaderBackBtn", "back", leaderPanel.transform,
                 new Vector2(0.3f, 0.02f), new Vector2(0.7f, 0.12f));
-            leaderBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // Wire ChallengeUI
             var challengeUI = canvas.AddComponent<UI.ChallengeUI>();
@@ -474,7 +456,7 @@ namespace MagicPairs.Editor
             cuSo.FindProperty("secondChanceButton").objectReferenceValue = secondChanceBtn.GetComponent<Button>();
             cuSo.ApplyModifiedProperties();
 
-            // Score Popup (floating +points animation)
+            // Score Popup, TimeAttack, DailyBonus, Shop, CoinPopup
             canvas.AddComponent<UI.ScorePopup>();
             canvas.AddComponent<UI.TimeAttackUI>();
             canvas.AddComponent<UI.DailyBonus>();
@@ -505,30 +487,10 @@ namespace MagicPairs.Editor
             titleRect.offsetMin = Vector2.zero;
             titleRect.offsetMax = Vector2.zero;
 
-            // Game Background (behind cards, on separate canvas)
-            var bgSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Textures/background_game.png");
-            var bgCanvas = new GameObject("BackgroundCanvas");
-            var bgC = bgCanvas.AddComponent<Canvas>();
-            bgC.renderMode = RenderMode.ScreenSpaceCamera;
-            bgC.worldCamera = UnityEngine.Camera.main;
-            bgC.planeDistance = 15f;
-            bgC.sortingOrder = -1;
-            bgCanvas.AddComponent<UnityEngine.UI.CanvasScaler>();
+            // Game Background
+            // No dynamic background — white background from camera
 
-            var bgObj = new GameObject("GameBackground");
-            bgObj.transform.SetParent(bgCanvas.transform, false);
-            var bgImg = bgObj.AddComponent<Image>();
-            bgImg.sprite = bgSprite;
-            bgImg.preserveAspect = false;
-            bgImg.color = new Color(1f, 1f, 1f, 0.5f);
-            bgObj.AddComponent<UI.GameBackground>();
-            var bgRect = bgObj.GetComponent<RectTransform>();
-            bgRect.anchorMin = Vector2.zero;
-            bgRect.anchorMax = new Vector2(1f, 0.85f);
-            bgRect.offsetMin = Vector2.zero;
-            bgRect.offsetMax = Vector2.zero;
-
-            // --- Start Panel (main screen) ---
+            // --- Start Panel ---
             var startPanel = new GameObject("StartPanel");
             startPanel.transform.SetParent(menuPanel.transform, false);
             var startPanelRect = startPanel.AddComponent<RectTransform>();
@@ -537,25 +499,21 @@ namespace MagicPairs.Editor
             startPanelRect.offsetMin = Vector2.zero;
             startPanelRect.offsetMax = Vector2.zero;
 
-            var playBtn = CreateButton("PlayBtn", "Graj", startPanel.transform,
-                new Vector2(0.2f, 0.83f), new Vector2(0.8f, 0.98f));
-            playBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
+            var playBtn = CreateIconBtn("PlayBtn", "play", startPanel.transform,
+                new Vector2(0.25f, 0.75f), new Vector2(0.75f, 0.98f));
 
-            var shopBtn = CreateButton("ShopBtn", "🪙 Sklep", startPanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.79f));
-            shopBtn.GetComponent<Image>().color = new Color(0.9f, 0.7f, 0.1f, 1f);
+            var shopBtn = CreateIconBtn("ShopBtn", "shop", startPanel.transform,
+                new Vector2(0.05f, 0.40f), new Vector2(0.48f, 0.70f));
 
-            var optionsBtn = CreateButton("OptionsBtn", "Opcje", startPanel.transform,
-                new Vector2(0.2f, 0.45f), new Vector2(0.8f, 0.60f));
-            optionsBtn.GetComponent<Image>().color = new Color(0.3f, 0.5f, 0.8f, 1f);
+            var optionsBtn = CreateIconBtn("OptionsBtn", "settings", startPanel.transform,
+                new Vector2(0.52f, 0.40f), new Vector2(0.95f, 0.70f));
 
-            var leaderBtn = CreateButton("LeaderboardBtn", "Wyniki", startPanel.transform,
-                new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.41f));
-            leaderBtn.GetComponent<Image>().color = new Color(0.8f, 0.6f, 0.1f, 1f);
+            var leaderBtn = CreateIconBtn("LeaderboardBtn", "scores", startPanel.transform,
+                new Vector2(0.05f, 0.05f), new Vector2(0.48f, 0.35f));
 
-            var quitBtn = CreateButton("QuitBtn", "Wyjdź", startPanel.transform,
-                new Vector2(0.2f, 0.07f), new Vector2(0.8f, 0.22f));
-            quitBtn.GetComponent<Image>().color = new Color(0.6f, 0.15f, 0.15f, 1f);
+            var quitBtn = CreateIconBtn("QuitBtn", "quit", startPanel.transform,
+                new Vector2(0.52f, 0.05f), new Vector2(0.95f, 0.35f));
+
 
             // --- Start Leaderboard Panel ---
             var startLeaderPanel = new GameObject("StartLeaderboardPanel");
@@ -571,9 +529,8 @@ namespace MagicPairs.Editor
             var startLeaderText = CreateUIText("StartLeaderText", "", startLeaderPanel.transform,
                 new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.85f), TextAnchor.UpperLeft, 22);
 
-            var startLeaderBackBtn = CreateButton("StartLeaderBackBtn", "←", startLeaderPanel.transform,
+            var startLeaderBackBtn = CreateIconBtn("StartLeaderBackBtn", "back", startLeaderPanel.transform,
                 new Vector2(0.3f, 0.02f), new Vector2(0.7f, 0.12f));
-            startLeaderBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Options Panel ---
             var optionsPanel = new GameObject("OptionsPanel");
@@ -587,24 +544,20 @@ namespace MagicPairs.Editor
             var optionsTitle = CreateUIText("OptionsTitle", "Opcje", optionsPanel.transform,
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
-            var langBtn = CreateButton("LanguageBtn", "Język", optionsPanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
+            var langBtn = CreateIconBtn("LanguageBtn", "language", optionsPanel.transform,
+                new Vector2(0.05f, 0.45f), new Vector2(0.48f, 0.78f));
 
-            var menuMusicBtn = CreateButton("MenuMusicBtn", "Muzyka menu ✓", optionsPanel.transform,
-                new Vector2(0.2f, 0.46f), new Vector2(0.8f, 0.62f));
-            menuMusicBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.5f, 1f);
+            var menuMusicBtn = CreateIconBtn("MenuMusicBtn", "music", optionsPanel.transform,
+                new Vector2(0.52f, 0.45f), new Vector2(0.95f, 0.78f));
 
-            var gameMusicBtn = CreateButton("GameMusicBtn", "Muzyka w grze ✓", optionsPanel.transform,
-                new Vector2(0.2f, 0.28f), new Vector2(0.8f, 0.44f));
-            gameMusicBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.5f, 1f);
+            var gameMusicBtn = CreateIconBtn("GameMusicBtn", "sound on", optionsPanel.transform,
+                new Vector2(0.05f, 0.08f), new Vector2(0.48f, 0.41f));
 
-            var creditsBtn = CreateButton("CreditsBtn", "Autor", optionsPanel.transform,
-                new Vector2(0.2f, 0.10f), new Vector2(0.8f, 0.26f));
-            creditsBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.5f, 1f);
+            var creditsBtn = CreateIconBtn("CreditsBtn", "info", optionsPanel.transform,
+                new Vector2(0.52f, 0.08f), new Vector2(0.95f, 0.41f));
 
-            var optionsBackBtn = CreateButton("OptionsBackBtn", "←", optionsPanel.transform,
+            var optionsBackBtn = CreateIconBtn("OptionsBackBtn", "back", optionsPanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            optionsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Language Panel ---
             var langPanel = new GameObject("LanguagePanel");
@@ -623,9 +576,8 @@ namespace MagicPairs.Editor
             var enBtn = CreateButton("EnglishBtn", "English", langPanel.transform,
                 new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.42f));
 
-            var langBackBtn = CreateButton("LangBackBtn", "←", langPanel.transform,
+            var langBackBtn = CreateIconBtn("LangBackBtn", "back", langPanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            langBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Credits Panel ---
             var creditsPanel = new GameObject("CreditsPanel");
@@ -642,9 +594,8 @@ namespace MagicPairs.Editor
             CreateUIText("CreditsAuthor", "Created by\nMateusz Bajak", creditsPanel.transform,
                 new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.65f), TextAnchor.MiddleCenter, 28);
 
-            var creditsBackBtn = CreateButton("CreditsBackBtn", "←", creditsPanel.transform,
+            var creditsBackBtn = CreateIconBtn("CreditsBackBtn", "back", creditsPanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            creditsBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Game Type Panel ---
             var gameTypePanel = new GameObject("GameTypePanel");
@@ -656,23 +607,20 @@ namespace MagicPairs.Editor
             gameTypePanelRect.offsetMax = Vector2.zero;
 
             var gameTypeTitle = CreateUIText("GameTypeTitle", "Wybierz tryb gry", gameTypePanel.transform,
-                new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
+                new Vector2(0f, 0.85f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
-            var challengeBtn = CreateButton("ChallengeBtn", "Wyzwanie", gameTypePanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
-            challengeBtn.GetComponent<Image>().color = new Color(0.8f, 0.4f, 0.1f, 1f);
+            var challengeBtn = CreateIconBtn("ChallengeBtn", "challenge", gameTypePanel.transform,
+                new Vector2(0.05f, 0.35f), new Vector2(0.35f, 0.80f));
 
-            var timeAttackBtn = CreateButton("TimeAttackBtn", "Na czas", gameTypePanel.transform,
-                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
-            timeAttackBtn.GetComponent<Image>().color = new Color(0.7f, 0.2f, 0.5f, 1f);
+            var timeAttackBtn = CreateIconBtn("TimeAttackBtn", "time attack", gameTypePanel.transform,
+                new Vector2(0.37f, 0.35f), new Vector2(0.63f, 0.80f));
 
-            var arcadeBtn = CreateButton("ArcadeBtn", "Arcade", gameTypePanel.transform,
-                new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
-            arcadeBtn.GetComponent<Image>().color = new Color(0.2f, 0.5f, 0.9f, 1f);
+            var arcadeBtn = CreateIconBtn("ArcadeBtn", "arcade", gameTypePanel.transform,
+                new Vector2(0.65f, 0.35f), new Vector2(0.95f, 0.80f));
 
-            var gameTypeBackBtn = CreateButton("GameTypeBackBtn", "←", gameTypePanel.transform,
-                new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            gameTypeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+            var gameTypeBackBtn = CreateIconBtn("GameTypeBackBtn", "back", gameTypePanel.transform,
+                new Vector2(0.35f, 0.05f), new Vector2(0.65f, 0.28f));
+
 
             // --- Challenge Names Panel ---
             var challengeNamesPanel = new GameObject("ChallengeNamesPanel");
@@ -688,13 +636,11 @@ namespace MagicPairs.Editor
             var challengeNameInput = CreateInputField("ChallengeNameInput", "Player", challengeNamesPanel.transform,
                 new Vector2(0.05f, 0.46f), new Vector2(0.95f, 0.63f));
 
-            var challengeStartBtn = CreateButton("ChallengeStartBtn", "Start", challengeNamesPanel.transform,
+            var challengeStartBtn = CreateIconBtn("ChallengeStartBtn", "play", challengeNamesPanel.transform,
                 new Vector2(0.2f, 0.14f), new Vector2(0.8f, 0.34f));
-            challengeStartBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
-            var challengeNamesBackBtn = CreateButton("ChallengeNamesBackBtn", "←", challengeNamesPanel.transform,
+            var challengeNamesBackBtn = CreateIconBtn("ChallengeNamesBackBtn", "back", challengeNamesPanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            challengeNamesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Challenge Theme Panel ---
             var challengeThemePanel = new GameObject("ChallengeThemePanel");
@@ -708,18 +654,28 @@ namespace MagicPairs.Editor
             var challengeThemeTitle = CreateUIText("ChallengeThemeTitle", "Wybierz typ kart", challengeThemePanel.transform,
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
 
-            var chCarsBtn = CreateButton("ChCarsBtn", "🚗 Samochody", challengeThemePanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
-            chCarsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
-            var chPrincessBtn = CreateButton("ChPrincessBtn", "👸 Księżniczki", challengeThemePanel.transform,
-                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
-            chPrincessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
-            var chColorsBtn = CreateButton("ChColorsBtn", "🎨 Kolory", challengeThemePanel.transform,
-                new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
+            // Row 1: Cars, Princess, Colors
+            var chCarsBtn = CreateIconBtn("ChCarsBtn", "cars", challengeThemePanel.transform,
+                new Vector2(0.02f, 0.45f), new Vector2(0.32f, 0.80f));
+            var chPrincessBtn = CreateIconBtn("ChPrincessBtn", "princess", challengeThemePanel.transform,
+                new Vector2(0.35f, 0.45f), new Vector2(0.65f, 0.80f));
+            var chColorsBtn = CreateIconBtn("ChColorsBtn", "water world", challengeThemePanel.transform,
+                new Vector2(0.68f, 0.45f), new Vector2(0.98f, 0.80f));
+            chColorsBtn.GetComponent<Button>().interactable = false;
+            AddBlockedOverlay(chColorsBtn);
 
-            var challengeThemeBackBtn = CreateButton("ChallengeThemeBackBtn", "←", challengeThemePanel.transform,
+            // Row 2: Locked placeholders
+            var chLockedCard1 = CreateIconBtn("ChLockedCard1", "animals", challengeThemePanel.transform,
+                new Vector2(0.02f, 0.10f), new Vector2(0.32f, 0.42f));
+            chLockedCard1.GetComponent<Button>().interactable = false;
+            AddBlockedOverlay(chLockedCard1);
+            var chLockedCard2 = CreateIconBtn("ChLockedCard2", "space", challengeThemePanel.transform,
+                new Vector2(0.35f, 0.10f), new Vector2(0.65f, 0.42f));
+            chLockedCard2.GetComponent<Button>().interactable = false;
+            AddBlockedOverlay(chLockedCard2);
+
+            var challengeThemeBackBtn = CreateIconBtn("ChallengeThemeBackBtn", "back", challengeThemePanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            challengeThemeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Mode Panel ---
             var modePanel = new GameObject("ModePanel");
@@ -733,15 +689,14 @@ namespace MagicPairs.Editor
             var modeTitle = CreateUIText("ModeTitle", "Wybierz tryb", modePanel.transform,
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
-            var twoPlayersBtn = CreateButton("TwoPlayersBtn", "2 Graczy", modePanel.transform,
+            var twoPlayersBtn = CreateIconBtn("TwoPlayersBtn", "2 players", modePanel.transform,
                 new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.68f));
             var singlePlayerBtn = CreateButton("SinglePlayerBtn", "1 Gracz (vs AI)", modePanel.transform,
                 new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.42f));
             singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
 
-            var modeBackBtn = CreateButton("ModeBackBtn", "←", modePanel.transform,
+            var modeBackBtn = CreateIconBtn("ModeBackBtn", "back", modePanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            modeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Difficulty Panel ---
             var diffPanel = new GameObject("DifficultyPanel");
@@ -755,32 +710,17 @@ namespace MagicPairs.Editor
             var diffTitle = CreateUIText("DiffTitle", "Wybierz poziom trudności", diffPanel.transform,
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
 
-            var easyBtn = CreateButton("EasyBtn", "★", diffPanel.transform,
+            var easyBtn = CreateIconBtn("EasyBtn", "easy 3x4", diffPanel.transform,
                 new Vector2(0.05f, 0.3f), new Vector2(0.3f, 0.7f));
-            easyBtn.GetComponent<Image>().color = new Color(0.3f, 0.8f, 0.3f, 1f);
-            easyBtn.GetComponentInChildren<Text>().fontSize = 48;
 
-            var mediumBtn = CreateButton("MediumBtn", "★★", diffPanel.transform,
+            var mediumBtn = CreateIconBtn("MediumBtn", "medium 4x5", diffPanel.transform,
                 new Vector2(0.35f, 0.3f), new Vector2(0.65f, 0.7f));
-            mediumBtn.GetComponent<Image>().color = new Color(0.9f, 0.7f, 0.1f, 1f);
-            mediumBtn.GetComponentInChildren<Text>().fontSize = 40;
 
-            var hardBtn = CreateButton("HardBtn", "★★★", diffPanel.transform,
+            var hardBtn = CreateIconBtn("HardBtn", "hard 5x6", diffPanel.transform,
                 new Vector2(0.7f, 0.3f), new Vector2(0.95f, 0.7f));
-            hardBtn.GetComponent<Image>().color = new Color(0.9f, 0.2f, 0.2f, 1f);
-            hardBtn.GetComponentInChildren<Text>().fontSize = 32;
 
-            // Labels under stars
-            CreateUIText("EasyLabel", "3x4", diffPanel.transform,
-                new Vector2(0.05f, 0.18f), new Vector2(0.3f, 0.3f), TextAnchor.MiddleCenter, 20);
-            CreateUIText("MediumLabel", "4x5", diffPanel.transform,
-                new Vector2(0.35f, 0.18f), new Vector2(0.65f, 0.3f), TextAnchor.MiddleCenter, 20);
-            CreateUIText("HardLabel", "5x6", diffPanel.transform,
-                new Vector2(0.7f, 0.18f), new Vector2(0.95f, 0.3f), TextAnchor.MiddleCenter, 20);
-
-            var diffBackBtn = CreateButton("DiffBackBtn", "←", diffPanel.transform,
+            var diffBackBtn = CreateIconBtn("DiffBackBtn", "back", diffPanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            diffBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Theme Panel ---
             var themePanel = new GameObject("ThemePanel");
@@ -792,20 +732,43 @@ namespace MagicPairs.Editor
             themePanelRect.offsetMax = Vector2.zero;
 
             var themeTitle = CreateUIText("ThemeTitle", "Wybierz typ kart", themePanel.transform,
-                new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0.25f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleLeft, 28);
 
-            var carsBtn = CreateButton("CarsBtn", "🚗 Samochody", themePanel.transform,
-                new Vector2(0.2f, 0.64f), new Vector2(0.8f, 0.8f));
-            carsBtn.GetComponent<Image>().color = new Color(0.2f, 0.6f, 0.8f, 1f);
-            var princessBtn = CreateButton("PrincessBtn", "👸 Księżniczki", themePanel.transform,
-                new Vector2(0.2f, 0.38f), new Vector2(0.8f, 0.54f));
-            princessBtn.GetComponent<Image>().color = new Color(0.9f, 0.4f, 0.7f, 1f);
-            var colorsBtn = CreateButton("ColorsBtn", "🎨 Kolory", themePanel.transform,
-                new Vector2(0.2f, 0.12f), new Vector2(0.8f, 0.28f));
+            // Cards icon next to title
+            var themeCardsIcon = new GameObject("CardsIcon");
+            themeCardsIcon.transform.SetParent(themePanel.transform, false);
+            var tciImg = themeCardsIcon.AddComponent<Image>();
+            tciImg.sprite = UI.UIIcons.Get("cards");
+            tciImg.preserveAspect = true;
+            tciImg.raycastTarget = false;
+            var tciRect = themeCardsIcon.GetComponent<RectTransform>();
+            tciRect.anchorMin = new Vector2(0.02f, 0.82f);
+            tciRect.anchorMax = new Vector2(0.22f, 1f);
+            tciRect.offsetMin = Vector2.zero;
+            tciRect.offsetMax = Vector2.zero;
 
-            var themeBackBtn = CreateButton("ThemeBackBtn", "←", themePanel.transform,
+            // Row 1: Cars, Princess, Colors
+            var carsBtn = CreateIconBtn("CarsBtn", "cars", themePanel.transform,
+                new Vector2(0.02f, 0.45f), new Vector2(0.32f, 0.80f));
+            var princessBtn = CreateIconBtn("PrincessBtn", "princess", themePanel.transform,
+                new Vector2(0.35f, 0.45f), new Vector2(0.65f, 0.80f));
+            var colorsBtn = CreateIconBtn("ColorsBtn", "water world", themePanel.transform,
+                new Vector2(0.68f, 0.45f), new Vector2(0.98f, 0.80f));
+            colorsBtn.GetComponent<Button>().interactable = false;
+            AddBlockedOverlay(colorsBtn);
+
+            // Row 2: Locked placeholders (animals, space)
+            var lockedCard1 = CreateIconBtn("LockedCard1", "animals", themePanel.transform,
+                new Vector2(0.02f, 0.10f), new Vector2(0.32f, 0.42f));
+            lockedCard1.GetComponent<Button>().interactable = false;
+            AddBlockedOverlay(lockedCard1);
+            var lockedCard2 = CreateIconBtn("LockedCard2", "space", themePanel.transform,
+                new Vector2(0.35f, 0.10f), new Vector2(0.65f, 0.42f));
+            lockedCard2.GetComponent<Button>().interactable = false;
+            AddBlockedOverlay(lockedCard2);
+
+            var themeBackBtn = CreateIconBtn("ThemeBackBtn", "back", themePanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            themeBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
 
             // --- Names Panel ---
             var namesPanel = new GameObject("NamesPanel");
@@ -826,13 +789,12 @@ namespace MagicPairs.Editor
             var p2Input = CreateInputField("P2Input", "Player 2", namesPanel.transform,
                 new Vector2(0.05f, 0.32f), new Vector2(0.95f, 0.46f));
 
-            var startBtn = CreateButton("StartBtn", "Start", namesPanel.transform,
+            var startBtn = CreateIconBtn("StartBtn", "play", namesPanel.transform,
                 new Vector2(0.2f, 0.06f), new Vector2(0.8f, 0.26f));
-            startBtn.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
 
-            var namesBackBtn = CreateButton("NamesBackBtn", "←", namesPanel.transform,
+            var namesBackBtn = CreateIconBtn("NamesBackBtn", "back", namesPanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
-            namesBackBtn.GetComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+
 
             // Wire MainMenu
             var mainMenu = canvas.AddComponent<UI.MainMenu>();
@@ -915,6 +877,47 @@ namespace MagicPairs.Editor
             mmSo.FindProperty("startButton").objectReferenceValue = startBtn.GetComponent<Button>();
             mmSo.FindProperty("startButtonText").objectReferenceValue = startBtn.GetComponentInChildren<Text>();
             mmSo.ApplyModifiedProperties();
+
+            // LoadingScreen
+            canvas.AddComponent<UI.LoadingScreen>();
+        }
+
+
+        private static GameObject CreateIconBtn(string name, string iconName, Transform parent, Vector2 anchorMin, Vector2 anchorMax)
+        {
+            var btn = UI.UIFactory.CreateIconButton(name, iconName, parent, anchorMin, anchorMax);
+            return btn.gameObject;
+        }
+
+        private static void AddBlockedOverlay(GameObject btn)
+        {
+            var overlay = new GameObject("BlockedOverlay");
+            overlay.transform.SetParent(btn.transform, false);
+            var img = overlay.AddComponent<Image>();
+            img.color = new Color(1f, 1f, 1f, 0.7f);
+            img.raycastTarget = false;
+            var rect = overlay.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.05f, 0.3f);
+            rect.anchorMax = new Vector2(0.95f, 0.7f);
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            var txtObj = new GameObject("Text");
+            txtObj.transform.SetParent(overlay.transform, false);
+            var txt = txtObj.AddComponent<Text>();
+            txt.text = "BLOCKED";
+            txt.fontSize = 24;
+            txt.fontStyle = FontStyle.Bold;
+            txt.alignment = TextAnchor.MiddleCenter;
+            txt.color = new Color(0.3f, 0.1f, 0.5f);
+            txt.font = GetGameFont();
+            txt.resizeTextForBestFit = true;
+            txt.resizeTextMinSize = 14;
+            txt.resizeTextMaxSize = 24;
+            var tr = txtObj.GetComponent<RectTransform>();
+            tr.anchorMin = Vector2.zero;
+            tr.anchorMax = Vector2.one;
+            tr.offsetMin = Vector2.zero;
+            tr.offsetMax = Vector2.zero;
         }
 
         private static Font _cachedFont;
@@ -978,7 +981,7 @@ namespace MagicPairs.Editor
             btnRect.offsetMin = Vector2.zero;
             btnRect.offsetMax = Vector2.zero;
 
-            // Shine overlay (white gradient reflection)
+            // Shine overlay
             var shine = new GameObject("Shine");
             shine.transform.SetParent(btn.transform, false);
             var shineImg = shine.AddComponent<Image>();
@@ -1012,7 +1015,7 @@ namespace MagicPairs.Editor
             txtRect.offsetMin = new Vector2(10f, 4f);
             txtRect.offsetMax = new Vector2(-10f, -4f);
 
-            // Bevel: dark shadow below (depth) + light shadow above (highlight)
+            // Bevel text shadows
             var txtShadow = txtObj.AddComponent<Shadow>();
             txtShadow.effectColor = new Color(0f, 0f, 0f, 0.45f);
             txtShadow.effectDistance = new Vector2(1.5f, -2f);
@@ -1036,7 +1039,6 @@ namespace MagicPairs.Editor
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
 
-            // Text child
             var textObj = new GameObject("Text");
             textObj.transform.SetParent(go.transform, false);
             var textComp = textObj.AddComponent<Text>();
@@ -1051,7 +1053,6 @@ namespace MagicPairs.Editor
             textRect.offsetMin = Vector2.zero;
             textRect.offsetMax = Vector2.zero;
 
-            // Placeholder child
             var phObj = new GameObject("Placeholder");
             phObj.transform.SetParent(go.transform, false);
             var phText = phObj.AddComponent<Text>();
