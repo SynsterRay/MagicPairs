@@ -84,24 +84,43 @@ namespace MagicPairs.UI
                 new Vector2(0.1f, 0.7f), new Vector2(0.9f, 0.95f), 32);
             _titleText.color = new Color(0.2f, 0.2f, 0.2f);
 
-            // Reward icon/text
-            string rewardName = _todayReward switch
+            // Power-up icon + name
+            string puIconName = _todayReward switch
             {
-                PowerUpType.Peek => $"🔍 {Localization.Get("peek")}",
-                PowerUpType.Shuffle => $"🔄 {Localization.Get("shuffle")}",
-                PowerUpType.Freeze => $"❄️ {Localization.Get("freeze")}",
+                PowerUpType.Peek => "peek",
+                PowerUpType.Shuffle => "shuffle",
+                PowerUpType.Freeze => "freeze",
+                _ => "peek"
+            };
+            string puName = _todayReward switch
+            {
+                PowerUpType.Peek => Localization.Get("peek"),
+                PowerUpType.Shuffle => Localization.Get("shuffle"),
+                PowerUpType.Freeze => Localization.Get("freeze"),
                 _ => ""
             };
             int rewardCount = _streak >= 7 ? 2 : 1;
             int coinReward = Mathf.Min(_streak * 10, 70);
-            string rewardDisplay = rewardCount > 1 ? $"{rewardName} x{rewardCount}" : rewardName;
-            rewardDisplay += $"\n🪙 +{coinReward}";
 
-            _rewardText = CreateText("Reward", rewardDisplay, panel.transform,
-                new Vector2(0.4f, 0.35f), new Vector2(0.9f, 0.7f), 34);
-            _rewardText.color = new Color(0.1f, 0.5f, 0.2f);
+            var puIcon = new GameObject("PUIcon");
+            puIcon.transform.SetParent(panel.transform, false);
+            var puImg = puIcon.AddComponent<Image>();
+            puImg.sprite = UIIcons.Get(puIconName);
+            puImg.preserveAspect = true;
+            puImg.raycastTarget = false;
+            var puRect = puIcon.GetComponent<RectTransform>();
+            puRect.anchorMin = new Vector2(0.08f, 0.52f);
+            puRect.anchorMax = new Vector2(0.32f, 0.72f);
+            puRect.offsetMin = Vector2.zero;
+            puRect.offsetMax = Vector2.zero;
 
-            // Coins icon
+            string puLabel = rewardCount > 1 ? $"{puName} x{rewardCount}" : puName;
+            _rewardText = CreateText("PUName", puLabel, panel.transform,
+                new Vector2(0.34f, 0.52f), new Vector2(0.92f, 0.72f), 28);
+            _rewardText.color = new Color(0.2f, 0.2f, 0.2f);
+            _rewardText.alignment = TextAnchor.MiddleLeft;
+
+            // Coins icon + gold amount text
             var coinsIcon = new GameObject("CoinsIcon");
             coinsIcon.transform.SetParent(panel.transform, false);
             var ciImg = coinsIcon.AddComponent<Image>();
@@ -109,10 +128,15 @@ namespace MagicPairs.UI
             ciImg.preserveAspect = true;
             ciImg.raycastTarget = false;
             var ciRect = coinsIcon.GetComponent<RectTransform>();
-            ciRect.anchorMin = new Vector2(0.08f, 0.38f);
-            ciRect.anchorMax = new Vector2(0.38f, 0.68f);
+            ciRect.anchorMin = new Vector2(0.08f, 0.30f);
+            ciRect.anchorMax = new Vector2(0.32f, 0.50f);
             ciRect.offsetMin = Vector2.zero;
             ciRect.offsetMax = Vector2.zero;
+
+            var coinText = CreateText("CoinAmount", $"+{coinReward}", panel.transform,
+                new Vector2(0.34f, 0.30f), new Vector2(0.92f, 0.50f), 30);
+            coinText.color = new Color(0.85f, 0.65f, 0.1f);
+            coinText.alignment = TextAnchor.MiddleLeft;
 
             // Streak info
             string streakInfo = Localization.Get("dailyStreak", _streak);

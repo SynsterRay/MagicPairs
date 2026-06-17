@@ -331,6 +331,13 @@ namespace MagicPairs.UI
 
         private void ShowLeaderboard()
         {
+            var gpgs = Core.GPGSManager.Instance;
+            if (gpgs != null && gpgs.IsAuthenticated)
+            {
+                gpgs.ShowLeaderboard();
+                return;
+            }
+
             if (leaderboardPanel != null) leaderboardPanel.SetActive(true);
             if (leaderboardText == null) return;
 

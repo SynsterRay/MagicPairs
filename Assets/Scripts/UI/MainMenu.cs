@@ -249,52 +249,10 @@ namespace MagicPairs.UI
 
             if (_achievementsBtn == null && show && startPanel != null)
             {
-                // Create button above Quit
-                var canvas = GetComponentInParent<Canvas>() ?? GetComponent<Canvas>();
-                if (canvas != null)
-                {
-                    _achievementsBtn = new GameObject("AchievementsBtn");
-                    _achievementsBtn.transform.SetParent(startPanel.transform, false);
-                    var img = _achievementsBtn.AddComponent<Image>();
-                    img.color = new Color(0.5f, 0.2f, 0.8f, 1f);
-                    img.sprite = RoundedButtonHelper.GetRoundedSprite();
-                    img.type = Image.Type.Sliced;
-                    var btn = _achievementsBtn.AddComponent<Button>();
-                    var rect = _achievementsBtn.GetComponent<RectTransform>();
-                    rect.anchorMin = new Vector2(0.2f, 0.07f);
-                    rect.anchorMax = new Vector2(0.8f, 0.22f);
-                    rect.offsetMin = Vector2.zero;
-                    rect.offsetMax = Vector2.zero;
-
-                    // Move quit button down
-                    var quitObj = startPanel.transform.Find("QuitBtn");
-                    if (quitObj != null)
-                    {
-                        var quitRect = quitObj.GetComponent<RectTransform>();
-                        quitRect.anchorMin = new Vector2(0.2f, -0.12f);
-                        quitRect.anchorMax = new Vector2(0.8f, 0.03f);
-                    }
-
-                    var txtObj = new GameObject("Text");
-                    txtObj.transform.SetParent(_achievementsBtn.transform, false);
-                    var txt = txtObj.AddComponent<Text>();
-                    txt.text = Localization.Get("achievements");
-                    txt.fontSize = 52;
-                    txt.fontStyle = FontStyle.Bold;
-                    txt.alignment = TextAnchor.MiddleCenter;
-                    txt.color = Color.white;
-                    txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                    txt.resizeTextForBestFit = true;
-                    txt.resizeTextMinSize = 28;
-                    txt.resizeTextMaxSize = 52;
-                    var tr = txtObj.GetComponent<RectTransform>();
-                    tr.anchorMin = Vector2.zero;
-                    tr.anchorMax = Vector2.one;
-                    tr.offsetMin = new Vector2(10f, 4f);
-                    tr.offsetMax = new Vector2(-10f, -4f);
-
-                    btn.onClick.AddListener(() => Core.GPGSManager.Instance?.ShowAchievements());
-                }
+                var btn = UIFactory.CreateIconButton("AchievementsBtn", "achievements",
+                    startPanel.transform, new Vector2(0.02f, 0.02f), new Vector2(0.32f, 0.34f));
+                _achievementsBtn = btn.gameObject;
+                btn.onClick.AddListener(() => Core.GPGSManager.Instance?.ShowAchievements());
             }
 
             if (_achievementsBtn != null)

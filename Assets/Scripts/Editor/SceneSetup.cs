@@ -546,17 +546,19 @@ namespace MagicPairs.Editor
             var playBtn = CreateIconBtn("PlayBtn", "play", startPanel.transform,
                 new Vector2(0.25f, 0.75f), new Vector2(0.75f, 0.98f));
 
+            // Row 2: Shop / Scores / Options
             var shopBtn = CreateIconBtn("ShopBtn", "shop", startPanel.transform,
-                new Vector2(0.05f, 0.40f), new Vector2(0.48f, 0.70f));
-
-            var optionsBtn = CreateIconBtn("OptionsBtn", "settings", startPanel.transform,
-                new Vector2(0.52f, 0.40f), new Vector2(0.95f, 0.70f));
+                new Vector2(0.02f, 0.38f), new Vector2(0.32f, 0.70f));
 
             var leaderBtn = CreateIconBtn("LeaderboardBtn", "scores", startPanel.transform,
-                new Vector2(0.05f, 0.05f), new Vector2(0.48f, 0.35f));
+                new Vector2(0.35f, 0.38f), new Vector2(0.65f, 0.70f));
 
+            var optionsBtn = CreateIconBtn("OptionsBtn", "settings", startPanel.transform,
+                new Vector2(0.68f, 0.38f), new Vector2(0.98f, 0.70f));
+
+            // Row 3: Quit bottom-right
             var quitBtn = CreateIconBtn("QuitBtn", "quit", startPanel.transform,
-                new Vector2(0.52f, 0.05f), new Vector2(0.95f, 0.35f));
+                new Vector2(0.68f, 0.02f), new Vector2(0.98f, 0.34f));
 
 
             // --- Start Leaderboard Panel ---
