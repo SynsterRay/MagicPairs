@@ -106,8 +106,8 @@ namespace MagicPairs.UI
             var backBtn = backGo.AddComponent<Button>();
             backBtn.transition = Selectable.Transition.None;
             var backRect = backGo.GetComponent<RectTransform>();
-            backRect.anchorMin = new Vector2(0.35f, 0.02f);
-            backRect.anchorMax = new Vector2(0.65f, 0.10f);
+            backRect.anchorMin = new Vector2(0.30f, 0.03f);
+            backRect.anchorMax = new Vector2(0.70f, 0.11f);
             backRect.offsetMin = Vector2.zero;
             backRect.offsetMax = Vector2.zero;
             backBtn.onClick.AddListener(() => { Hide(); onBack?.Invoke(); });
@@ -151,10 +151,10 @@ namespace MagicPairs.UI
             var go = new GameObject("Header");
             go.transform.SetParent(_content, false);
             var le = go.AddComponent<LayoutElement>();
-            le.preferredHeight = 60f;
+            le.preferredHeight = 70f;
             var txt = go.AddComponent<Text>();
             txt.text = text;
-            txt.fontSize = 36;
+            txt.fontSize = 42;
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = new Color(0.3f, 0.1f, 0.5f);
@@ -229,7 +229,7 @@ namespace MagicPairs.UI
                 priceBg.type = Image.Type.Sliced;
                 var priceRect = priceObj.GetComponent<RectTransform>();
                 priceRect.anchorMin = new Vector2(xMin + 0.01f, 0.0f);
-                priceRect.anchorMax = new Vector2(xMax - 0.01f, 0.15f);
+                priceRect.anchorMax = new Vector2(xMax - 0.01f, 0.18f);
                 priceRect.offsetMin = Vector2.zero;
                 priceRect.offsetMax = Vector2.zero;
 
