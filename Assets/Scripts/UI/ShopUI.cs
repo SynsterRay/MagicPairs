@@ -23,8 +23,8 @@ namespace MagicPairs.UI
 
         public void Show(System.Action onBack)
         {
-            if (!_panel) { _panel = null; _content = null; }
-            if (_panel == null) CreatePanel(onBack);
+            if (_panel != null) { Destroy(_panel); _panel = null; _content = null; }
+            CreatePanel(onBack);
             if (_panel == null) return;
             _panel.SetActive(true);
             // Update title to reflect current language
@@ -290,15 +290,22 @@ namespace MagicPairs.UI
 
             // Price label
             string price = GetCoinPackPrice(item);
+            string discount = item.quantity switch
+            {
+                500 => "20% OFF",
+                1500 => "40% OFF",
+                _ => null
+            };
             var priceObj = new GameObject("Price");
             priceObj.transform.SetParent(row.transform, false);
             var priceTxt = priceObj.AddComponent<Text>();
-            priceTxt.text = price;
+            priceTxt.text = discount != null ? $"{price}  <color=#2BAF2B>{discount}</color>" : price;
             priceTxt.fontSize = 22;
             priceTxt.fontStyle = FontStyle.Bold;
             priceTxt.alignment = TextAnchor.MiddleLeft;
             priceTxt.color = new Color(0.4f, 0.4f, 0.4f);
             priceTxt.font = UIFactory.GetFont();
+            priceTxt.supportRichText = true;
             var priceRect = priceObj.GetComponent<RectTransform>();
             priceRect.anchorMin = new Vector2(0.30f, 0.1f);
             priceRect.anchorMax = new Vector2(0.70f, 0.5f);
