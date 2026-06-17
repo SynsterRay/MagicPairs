@@ -68,7 +68,7 @@ namespace MagicPairs.UI
             var scrollArea = new GameObject("ScrollArea", typeof(RectTransform));
             scrollArea.transform.SetParent(_panel.transform, false);
             var scrollAreaRect = scrollArea.GetComponent<RectTransform>();
-            scrollAreaRect.anchorMin = new Vector2(0.03f, 0.12f);
+            scrollAreaRect.anchorMin = new Vector2(0.03f, 0.21f);
             scrollAreaRect.anchorMax = new Vector2(0.97f, 0.87f);
             scrollAreaRect.offsetMin = Vector2.zero;
             scrollAreaRect.offsetMax = Vector2.zero;
@@ -106,8 +106,8 @@ namespace MagicPairs.UI
             var backBtn = backGo.AddComponent<Button>();
             backBtn.transition = Selectable.Transition.None;
             var backRect = backGo.GetComponent<RectTransform>();
-            backRect.anchorMin = new Vector2(0.30f, 0.03f);
-            backRect.anchorMax = new Vector2(0.70f, 0.11f);
+            backRect.anchorMin = new Vector2(0.30f, 0.12f);
+            backRect.anchorMax = new Vector2(0.70f, 0.20f);
             backRect.offsetMin = Vector2.zero;
             backRect.offsetMax = Vector2.zero;
             backBtn.onClick.AddListener(() => { Hide(); onBack?.Invoke(); });
