@@ -13,7 +13,7 @@ namespace MagicPairs.UI
 
         private void Awake()
         {
-            _canvas = GetComponentInParent<Canvas>() ?? GetComponent<Canvas>();
+            _canvas = GetComponent<Canvas>() ?? GetComponentInParent<Canvas>();
         }
 
         private void OnEnable() => GameEvents.OnGameStarted += ShowBackground;
@@ -39,7 +39,19 @@ namespace MagicPairs.UI
             }
 
             var tex = Resources.Load<Texture2D>(path);
-            if (tex == null) { Hide(); return; }
+            if (tex == null)
+            {
+                // Try loading as sprite directly
+                var spr = Resources.Load<Sprite>(path);
+                if (spr == null) { Hide(); return; }
+                if (_bgPanel == null) CreatePanel();
+                _bgPanel.SetActive(true);
+                _bgPanel.transform.SetAsFirstSibling();
+                _currentSprite = null;
+                _bgImage.sprite = spr;
+                _bgImage.color = Color.white;
+                return;
+            }
 
             if (_bgPanel == null) CreatePanel();
             _bgPanel.SetActive(true);
