@@ -195,6 +195,39 @@ namespace MagicPairs.Editor
             topBarRect.offsetMin = Vector2.zero;
             topBarRect.offsetMax = Vector2.zero;
 
+            // White bar for power-ups area (above TopBar)
+            var puBar = new GameObject("PowerUpBar");
+            puBar.transform.SetParent(canvas.transform, false);
+            var puImg = puBar.AddComponent<Image>();
+            puImg.color = Color.white;
+            puImg.raycastTarget = false;
+            var puRect = puBar.GetComponent<RectTransform>();
+            puRect.anchorMin = new Vector2(0f, 0.93f);
+            puRect.anchorMax = new Vector2(1f, 1.0f);
+            puRect.offsetMin = Vector2.zero;
+            puRect.offsetMax = Vector2.zero;
+
+            // White-to-transparent gradient below TopBar
+            var gradBar = new GameObject("TopBarGradient");
+            gradBar.transform.SetParent(canvas.transform, false);
+            var gradImg = gradBar.AddComponent<Image>();
+            gradImg.raycastTarget = false;
+            var gTex = new Texture2D(4, 32, TextureFormat.RGBA32, false);
+            gTex.wrapMode = TextureWrapMode.Clamp;
+            for (int y = 0; y < 32; y++)
+            {
+                float a = (float)y / 31f;
+                var col = new Color(1f, 1f, 1f, a);
+                for (int x = 0; x < 4; x++) gTex.SetPixel(x, y, col);
+            }
+            gTex.Apply();
+            gradImg.sprite = Sprite.Create(gTex, new Rect(0, 0, 4, 32), new Vector2(0.5f, 0.5f));
+            var gradRect = gradBar.GetComponent<RectTransform>();
+            gradRect.anchorMin = new Vector2(0f, 0.70f);
+            gradRect.anchorMax = new Vector2(1f, 0.82f);
+            gradRect.offsetMin = Vector2.zero;
+            gradRect.offsetMax = Vector2.zero;
+
             var scorePanel = new GameObject("ScorePanel");
             scorePanel.transform.SetParent(topBar.transform, false);
             var scoreRect = scorePanel.AddComponent<RectTransform>();
