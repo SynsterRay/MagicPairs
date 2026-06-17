@@ -73,7 +73,7 @@ namespace MagicPairs.Cards
                 {
                     var sprObj = new GameObject("FaceSprite");
                     sprObj.transform.SetParent(transform, false);
-                    sprObj.transform.localPosition = new Vector3(0f, 0f, -0.01f);
+                    sprObj.transform.localPosition = new Vector3(0f, 0f, -0.001f);
                     _spriteRenderer = sprObj.AddComponent<SpriteRenderer>();
                 }
             }
