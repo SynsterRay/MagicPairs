@@ -24,7 +24,7 @@ namespace MagicPairs.Core
         {
             // Card themes (expensive — encourage IAP)
             new() { id = "theme_animals", type = ShopItemType.CardTheme, coinPrice = 500, theme = (CardTheme)3, quantity = 1 },
-            new() { id = "theme_dinos", type = ShopItemType.CardTheme, coinPrice = 800, theme = (CardTheme)4, quantity = 1 },
+            new() { id = "theme_water_world", type = ShopItemType.CardTheme, coinPrice = 800, theme = (CardTheme)4, quantity = 1 },
             new() { id = "theme_space", type = ShopItemType.CardTheme, coinPrice = 1200, theme = (CardTheme)5, quantity = 1 },
 
             // Power-ups (moderate)

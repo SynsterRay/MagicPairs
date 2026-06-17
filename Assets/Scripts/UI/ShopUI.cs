@@ -106,7 +106,7 @@ namespace MagicPairs.UI
             var backBtn = backGo.AddComponent<Button>();
             backBtn.transition = Selectable.Transition.None;
             var backRect = backGo.GetComponent<RectTransform>();
-            backRect.anchorMin = new Vector2(0.35f, 0.01f);
+            backRect.anchorMin = new Vector2(0.35f, 0.02f);
             backRect.anchorMax = new Vector2(0.65f, 0.10f);
             backRect.offsetMin = Vector2.zero;
             backRect.offsetMax = Vector2.zero;
@@ -125,27 +125,25 @@ namespace MagicPairs.UI
 
             // Section: Card Themes
             CreateSectionHeader(Localization.Get("chooseTheme"));
+            var themes = new System.Collections.Generic.List<ShopItem>();
             foreach (var item in ShopCatalog.Items)
-            {
-                if (item.type == ShopItemType.CardTheme)
-                    CreateShopRow(item);
-            }
+                if (item.type == ShopItemType.CardTheme) themes.Add(item);
+            CreateIconRow(themes);
 
             // Section: Power-ups
             CreateSectionHeader("Power-ups");
+            var powerups = new System.Collections.Generic.List<ShopItem>();
             foreach (var item in ShopCatalog.Items)
-            {
                 if (item.type == ShopItemType.PowerUpPeek || item.type == ShopItemType.PowerUpShuffle || item.type == ShopItemType.PowerUpFreeze)
-                    CreateShopRow(item);
-            }
+                    powerups.Add(item);
+            CreateIconRow(powerups);
 
             // Section: Coin Packs
             CreateSectionHeader($"🪙 {Localization.Get("coins")}");
+            var coins = new System.Collections.Generic.List<ShopItem>();
             foreach (var item in ShopCatalog.Items)
-            {
-                if (item.type == ShopItemType.CoinPack)
-                    CreateCoinPackRow(item);
-            }
+                if (item.type == ShopItemType.CoinPack) coins.Add(item);
+            CreateIconRow(coins);
         }
 
         private void CreateSectionHeader(string text)
@@ -163,158 +161,95 @@ namespace MagicPairs.UI
             txt.font = UIFactory.GetFont();
         }
 
-        private void CreateShopRow(ShopItem item)
+        private void CreateIconRow(System.Collections.Generic.List<ShopItem> items)
         {
-            var row = new GameObject(item.id);
+            var row = new GameObject("Row");
             row.transform.SetParent(_content, false);
             var le = row.AddComponent<LayoutElement>();
-            le.preferredHeight = 150f;
+            le.preferredHeight = 200f;
 
-            // Big icon (centered)
-            string iconName = GetItemIcon(item);
-            if (iconName != null)
+            int count = items.Count;
+            for (int i = 0; i < count; i++)
             {
-                var iconObj = new GameObject("Icon");
-                iconObj.transform.SetParent(row.transform, false);
-                var iconImg = iconObj.AddComponent<Image>();
-                iconImg.sprite = UIIcons.Get(iconName);
-                iconImg.preserveAspect = true;
-                iconImg.color = Color.white;
-                iconImg.raycastTarget = false;
-                var iconRect = iconObj.GetComponent<RectTransform>();
-                iconRect.anchorMin = new Vector2(0.05f, 0.25f);
-                iconRect.anchorMax = new Vector2(0.40f, 0.95f);
-                iconRect.offsetMin = Vector2.zero;
-                iconRect.offsetMax = Vector2.zero;
-            }
+                var item = items[i];
+                float xMin = (float)i / count + 0.02f;
+                float xMax = (float)(i + 1) / count - 0.02f;
 
-            // Name + price
-            string displayName = GetItemName(item);
-            var nameObj = new GameObject("Name");
-            nameObj.transform.SetParent(row.transform, false);
-            var nameTxt = nameObj.AddComponent<Text>();
-            nameTxt.text = displayName;
-            nameTxt.fontSize = 26;
-            nameTxt.fontStyle = FontStyle.Bold;
-            nameTxt.alignment = TextAnchor.MiddleLeft;
-            nameTxt.color = new Color(0.2f, 0.2f, 0.2f);
-            nameTxt.font = UIFactory.GetFont();
-            var nameRect = nameObj.GetComponent<RectTransform>();
-            nameRect.anchorMin = new Vector2(0.42f, 0.5f);
-            nameRect.anchorMax = new Vector2(0.95f, 0.95f);
-            nameRect.offsetMin = Vector2.zero;
-            nameRect.offsetMax = Vector2.zero;
+                // Icon (top 65%)
+                string iconName = GetItemIcon(item);
+                if (iconName != null || item.type == ShopItemType.CoinPack)
+                {
+                    var iconObj = new GameObject("Icon_" + i);
+                    iconObj.transform.SetParent(row.transform, false);
+                    var iconImg = iconObj.AddComponent<Image>();
+                    iconImg.sprite = UIIcons.Get(iconName ?? "coins");
+                    iconImg.preserveAspect = true;
+                    iconImg.color = Color.white;
+                    iconImg.raycastTarget = false;
+                    var iconRect = iconObj.GetComponent<RectTransform>();
+                    iconRect.anchorMin = new Vector2(xMin + 0.02f, 0.35f);
+                    iconRect.anchorMax = new Vector2(xMax - 0.02f, 0.95f);
+                    iconRect.offsetMin = Vector2.zero;
+                    iconRect.offsetMax = Vector2.zero;
+                }
 
-            // Status or Buy
-            bool owned = item.type == ShopItemType.CardTheme && item.theme.HasValue && ShopCatalog.IsThemeUnlocked(item.theme.Value);
+                // Name label (below icon)
+                string displayName = GetItemName(item);
+                var nameObj = new GameObject("Name_" + i);
+                nameObj.transform.SetParent(row.transform, false);
+                var nameTxt = nameObj.AddComponent<Text>();
+                nameTxt.text = displayName;
+                nameTxt.fontSize = 20;
+                nameTxt.fontStyle = FontStyle.Bold;
+                nameTxt.alignment = TextAnchor.UpperCenter;
+                nameTxt.color = new Color(0.2f, 0.2f, 0.2f);
+                nameTxt.font = UIFactory.GetFont();
+                nameTxt.resizeTextForBestFit = true;
+                nameTxt.resizeTextMinSize = 14;
+                nameTxt.resizeTextMaxSize = 20;
+                var nameRect = nameObj.GetComponent<RectTransform>();
+                nameRect.anchorMin = new Vector2(xMin, 0.18f);
+                nameRect.anchorMax = new Vector2(xMax, 0.38f);
+                nameRect.offsetMin = Vector2.zero;
+                nameRect.offsetMax = Vector2.zero;
 
-            if (owned)
-            {
-                var statusObj = new GameObject("Status");
-                statusObj.transform.SetParent(row.transform, false);
-                var statusTxt = statusObj.AddComponent<Text>();
-                statusTxt.text = "✓";
-                statusTxt.fontSize = 36;
-                statusTxt.alignment = TextAnchor.MiddleCenter;
-                statusTxt.color = new Color(0.2f, 0.7f, 0.2f);
-                statusTxt.font = UIFactory.GetFont();
-                var statusRect = statusObj.GetComponent<RectTransform>();
-                statusRect.anchorMin = new Vector2(0.42f, 0.05f);
-                statusRect.anchorMax = new Vector2(0.95f, 0.5f);
-                statusRect.offsetMin = Vector2.zero;
-                statusRect.offsetMax = Vector2.zero;
-            }
-            else if (item.type == ShopItemType.CardTheme)
-            {
-                var statusObj = new GameObject("Status");
-                statusObj.transform.SetParent(row.transform, false);
-                var statusTxt = statusObj.AddComponent<Text>();
-                statusTxt.text = "🔒";
-                statusTxt.fontSize = 32;
-                statusTxt.alignment = TextAnchor.MiddleCenter;
-                statusTxt.color = new Color(0.5f, 0.5f, 0.5f);
-                statusTxt.font = UIFactory.GetFont();
-                var statusRect = statusObj.GetComponent<RectTransform>();
-                statusRect.anchorMin = new Vector2(0.42f, 0.05f);
-                statusRect.anchorMax = new Vector2(0.95f, 0.5f);
-                statusRect.offsetMin = Vector2.zero;
-                statusRect.offsetMax = Vector2.zero;
-            }
-            else
-            {
-                var buyBtn = CreateBuyButton(row.transform, $"🪙 {item.coinPrice}");
-                var capturedItem = item;
-                buyBtn.onClick.AddListener(() => OnBuy(capturedItem));
+                // Price / status (bottom)
+                string priceText = GetPriceLabel(item);
+                var priceObj = new GameObject("Price_" + i);
+                priceObj.transform.SetParent(row.transform, false);
+                var priceTxt = priceObj.AddComponent<Text>();
+                priceTxt.text = priceText;
+                priceTxt.fontSize = 18;
+                priceTxt.fontStyle = FontStyle.Bold;
+                priceTxt.alignment = TextAnchor.UpperCenter;
+                priceTxt.color = new Color(0.4f, 0.4f, 0.4f);
+                priceTxt.font = UIFactory.GetFont();
+                priceTxt.supportRichText = true;
+                var priceRect = priceObj.GetComponent<RectTransform>();
+                priceRect.anchorMin = new Vector2(xMin, 0.0f);
+                priceRect.anchorMax = new Vector2(xMax, 0.20f);
+                priceRect.offsetMin = Vector2.zero;
+                priceRect.offsetMax = Vector2.zero;
             }
         }
 
-        private void CreateCoinPackRow(ShopItem item)
+        private string GetPriceLabel(ShopItem item)
         {
-            var row = new GameObject(item.id);
-            row.transform.SetParent(_content, false);
-            var le = row.AddComponent<LayoutElement>();
-            le.preferredHeight = 120f;
-            var rowImg = row.AddComponent<Image>();
-            rowImg.color = new Color(1f, 0.97f, 0.88f);
-            rowImg.sprite = RoundedButtonHelper.GetRoundedSprite();
-            rowImg.type = Image.Type.Sliced;
-
-            // Big coins icon (left side)
-            var coinObj = new GameObject("CoinIcon");
-            coinObj.transform.SetParent(row.transform, false);
-            var coinImg = coinObj.AddComponent<Image>();
-            coinImg.sprite = UIIcons.Get("coins");
-            coinImg.preserveAspect = true;
-            coinImg.color = Color.white;
-            var coinRect = coinObj.GetComponent<RectTransform>();
-            coinRect.anchorMin = new Vector2(0.03f, 0.1f);
-            coinRect.anchorMax = new Vector2(0.28f, 0.9f);
-            coinRect.offsetMin = Vector2.zero;
-            coinRect.offsetMax = Vector2.zero;
-
-            // Quantity label (big text)
-            var nameObj = new GameObject("Name");
-            nameObj.transform.SetParent(row.transform, false);
-            var nameTxt = nameObj.AddComponent<Text>();
-            nameTxt.text = $"{item.quantity} {Localization.Get("coins")}";
-            nameTxt.fontSize = 28;
-            nameTxt.fontStyle = FontStyle.Bold;
-            nameTxt.alignment = TextAnchor.MiddleLeft;
-            nameTxt.color = new Color(0.2f, 0.2f, 0.2f);
-            nameTxt.font = UIFactory.GetFont();
-            var nameRect = nameObj.GetComponent<RectTransform>();
-            nameRect.anchorMin = new Vector2(0.30f, 0.5f);
-            nameRect.anchorMax = new Vector2(0.70f, 0.9f);
-            nameRect.offsetMin = Vector2.zero;
-            nameRect.offsetMax = Vector2.zero;
-
-            // Price label
-            string price = GetCoinPackPrice(item);
-            string discount = item.quantity switch
+            bool owned = item.type == ShopItemType.CardTheme && item.theme.HasValue && ShopCatalog.IsThemeUnlocked(item.theme.Value);
+            if (owned) return "<color=#2BAF2B>✓</color>";
+            if (item.type == ShopItemType.CardTheme) return "🔒";
+            if (item.type == ShopItemType.CoinPack)
             {
-                500 => "20% OFF",
-                1500 => "40% OFF",
-                _ => null
-            };
-            var priceObj = new GameObject("Price");
-            priceObj.transform.SetParent(row.transform, false);
-            var priceTxt = priceObj.AddComponent<Text>();
-            priceTxt.text = discount != null ? $"{price}  <color=#2BAF2B>{discount}</color>" : price;
-            priceTxt.fontSize = 22;
-            priceTxt.fontStyle = FontStyle.Bold;
-            priceTxt.alignment = TextAnchor.MiddleLeft;
-            priceTxt.color = new Color(0.4f, 0.4f, 0.4f);
-            priceTxt.font = UIFactory.GetFont();
-            priceTxt.supportRichText = true;
-            var priceRect = priceObj.GetComponent<RectTransform>();
-            priceRect.anchorMin = new Vector2(0.30f, 0.1f);
-            priceRect.anchorMax = new Vector2(0.70f, 0.5f);
-            priceRect.offsetMin = Vector2.zero;
-            priceRect.offsetMax = Vector2.zero;
-
-            // Buy button
-            var buyBtn = CreateBuyButton(row.transform, Localization.Get("buy"));
-            buyBtn.onClick.AddListener(() => OnBuyCoinPack(item));
+                string price = GetCoinPackPrice(item);
+                string discount = item.quantity switch
+                {
+                    500 => "\n<color=#2BAF2B>20% OFF</color>",
+                    1500 => "\n<color=#2BAF2B>40% OFF</color>",
+                    _ => ""
+                };
+                return price + discount;
+            }
+            return $"🪙 {item.coinPrice}";
         }
 
         private Button CreateBuyButton(Transform parent, string label)
@@ -458,7 +393,7 @@ namespace MagicPairs.UI
                 ShopItemType.CardTheme => item.id switch
                 {
                     "theme_animals" => "animals",
-                    "theme_dinos" => "space",
+                    "theme_water_world" => "water world",
                     "theme_space" => "space",
                     _ => null
                 },
@@ -476,7 +411,7 @@ namespace MagicPairs.UI
                 ShopItemType.CardTheme => item.id switch
                 {
                     "theme_animals" => Localization.CurrentLanguage == Language.Polish ? "Zwierzęta" : "Animals",
-                    "theme_dinos" => Localization.CurrentLanguage == Language.Polish ? "Dinozaury" : "Dinosaurs",
+                    "theme_water_world" => Localization.CurrentLanguage == Language.Polish ? "Wodny Świat" : "Water World",
                     "theme_space" => Localization.CurrentLanguage == Language.Polish ? "Kosmos" : "Space",
                     _ => item.id
                 },
