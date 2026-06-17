@@ -607,19 +607,19 @@ namespace MagicPairs.Editor
             gameTypePanelRect.offsetMax = Vector2.zero;
 
             var gameTypeTitle = CreateUIText("GameTypeTitle", "Wybierz tryb gry", gameTypePanel.transform,
-                new Vector2(0f, 0.85f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
+                new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var challengeBtn = CreateIconBtn("ChallengeBtn", "challenge", gameTypePanel.transform,
-                new Vector2(0.05f, 0.35f), new Vector2(0.35f, 0.80f));
+                new Vector2(0.05f, 0.30f), new Vector2(0.30f, 0.70f));
 
             var timeAttackBtn = CreateIconBtn("TimeAttackBtn", "time attack", gameTypePanel.transform,
-                new Vector2(0.37f, 0.35f), new Vector2(0.63f, 0.80f));
+                new Vector2(0.35f, 0.30f), new Vector2(0.65f, 0.70f));
 
             var arcadeBtn = CreateIconBtn("ArcadeBtn", "arcade", gameTypePanel.transform,
-                new Vector2(0.65f, 0.35f), new Vector2(0.95f, 0.80f));
+                new Vector2(0.70f, 0.30f), new Vector2(0.95f, 0.70f));
 
             var gameTypeBackBtn = CreateIconBtn("GameTypeBackBtn", "back", gameTypePanel.transform,
-                new Vector2(0.35f, 0.05f), new Vector2(0.65f, 0.28f));
+                new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
 
 
             // --- Challenge Names Panel ---

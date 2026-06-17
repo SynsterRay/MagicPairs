@@ -67,8 +67,8 @@ namespace MagicPairs.Cards
             list.Add(b);
 
             // Hide matched cards
-            a.gameObject.SetActive(false);
-            b.gameObject.SetActive(false);
+            if (a != null) a.gameObject.SetActive(false);
+            if (b != null) b.gameObject.SetActive(false);
         }
 
     }
