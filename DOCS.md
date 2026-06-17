@@ -237,6 +237,24 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 
 ## Changelog
 
+### 2026-06-17 (v1.41)
+- Complete UI overhaul: all text buttons replaced with icon sprites
+- Start panel: 3-column grid (Play top, Shop/Scores/Options, Achievements/Quit)
+- Achievements icon button (bottom-left, only when GPGS authenticated)
+- Loading screen with animated purple/gray dots between menu→game
+- Shop redesigned: big icons side-by-side, green price tag badges with %OFF
+- DailyBonus: power-up icon + name (left/right), coins icon + gold amount
+- Themed game backgrounds (Cars/Princess) via world-space SpriteRenderer
+- White gradient below score bar (ScreenSpaceCamera canvas, renders behind cards)
+- White PowerUpBar above TopBar
+- All game panels white: ChallengeOver, TimeAttack result, LevelComplete (green text)
+- "BLOCKED" overlay on locked themes instead of gray tint
+- Scores button reactive (GPGS only), post-game scores → GPGS global leaderboard
+- Performance refactor: cached game mode refs in TouchInputHandler, static back sprite cache, font cache in ScorePopup, reduced TimeAttackUI per-frame allocs
+- Removed dead code: OnlineGameMode.cs, GameBackground.CreatePanel(), unused fields
+- Stripped 22 Debug.Log statements for production builds
+- Fixed card sprite z-fighting artifact on upper rows
+
 ### 2026-06-12
 - Ad monetization overhaul:
   - Added adaptive banner ad (bottom of screen, always visible)
