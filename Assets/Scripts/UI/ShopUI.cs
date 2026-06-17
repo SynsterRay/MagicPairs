@@ -258,13 +258,13 @@ namespace MagicPairs.UI
             var row = new GameObject(item.id);
             row.transform.SetParent(_content, false);
             var le = row.AddComponent<LayoutElement>();
-            le.preferredHeight = 80f;
+            le.preferredHeight = 120f;
             var rowImg = row.AddComponent<Image>();
             rowImg.color = new Color(1f, 0.97f, 0.88f);
             rowImg.sprite = RoundedButtonHelper.GetRoundedSprite();
             rowImg.type = Image.Type.Sliced;
 
-            // Coin icon
+            // Big coins icon (left side)
             var coinObj = new GameObject("CoinIcon");
             coinObj.transform.SetParent(row.transform, false);
             var coinImg = coinObj.AddComponent<Image>();
@@ -272,70 +272,46 @@ namespace MagicPairs.UI
             coinImg.preserveAspect = true;
             coinImg.color = Color.white;
             var coinRect = coinObj.GetComponent<RectTransform>();
-            coinRect.anchorMin = new Vector2(0.03f, 0.15f);
-            coinRect.anchorMax = new Vector2(0.12f, 0.85f);
+            coinRect.anchorMin = new Vector2(0.03f, 0.1f);
+            coinRect.anchorMax = new Vector2(0.28f, 0.9f);
             coinRect.offsetMin = Vector2.zero;
             coinRect.offsetMax = Vector2.zero;
 
-            // Name
+            // Quantity label (big text)
             var nameObj = new GameObject("Name");
             nameObj.transform.SetParent(row.transform, false);
             var nameTxt = nameObj.AddComponent<Text>();
-            string saveLabel = item.quantity switch
-            {
-                500 => $"  Save 20%",
-                1500 => $"  Save 40%",
-                _ => ""
-            };
             nameTxt.text = $"{item.quantity} {Localization.Get("coins")}";
-            nameTxt.fontSize = 24;
+            nameTxt.fontSize = 28;
             nameTxt.fontStyle = FontStyle.Bold;
             nameTxt.alignment = TextAnchor.MiddleLeft;
             nameTxt.color = new Color(0.2f, 0.2f, 0.2f);
             nameTxt.font = UIFactory.GetFont();
-            nameTxt.supportRichText = false;
             var nameRect = nameObj.GetComponent<RectTransform>();
-            nameRect.anchorMin = new Vector2(0.14f, 0f);
-            nameRect.anchorMax = new Vector2(0.55f, 1f);
+            nameRect.anchorMin = new Vector2(0.30f, 0.5f);
+            nameRect.anchorMax = new Vector2(0.70f, 0.9f);
             nameRect.offsetMin = Vector2.zero;
             nameRect.offsetMax = Vector2.zero;
 
-            // Save badge
-            if (!string.IsNullOrEmpty(saveLabel))
-            {
-                var badgeObj = new GameObject("SaveBadge");
-                badgeObj.transform.SetParent(row.transform, false);
-                var badgeImg = badgeObj.AddComponent<Image>();
-                badgeImg.color = new Color(0.1f, 0.7f, 0.3f, 1f);
-                badgeImg.sprite = RoundedButtonHelper.GetRoundedSprite();
-                badgeImg.type = Image.Type.Sliced;
-                var badgeRect = badgeObj.GetComponent<RectTransform>();
-                badgeRect.anchorMin = new Vector2(0.35f, 0.6f);
-                badgeRect.anchorMax = new Vector2(0.58f, 0.92f);
-                badgeRect.offsetMin = Vector2.zero;
-                badgeRect.offsetMax = Vector2.zero;
+            // Price label
+            string price = GetCoinPackPrice(item);
+            var priceObj = new GameObject("Price");
+            priceObj.transform.SetParent(row.transform, false);
+            var priceTxt = priceObj.AddComponent<Text>();
+            priceTxt.text = price;
+            priceTxt.fontSize = 22;
+            priceTxt.fontStyle = FontStyle.Bold;
+            priceTxt.alignment = TextAnchor.MiddleLeft;
+            priceTxt.color = new Color(0.4f, 0.4f, 0.4f);
+            priceTxt.font = UIFactory.GetFont();
+            var priceRect = priceObj.GetComponent<RectTransform>();
+            priceRect.anchorMin = new Vector2(0.30f, 0.1f);
+            priceRect.anchorMax = new Vector2(0.70f, 0.5f);
+            priceRect.offsetMin = Vector2.zero;
+            priceRect.offsetMax = Vector2.zero;
 
-                var badgeTxt = new GameObject("Text");
-                badgeTxt.transform.SetParent(badgeObj.transform, false);
-                var bt = badgeTxt.AddComponent<Text>();
-                bt.text = saveLabel.Trim();
-                bt.fontSize = 16;
-                bt.fontStyle = FontStyle.Bold;
-                bt.alignment = TextAnchor.MiddleCenter;
-                bt.color = Color.white;
-                bt.font = UIFactory.GetFont();
-                bt.resizeTextForBestFit = true;
-                bt.resizeTextMinSize = 12;
-                bt.resizeTextMaxSize = 16;
-                var btRect = badgeTxt.GetComponent<RectTransform>();
-                btRect.anchorMin = Vector2.zero;
-                btRect.anchorMax = Vector2.one;
-                btRect.offsetMin = new Vector2(4f, 2f);
-                btRect.offsetMax = new Vector2(-4f, -2f);
-            }
-
-            // IAP button
-            var buyBtn = CreateBuyButton(row.transform, GetCoinPackPrice(item));
+            // Buy button
+            var buyBtn = CreateBuyButton(row.transform, Localization.Get("buy"));
             buyBtn.onClick.AddListener(() => OnBuyCoinPack(item));
         }
 

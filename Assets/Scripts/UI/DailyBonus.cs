@@ -98,8 +98,21 @@ namespace MagicPairs.UI
             rewardDisplay += $"\n🪙 +{coinReward}";
 
             _rewardText = CreateText("Reward", rewardDisplay, panel.transform,
-                new Vector2(0.1f, 0.35f), new Vector2(0.9f, 0.7f), 34);
+                new Vector2(0.4f, 0.35f), new Vector2(0.9f, 0.7f), 34);
             _rewardText.color = new Color(0.1f, 0.5f, 0.2f);
+
+            // Coins icon
+            var coinsIcon = new GameObject("CoinsIcon");
+            coinsIcon.transform.SetParent(panel.transform, false);
+            var ciImg = coinsIcon.AddComponent<Image>();
+            ciImg.sprite = UIIcons.Get("coins");
+            ciImg.preserveAspect = true;
+            ciImg.raycastTarget = false;
+            var ciRect = coinsIcon.GetComponent<RectTransform>();
+            ciRect.anchorMin = new Vector2(0.08f, 0.38f);
+            ciRect.anchorMax = new Vector2(0.38f, 0.68f);
+            ciRect.offsetMin = Vector2.zero;
+            ciRect.offsetMax = Vector2.zero;
 
             // Streak info
             string streakInfo = Localization.Get("dailyStreak", _streak);
