@@ -880,6 +880,7 @@ namespace MagicPairs.Editor
 
             // LoadingScreen
             canvas.AddComponent<UI.LoadingScreen>();
+            canvas.AddComponent<UI.GameBackground>();
         }
 
 
