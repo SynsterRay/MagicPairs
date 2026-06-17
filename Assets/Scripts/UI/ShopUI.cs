@@ -438,6 +438,7 @@ namespace MagicPairs.UI
                 ShopItemType.PowerUpPeek => $"{Localization.Get("peek")} x{item.quantity}",
                 ShopItemType.PowerUpShuffle => $"{Localization.Get("shuffle")} x{item.quantity}",
                 ShopItemType.PowerUpFreeze => $"{Localization.Get("freeze")} x{item.quantity}",
+                ShopItemType.CoinPack => $"{Localization.Get("coins")} {item.quantity}",
                 _ => item.id
             };
         }
