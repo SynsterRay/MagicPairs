@@ -168,13 +168,9 @@ namespace MagicPairs.UI
             var row = new GameObject(item.id);
             row.transform.SetParent(_content, false);
             var le = row.AddComponent<LayoutElement>();
-            le.preferredHeight = 80f;
-            var rowImg = row.AddComponent<Image>();
-            rowImg.color = new Color(0.95f, 0.95f, 0.97f);
-            rowImg.sprite = RoundedButtonHelper.GetRoundedSprite();
-            rowImg.type = Image.Type.Sliced;
+            le.preferredHeight = 150f;
 
-            // Theme icon (for card themes) or power-up icon
+            // Big icon (centered)
             string iconName = GetItemIcon(item);
             if (iconName != null)
             {
@@ -186,30 +182,30 @@ namespace MagicPairs.UI
                 iconImg.color = Color.white;
                 iconImg.raycastTarget = false;
                 var iconRect = iconObj.GetComponent<RectTransform>();
-                iconRect.anchorMin = new Vector2(0.02f, 0.1f);
-                iconRect.anchorMax = new Vector2(0.15f, 0.9f);
+                iconRect.anchorMin = new Vector2(0.05f, 0.25f);
+                iconRect.anchorMax = new Vector2(0.40f, 0.95f);
                 iconRect.offsetMin = Vector2.zero;
                 iconRect.offsetMax = Vector2.zero;
             }
 
-            // Name
+            // Name + price
             string displayName = GetItemName(item);
             var nameObj = new GameObject("Name");
             nameObj.transform.SetParent(row.transform, false);
             var nameTxt = nameObj.AddComponent<Text>();
             nameTxt.text = displayName;
-            nameTxt.fontSize = 24;
+            nameTxt.fontSize = 26;
             nameTxt.fontStyle = FontStyle.Bold;
             nameTxt.alignment = TextAnchor.MiddleLeft;
             nameTxt.color = new Color(0.2f, 0.2f, 0.2f);
             nameTxt.font = UIFactory.GetFont();
             var nameRect = nameObj.GetComponent<RectTransform>();
-            nameRect.anchorMin = new Vector2(0.05f, 0f);
-            nameRect.anchorMax = new Vector2(0.55f, 1f);
+            nameRect.anchorMin = new Vector2(0.42f, 0.5f);
+            nameRect.anchorMax = new Vector2(0.95f, 0.95f);
             nameRect.offsetMin = Vector2.zero;
             nameRect.offsetMax = Vector2.zero;
 
-            // Status / Buy button
+            // Status or Buy
             bool owned = item.type == ShopItemType.CardTheme && item.theme.HasValue && ShopCatalog.IsThemeUnlocked(item.theme.Value);
 
             if (owned)
@@ -218,30 +214,29 @@ namespace MagicPairs.UI
                 statusObj.transform.SetParent(row.transform, false);
                 var statusTxt = statusObj.AddComponent<Text>();
                 statusTxt.text = "✓";
-                statusTxt.fontSize = 32;
+                statusTxt.fontSize = 36;
                 statusTxt.alignment = TextAnchor.MiddleCenter;
                 statusTxt.color = new Color(0.2f, 0.7f, 0.2f);
                 statusTxt.font = UIFactory.GetFont();
                 var statusRect = statusObj.GetComponent<RectTransform>();
-                statusRect.anchorMin = new Vector2(0.7f, 0.15f);
-                statusRect.anchorMax = new Vector2(0.95f, 0.85f);
+                statusRect.anchorMin = new Vector2(0.42f, 0.05f);
+                statusRect.anchorMax = new Vector2(0.95f, 0.5f);
                 statusRect.offsetMin = Vector2.zero;
                 statusRect.offsetMax = Vector2.zero;
             }
             else if (item.type == ShopItemType.CardTheme)
             {
-                // Card themes locked until graphics are ready
                 var statusObj = new GameObject("Status");
                 statusObj.transform.SetParent(row.transform, false);
                 var statusTxt = statusObj.AddComponent<Text>();
                 statusTxt.text = "🔒";
-                statusTxt.fontSize = 28;
+                statusTxt.fontSize = 32;
                 statusTxt.alignment = TextAnchor.MiddleCenter;
                 statusTxt.color = new Color(0.5f, 0.5f, 0.5f);
                 statusTxt.font = UIFactory.GetFont();
                 var statusRect = statusObj.GetComponent<RectTransform>();
-                statusRect.anchorMin = new Vector2(0.7f, 0.15f);
-                statusRect.anchorMax = new Vector2(0.95f, 0.85f);
+                statusRect.anchorMin = new Vector2(0.42f, 0.05f);
+                statusRect.anchorMax = new Vector2(0.95f, 0.5f);
                 statusRect.offsetMin = Vector2.zero;
                 statusRect.offsetMax = Vector2.zero;
             }
