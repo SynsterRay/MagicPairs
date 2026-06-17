@@ -47,7 +47,6 @@ namespace MagicPairs.Core
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
             _store = controller;
-            Debug.Log("[IAP] Initialized");
         }
 
         public void OnInitializeFailed(InitializationFailureReason error)

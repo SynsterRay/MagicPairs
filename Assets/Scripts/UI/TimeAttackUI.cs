@@ -106,9 +106,15 @@ namespace MagicPairs.UI
             if (_resultPanel != null) _resultPanel.SetActive(false);
         }
 
+        private float _lastDisplayedTime = -1f;
+
         private void UpdateTimer(float time)
         {
             if (_timerText == null) return;
+            // Only update text when display value changes (avoid per-frame string alloc)
+            float rounded = Mathf.Round(time * 10f) / 10f;
+            if (rounded == _lastDisplayedTime) return;
+            _lastDisplayedTime = rounded;
             _timerText.text = $"⏱ {time:F1}s";
             _timerText.color = time < 10f ? Color.red : new Color(0.15f, 0.15f, 0.15f);
         }

@@ -17,6 +17,9 @@ namespace MagicPairs.Cards
         private Sprite _backSprite;
         private static Audio.SFXManager _sfxCache;
 
+        private static Sprite _backSpriteCache;
+        private static string _backSpriteCacheFolder;
+
         public void Initialize(CardData data, Color backColor)
         {
             Data = data;
@@ -24,21 +27,27 @@ namespace MagicPairs.Cards
             _animator = GetComponent<CardAnimator>();
             if (_sfxCache == null) _sfxCache = FindAnyObjectByType<Audio.SFXManager>();
 
-            // Load back sprite for sprite-based themes
+            // Load back sprite for sprite-based themes (cached per folder)
             if (data.HasSprite)
             {
                 string folder = Core.GameManager.Instance?.Config?.theme == Core.CardTheme.Cars
                     ? "CarCards" : "PrincessCards";
-                _backSprite = Resources.Load<Sprite>($"{folder}/back_card");
-                if (_backSprite == null)
-                    _backSprite = Resources.Load<Sprite>($"{folder}/cars_back");
-                if (_backSprite == null)
+
+                if (_backSpriteCache == null || _backSpriteCacheFolder != folder)
                 {
-                    var tex = Resources.Load<Texture2D>($"{folder}/back_card")
-                           ?? Resources.Load<Texture2D>($"{folder}/cars_back");
-                    if (tex != null)
-                        _backSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                    _backSpriteCacheFolder = folder;
+                    _backSpriteCache = Resources.Load<Sprite>($"{folder}/back_card");
+                    if (_backSpriteCache == null)
+                        _backSpriteCache = Resources.Load<Sprite>($"{folder}/cars_back");
+                    if (_backSpriteCache == null)
+                    {
+                        var tex = Resources.Load<Texture2D>($"{folder}/back_card")
+                               ?? Resources.Load<Texture2D>($"{folder}/cars_back");
+                        if (tex != null)
+                            _backSpriteCache = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                    }
                 }
+                _backSprite = _backSpriteCache;
 
                 if (_backSprite != null)
                     _animator.SetSprite(_backSprite);

@@ -8,22 +8,26 @@ namespace MagicPairs.Input
     public class TouchInputHandler : MonoBehaviour
     {
         private UnityEngine.Camera _cam;
+        private TimeAttackMode _timeAttack;
+        private ChallengeMode _challenge;
+        private SinglePlayerMode _single;
+        private LocalGameMode _local;
 
         private void Start()
         {
             _cam = UnityEngine.Camera.main;
+            _timeAttack = GetComponent<TimeAttackMode>();
+            _challenge = GetComponent<ChallengeMode>();
+            _single = GetComponent<SinglePlayerMode>();
+            _local = GetComponent<LocalGameMode>();
         }
 
         private IGameMode GetActiveMode()
         {
-            var timeAttack = GetComponent<TimeAttackMode>();
-            if (timeAttack != null && timeAttack.enabled) return timeAttack;
-            var challenge = GetComponent<ChallengeMode>();
-            if (challenge != null && challenge.enabled) return challenge;
-            var single = GetComponent<SinglePlayerMode>();
-            if (single != null && single.enabled) return single;
-            var local = GetComponent<LocalGameMode>();
-            if (local != null && local.enabled) return local;
+            if (_timeAttack != null && _timeAttack.enabled) return _timeAttack;
+            if (_challenge != null && _challenge.enabled) return _challenge;
+            if (_single != null && _single.enabled) return _single;
+            if (_local != null && _local.enabled) return _local;
             return null;
         }
 

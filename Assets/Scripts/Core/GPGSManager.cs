@@ -53,7 +53,6 @@ namespace MagicPairs.Core
             PlayGamesPlatform.Instance.Authenticate(status =>
             {
                 IsAuthenticated = status == SignInStatus.Success;
-                Debug.Log($"[GPGS] Sign in: {status}");
                 OnAuthChanged?.Invoke();
             });
         }
@@ -63,16 +62,14 @@ namespace MagicPairs.Core
         public void PostChallengeScore(int score)
         {
             if (!IsAuthenticated) return;
-            Social.ReportScore(score, LeaderboardChallengeId, success =>
-                Debug.Log($"[GPGS] Challenge score posted: {success}"));
+            Social.ReportScore(score, LeaderboardChallengeId, success => { });
         }
 
         public void PostTimeAttackScore(float timeLeft)
         {
             if (!IsAuthenticated) return;
             long ms = (long)(timeLeft * 1000);
-            Social.ReportScore(ms, LeaderboardTimeAttackId, success =>
-                Debug.Log($"[GPGS] TimeAttack score posted: {success}"));
+            Social.ReportScore(ms, LeaderboardTimeAttackId, success => { });
         }
 
         public void ShowLeaderboard()
@@ -167,15 +164,13 @@ namespace MagicPairs.Core
         private void Unlock(string id)
         {
             if (!IsAuthenticated) return;
-            Social.ReportProgress(id, 100.0, success =>
-                Debug.Log($"[GPGS] Achievement {id}: {success}"));
+            Social.ReportProgress(id, 100.0, success => { });
         }
 
         private void Increment(string id, int steps)
         {
             if (!IsAuthenticated) return;
-            PlayGamesPlatform.Instance.IncrementAchievement(id, steps, success =>
-                Debug.Log($"[GPGS] Achievement increment {id}: {success}"));
+            PlayGamesPlatform.Instance.IncrementAchievement(id, steps, success => { });
         }
 
         public void ShowAchievements()

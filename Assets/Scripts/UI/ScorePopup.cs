@@ -9,11 +9,14 @@ namespace MagicPairs.UI
     public class ScorePopup : MonoBehaviour
     {
         private Canvas _canvas;
-
+        private Font _font;
         private int _lastScore;
-        private int _lastStreak;
 
-        private void Awake() => _canvas = GetComponent<Canvas>();
+        private void Awake()
+        {
+            _canvas = GetComponent<Canvas>();
+            _font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        }
 
         private void OnEnable()
         {
@@ -30,7 +33,6 @@ namespace MagicPairs.UI
         private void ResetLastScore()
         {
             _lastScore = 0;
-            _lastStreak = 0;
         }
 
         private void OnScoreChanged(int score, int streak, int level)
@@ -48,7 +50,6 @@ namespace MagicPairs.UI
                 SpawnPopup($"{delta}", new Color(0.9f, 0.2f, 0.2f));
             }
             _lastScore = score;
-            _lastStreak = streak;
         }
 
         private void SpawnPopup(string text, Color color)
@@ -64,7 +65,7 @@ namespace MagicPairs.UI
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = color;
-            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = _font;
 
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(0.3f, 0.45f);

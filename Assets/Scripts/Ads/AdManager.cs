@@ -57,7 +57,6 @@ namespace MagicPairs.Ads
 
             MobileAds.Initialize(status =>
             {
-                Debug.Log("[AdManager] AdMob initialized");
                 LoadInterstitial();
                 LoadRewarded();
                 ShowBanner();
