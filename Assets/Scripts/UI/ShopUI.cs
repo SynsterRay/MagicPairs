@@ -56,12 +56,12 @@ namespace MagicPairs.UI
 
             // Title
             var title = UIFactory.CreateText("ShopTitle", Localization.Get("shop"), _panel.transform,
-                new Vector2(0.1f, 0.88f), new Vector2(0.9f, 0.96f), TextAnchor.MiddleCenter, 36);
-            title.color = new Color(0.2f, 0.2f, 0.2f);
+                new Vector2(0.1f, 0.88f), new Vector2(0.5f, 0.96f), TextAnchor.MiddleLeft, 48);
+            title.color = new Color(0.3f, 0.1f, 0.5f);
 
             // Coins display
             _coinsText = UIFactory.CreateText("CoinsDisplay", $"🪙 {PlayerWallet.Coins}", _panel.transform,
-                new Vector2(0.6f, 0.88f), new Vector2(0.95f, 0.96f), TextAnchor.MiddleRight, 28);
+                new Vector2(0.5f, 0.88f), new Vector2(0.95f, 0.96f), TextAnchor.MiddleRight, 40);
             _coinsText.color = new Color(0.8f, 0.6f, 0.1f);
 
             // Scroll content area
