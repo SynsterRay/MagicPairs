@@ -378,7 +378,7 @@ namespace MagicPairs.Editor
             var lvlCompletePanel = new GameObject("LevelCompletePanel");
             lvlCompletePanel.transform.SetParent(canvas.transform, false);
             var lcImg = lvlCompletePanel.AddComponent<Image>();
-            lcImg.color = new Color(0.1f, 0.5f, 0.2f, 0.85f);
+            lcImg.color = new Color(1f, 1f, 1f, 1f);
             lcImg.sprite = UI.RoundedButtonHelper.GetRoundedSprite();
             lcImg.type = Image.Type.Sliced;
             var lcRect = lvlCompletePanel.GetComponent<RectTransform>();
@@ -389,7 +389,7 @@ namespace MagicPairs.Editor
 
             var lvlCompleteText = CreateUIText("LvlCompleteText", "Poziom ukończony!", lvlCompletePanel.transform,
                 new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 28);
-            lvlCompleteText.color = Color.white;
+            lvlCompleteText.color = new Color(0.1f, 0.6f, 0.2f);
 
             var nextLvlBtn = CreateIconBtn("NextLvlBtn", "play", lvlCompletePanel.transform,
                 new Vector2(0.2f, 0.1f), new Vector2(0.8f, 0.4f));
