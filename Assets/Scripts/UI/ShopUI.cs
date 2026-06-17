@@ -156,7 +156,7 @@ namespace MagicPairs.UI
             txt.text = text;
             txt.fontSize = 28;
             txt.fontStyle = FontStyle.Bold;
-            txt.alignment = TextAnchor.MiddleLeft;
+            txt.alignment = TextAnchor.MiddleCenter;
             txt.color = new Color(0.3f, 0.3f, 0.3f);
             txt.font = UIFactory.GetFont();
         }
@@ -166,7 +166,7 @@ namespace MagicPairs.UI
             var row = new GameObject("Row");
             row.transform.SetParent(_content, false);
             var le = row.AddComponent<LayoutElement>();
-            le.preferredHeight = 200f;
+            le.preferredHeight = 250f;
 
             int count = items.Count;
             for (int i = 0; i < count; i++)
@@ -175,25 +175,31 @@ namespace MagicPairs.UI
                 float xMin = (float)i / count + 0.02f;
                 float xMax = (float)(i + 1) / count - 0.02f;
 
-                // Icon (top 65%)
+                // Icon as button (top 70%)
                 string iconName = GetItemIcon(item);
-                if (iconName != null || item.type == ShopItemType.CoinPack)
-                {
-                    var iconObj = new GameObject("Icon_" + i);
-                    iconObj.transform.SetParent(row.transform, false);
-                    var iconImg = iconObj.AddComponent<Image>();
-                    iconImg.sprite = UIIcons.Get(iconName ?? "coins");
-                    iconImg.preserveAspect = true;
-                    iconImg.color = Color.white;
-                    iconImg.raycastTarget = false;
-                    var iconRect = iconObj.GetComponent<RectTransform>();
-                    iconRect.anchorMin = new Vector2(xMin + 0.02f, 0.35f);
-                    iconRect.anchorMax = new Vector2(xMax - 0.02f, 0.95f);
-                    iconRect.offsetMin = Vector2.zero;
-                    iconRect.offsetMax = Vector2.zero;
-                }
+                var iconObj = new GameObject("Btn_" + i);
+                iconObj.transform.SetParent(row.transform, false);
+                var iconImg = iconObj.AddComponent<Image>();
+                iconImg.sprite = UIIcons.Get(iconName ?? "coins");
+                iconImg.preserveAspect = true;
+                iconImg.color = Color.white;
+                var btn = iconObj.AddComponent<Button>();
+                btn.transition = Selectable.Transition.None;
+                var iconRect = iconObj.GetComponent<RectTransform>();
+                iconRect.anchorMin = new Vector2(xMin + 0.01f, 0.30f);
+                iconRect.anchorMax = new Vector2(xMax - 0.01f, 0.95f);
+                iconRect.offsetMin = Vector2.zero;
+                iconRect.offsetMax = Vector2.zero;
 
-                // Name label (below icon)
+                // Wire button action
+                var capturedItem = item;
+                bool owned = item.type == ShopItemType.CardTheme && item.theme.HasValue && ShopCatalog.IsThemeUnlocked(item.theme.Value);
+                if (item.type == ShopItemType.CoinPack)
+                    btn.onClick.AddListener(() => OnBuyCoinPack(capturedItem));
+                else if (!owned && item.type != ShopItemType.CardTheme)
+                    btn.onClick.AddListener(() => OnBuy(capturedItem));
+
+                // Name label
                 string displayName = GetItemName(item);
                 var nameObj = new GameObject("Name_" + i);
                 nameObj.transform.SetParent(row.transform, false);
@@ -208,12 +214,12 @@ namespace MagicPairs.UI
                 nameTxt.resizeTextMinSize = 14;
                 nameTxt.resizeTextMaxSize = 20;
                 var nameRect = nameObj.GetComponent<RectTransform>();
-                nameRect.anchorMin = new Vector2(xMin, 0.18f);
-                nameRect.anchorMax = new Vector2(xMax, 0.38f);
+                nameRect.anchorMin = new Vector2(xMin, 0.12f);
+                nameRect.anchorMax = new Vector2(xMax, 0.32f);
                 nameRect.offsetMin = Vector2.zero;
                 nameRect.offsetMax = Vector2.zero;
 
-                // Price / status (bottom)
+                // Price / status
                 string priceText = GetPriceLabel(item);
                 var priceObj = new GameObject("Price_" + i);
                 priceObj.transform.SetParent(row.transform, false);
@@ -227,7 +233,7 @@ namespace MagicPairs.UI
                 priceTxt.supportRichText = true;
                 var priceRect = priceObj.GetComponent<RectTransform>();
                 priceRect.anchorMin = new Vector2(xMin, 0.0f);
-                priceRect.anchorMax = new Vector2(xMax, 0.20f);
+                priceRect.anchorMax = new Vector2(xMax, 0.14f);
                 priceRect.offsetMin = Vector2.zero;
                 priceRect.offsetMax = Vector2.zero;
             }
