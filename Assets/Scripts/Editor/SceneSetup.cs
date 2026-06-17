@@ -207,9 +207,20 @@ namespace MagicPairs.Editor
             puRect.offsetMin = Vector2.zero;
             puRect.offsetMax = Vector2.zero;
 
-            // White-to-transparent gradient below TopBar
+            // White-to-transparent gradient below TopBar (on separate camera canvas so it renders BEHIND 3D cards)
+            var gradCanvas = new GameObject("GradientCanvas");
+            var gc = gradCanvas.AddComponent<Canvas>();
+            gc.renderMode = RenderMode.ScreenSpaceCamera;
+            gc.worldCamera = UnityEngine.Camera.main;
+            gc.planeDistance = 12f; // behind cards (at distance 10) but in front of bg (at distance 15)
+            gc.sortingOrder = -1;
+            var gcScaler = gradCanvas.AddComponent<CanvasScaler>();
+            gcScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            gcScaler.referenceResolution = new Vector2(1080f, 1920f);
+            gcScaler.matchWidthOrHeight = 1f;
+
             var gradBar = new GameObject("TopBarGradient");
-            gradBar.transform.SetParent(canvas.transform, false);
+            gradBar.transform.SetParent(gradCanvas.transform, false);
             var gradImg = gradBar.AddComponent<Image>();
             gradImg.raycastTarget = false;
             var gTex = new Texture2D(4, 32, TextureFormat.RGBA32, false);
@@ -431,7 +442,7 @@ namespace MagicPairs.Editor
             var chOverPanel = new GameObject("ChallengeOverPanel");
             chOverPanel.transform.SetParent(canvas.transform, false);
             var coImg = chOverPanel.AddComponent<Image>();
-            coImg.color = new Color(0.1f, 0.1f, 0.1f, 0.95f);
+            coImg.color = new Color(1f, 1f, 1f, 1f);
             var coRect = chOverPanel.GetComponent<RectTransform>();
             coRect.anchorMin = new Vector2(0.1f, 0.25f);
             coRect.anchorMax = new Vector2(0.9f, 0.75f);
@@ -440,7 +451,7 @@ namespace MagicPairs.Editor
 
             var chFinalScoreText = CreateUIText("ChFinalScore", "Koniec! Wynik: 0", chOverPanel.transform,
                 new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 30);
-            chFinalScoreText.color = Color.white;
+            chFinalScoreText.color = new Color(0.15f, 0.15f, 0.15f);
 
             var chMenuBtn = CreateIconBtn("ChMenuBtn", "back", chOverPanel.transform,
                 new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.4f));

@@ -70,7 +70,7 @@ namespace MagicPairs.UI
             _resultPanel = new GameObject("TimeAttackResult");
             _resultPanel.transform.SetParent(canvas.transform, false);
             var rpImg = _resultPanel.AddComponent<Image>();
-            rpImg.color = new Color(0.1f, 0.1f, 0.1f, 0.92f);
+            rpImg.color = new Color(1f, 1f, 1f, 1f);
             var rpRect = _resultPanel.GetComponent<RectTransform>();
             rpRect.anchorMin = new Vector2(0.1f, 0.3f);
             rpRect.anchorMax = new Vector2(0.9f, 0.7f);
@@ -79,7 +79,7 @@ namespace MagicPairs.UI
 
             _resultText = CreateText("ResultText", "", _resultPanel.transform,
                 new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.9f), 30);
-            _resultText.color = Color.white;
+            _resultText.color = new Color(0.15f, 0.15f, 0.15f);
 
             _menuButton = CreateButton("MenuBtn", "Menu", _resultPanel.transform,
                 new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.4f));
