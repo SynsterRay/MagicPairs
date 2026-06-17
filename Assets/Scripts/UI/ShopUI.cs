@@ -97,8 +97,19 @@ namespace MagicPairs.UI
             scroll.movementType = ScrollRect.MovementType.Elastic;
 
             // Back button
-            var backBtn = UIFactory.CreateButton("ShopBackBtn", "←", _panel.transform,
-                new Vector2(0.3f, 0.06f), new Vector2(0.7f, 0.14f), new Color(0.4f, 0.4f, 0.4f, 1f));
+            var backGo = new GameObject("ShopBackBtn");
+            backGo.transform.SetParent(_panel.transform, false);
+            var backImg = backGo.AddComponent<Image>();
+            backImg.sprite = UIIcons.Get("back");
+            backImg.preserveAspect = true;
+            backImg.color = Color.white;
+            var backBtn = backGo.AddComponent<Button>();
+            backBtn.transition = Selectable.Transition.None;
+            var backRect = backGo.GetComponent<RectTransform>();
+            backRect.anchorMin = new Vector2(0.35f, 0.01f);
+            backRect.anchorMax = new Vector2(0.65f, 0.10f);
+            backRect.offsetMin = Vector2.zero;
+            backRect.offsetMax = Vector2.zero;
             backBtn.onClick.AddListener(() => { Hide(); onBack?.Invoke(); });
             _backButton = backBtn;
         }
@@ -162,6 +173,24 @@ namespace MagicPairs.UI
             rowImg.color = new Color(0.95f, 0.95f, 0.97f);
             rowImg.sprite = RoundedButtonHelper.GetRoundedSprite();
             rowImg.type = Image.Type.Sliced;
+
+            // Theme icon (for card themes) or power-up icon
+            string iconName = GetItemIcon(item);
+            if (iconName != null)
+            {
+                var iconObj = new GameObject("Icon");
+                iconObj.transform.SetParent(row.transform, false);
+                var iconImg = iconObj.AddComponent<Image>();
+                iconImg.sprite = UIIcons.Get(iconName);
+                iconImg.preserveAspect = true;
+                iconImg.color = Color.white;
+                iconImg.raycastTarget = false;
+                var iconRect = iconObj.GetComponent<RectTransform>();
+                iconRect.anchorMin = new Vector2(0.02f, 0.1f);
+                iconRect.anchorMax = new Vector2(0.15f, 0.9f);
+                iconRect.offsetMin = Vector2.zero;
+                iconRect.offsetMax = Vector2.zero;
+            }
 
             // Name
             string displayName = GetItemName(item);
@@ -235,32 +264,18 @@ namespace MagicPairs.UI
             rowImg.sprite = RoundedButtonHelper.GetRoundedSprite();
             rowImg.type = Image.Type.Sliced;
 
-            // Coin graphic (spinning gold disc)
+            // Coin icon
             var coinObj = new GameObject("CoinIcon");
             coinObj.transform.SetParent(row.transform, false);
             var coinImg = coinObj.AddComponent<Image>();
-            coinImg.color = new Color(1f, 0.82f, 0.1f);
-            coinImg.sprite = RoundedButtonHelper.GetRoundedSprite();
-            coinImg.type = Image.Type.Sliced;
+            coinImg.sprite = UIIcons.Get("coins");
+            coinImg.preserveAspect = true;
+            coinImg.color = Color.white;
             var coinRect = coinObj.GetComponent<RectTransform>();
             coinRect.anchorMin = new Vector2(0.03f, 0.15f);
             coinRect.anchorMax = new Vector2(0.12f, 0.85f);
             coinRect.offsetMin = Vector2.zero;
             coinRect.offsetMax = Vector2.zero;
-
-            // Inner coin detail
-            var coinInner = new GameObject("Inner");
-            coinInner.transform.SetParent(coinObj.transform, false);
-            var innerRect = coinInner.AddComponent<RectTransform>();
-            innerRect.anchorMin = new Vector2(0.2f, 0.2f);
-            innerRect.anchorMax = new Vector2(0.8f, 0.8f);
-            innerRect.offsetMin = Vector2.zero;
-            innerRect.offsetMax = Vector2.zero;
-            var innerImg = coinInner.AddComponent<Image>();
-            innerImg.color = new Color(0.85f, 0.65f, 0f);
-            innerImg.sprite = RoundedButtonHelper.GetRoundedSprite();
-            innerImg.type = Image.Type.Sliced;
-            innerImg.raycastTarget = false;
 
             // Name
             var nameObj = new GameObject("Name");
@@ -456,6 +471,24 @@ namespace MagicPairs.UI
                 _coinsText.text = $"🪙 {coins}";
                 _coinsText.color = new Color(0.8f, 0.6f, 0.1f);
             }
+        }
+
+        private string GetItemIcon(ShopItem item)
+        {
+            return item.type switch
+            {
+                ShopItemType.CardTheme => item.id switch
+                {
+                    "theme_animals" => "animals",
+                    "theme_dinos" => "space",
+                    "theme_space" => "space",
+                    _ => null
+                },
+                ShopItemType.PowerUpPeek => "peek",
+                ShopItemType.PowerUpShuffle => "shuffle",
+                ShopItemType.PowerUpFreeze => "freeze",
+                _ => null
+            };
         }
 
         private string GetItemName(ShopItem item)

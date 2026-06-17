@@ -107,17 +107,18 @@ namespace MagicPairs.UI
                 new Vector2(0.1f, 0.25f), new Vector2(0.9f, 0.4f), 22);
             _streakText.color = new Color(0.5f, 0.5f, 0.5f);
 
-            // Claim button
+            // Claim button (icon)
             var claimGo = new GameObject("ClaimBtn");
             claimGo.transform.SetParent(panel.transform, false);
             var claimImg = claimGo.AddComponent<Image>();
-            claimImg.color = new Color(0.1f, 0.7f, 0.3f, 1f);
-            claimImg.sprite = RoundedButtonHelper.GetRoundedSprite();
-            claimImg.type = Image.Type.Sliced;
+            claimImg.sprite = UIIcons.Get("claim");
+            claimImg.preserveAspect = true;
+            claimImg.color = Color.white;
             _claimButton = claimGo.AddComponent<Button>();
+            _claimButton.transition = Selectable.Transition.None;
             var claimRect = claimGo.GetComponent<RectTransform>();
-            claimRect.anchorMin = new Vector2(0.2f, 0.05f);
-            claimRect.anchorMax = new Vector2(0.8f, 0.23f);
+            claimRect.anchorMin = new Vector2(0.3f, 0.03f);
+            claimRect.anchorMax = new Vector2(0.7f, 0.28f);
             claimRect.offsetMin = Vector2.zero;
             claimRect.offsetMax = Vector2.zero;
 

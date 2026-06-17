@@ -135,6 +135,9 @@ namespace MagicPairs.UI
             txt.alignment = TextAnchor.LowerCenter;
             txt.color = Color.white;
             txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            var outline = txtObj.AddComponent<Outline>();
+            outline.effectColor = new Color(0.2f, 0.1f, 0.4f, 0.8f);
+            outline.effectDistance = new Vector2(1.5f, -1.5f);
             var tr = txtObj.GetComponent<RectTransform>();
             tr.anchorMin = Vector2.zero;
             tr.anchorMax = Vector2.one;
