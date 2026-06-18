@@ -70,7 +70,7 @@ namespace MagicPairs.UI
             var panel = new GameObject("Panel");
             panel.transform.SetParent(_popup.transform, false);
             var panelImg = panel.AddComponent<Image>();
-            panelImg.color = new Color(1f, 1f, 1f, 0.97f);
+            panelImg.color = new Color(1f, 1f, 1f, 1f);
             panelImg.sprite = RoundedButtonHelper.GetRoundedSprite();
             panelImg.type = Image.Type.Sliced;
             var panelRect = panel.GetComponent<RectTransform>();
@@ -116,8 +116,8 @@ namespace MagicPairs.UI
 
             string puLabel = rewardCount > 1 ? $"{puName} x{rewardCount}" : puName;
             _rewardText = CreateText("PUName", puLabel, panel.transform,
-                new Vector2(0.34f, 0.52f), new Vector2(0.92f, 0.72f), 28);
-            _rewardText.color = new Color(0.2f, 0.2f, 0.2f);
+                new Vector2(0.34f, 0.52f), new Vector2(0.92f, 0.72f), 38);
+            _rewardText.color = new Color(0.1f, 0.65f, 0.2f);
             _rewardText.alignment = TextAnchor.MiddleLeft;
 
             // Coins icon + gold amount text

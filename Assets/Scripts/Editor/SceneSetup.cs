@@ -707,8 +707,6 @@ namespace MagicPairs.Editor
                 new Vector2(0.35f, 0.45f), new Vector2(0.65f, 0.80f));
             var chColorsBtn = CreateIconBtn("ChColorsBtn", "water world", challengeThemePanel.transform,
                 new Vector2(0.68f, 0.45f), new Vector2(0.98f, 0.80f));
-            chColorsBtn.GetComponent<Button>().interactable = false;
-            AddBlockedOverlay(chColorsBtn);
 
             // Row 2: Locked placeholders
             var chLockedCard1 = CreateIconBtn("ChLockedCard1", "animals", challengeThemePanel.transform,
@@ -800,8 +798,6 @@ namespace MagicPairs.Editor
                 new Vector2(0.35f, 0.45f), new Vector2(0.65f, 0.80f));
             var colorsBtn = CreateIconBtn("ColorsBtn", "water world", themePanel.transform,
                 new Vector2(0.68f, 0.45f), new Vector2(0.98f, 0.80f));
-            colorsBtn.GetComponent<Button>().interactable = false;
-            AddBlockedOverlay(colorsBtn);
 
             // Row 2: Locked placeholders (animals, space)
             var lockedCard1 = CreateIconBtn("LockedCard1", "animals", themePanel.transform,

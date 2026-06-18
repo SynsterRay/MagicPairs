@@ -140,7 +140,7 @@ namespace MagicPairs.UI
             easyButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Easy));
             mediumButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Medium));
             hardButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Hard));
-            colorsThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Colors));
+            colorsThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Dinos));
             princessThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Princess));
             carsThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Cars));
             startButton?.onClick.AddListener(OnStart);
@@ -154,7 +154,7 @@ namespace MagicPairs.UI
             namesBackButton?.onClick.AddListener(OnNamesBack);
             challengeStartButton?.onClick.AddListener(OnChallengeStart);
             challengeNamesBackButton?.onClick.AddListener(ShowChallengeThemePanel);
-            challengeColorsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Colors));
+            challengeColorsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Dinos));
             challengePrincessButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Princess));
             challengeCarsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Cars));
             challengeThemeBackButton?.onClick.AddListener(ShowGameTypePanel);

@@ -41,7 +41,7 @@ namespace MagicPairs.Core
         public static bool IsThemeUnlocked(CardTheme theme)
         {
             // Base themes always unlocked
-            if (theme == CardTheme.Colors || theme == CardTheme.Princess || theme == CardTheme.Cars)
+            if (theme == CardTheme.Colors || theme == CardTheme.Princess || theme == CardTheme.Cars || theme == CardTheme.Dinos)
                 return true;
             int unlocked = PlayerPrefs.GetInt(UnlockedKey, 0);
             return (unlocked & (1 << (int)theme)) != 0;

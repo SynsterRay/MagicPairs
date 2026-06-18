@@ -30,8 +30,12 @@ namespace MagicPairs.Cards
             // Load back sprite for sprite-based themes (cached per folder)
             if (data.HasSprite)
             {
-                string folder = Core.GameManager.Instance?.Config?.theme == Core.CardTheme.Cars
-                    ? "CarCards" : "PrincessCards";
+                string folder = Core.GameManager.Instance?.Config?.theme switch
+                {
+                    Core.CardTheme.Cars => "CarCards",
+                    Core.CardTheme.Dinos => "WaterWorldCards",
+                    _ => "PrincessCards"
+                };
 
                 if (_backSpriteCache == null || _backSpriteCacheFolder != folder)
                 {
