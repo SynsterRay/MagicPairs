@@ -60,9 +60,9 @@ namespace MagicPairs.UI
             title.color = new Color(0.3f, 0.1f, 0.5f);
 
             // Coins display
-            _coinsText = UIFactory.CreateText("CoinsDisplay", $"🪙 {PlayerWallet.Coins}", _panel.transform,
-                new Vector2(0.55f, 0.88f), new Vector2(0.95f, 0.96f), TextAnchor.MiddleRight, 40);
-            _coinsText.color = new Color(0.8f, 0.6f, 0.1f);
+            _coinsText = UIFactory.CreateText("CoinsDisplay", $"{PlayerWallet.Coins}", _panel.transform,
+                new Vector2(0.55f, 0.88f), new Vector2(0.85f, 0.96f), TextAnchor.MiddleLeft, 40);
+            _coinsText.color = new Color(0.9f, 0.75f, 0.1f);
 
             // Coin icon
             var coinIcon = new GameObject("CoinIcon");
@@ -414,8 +414,8 @@ namespace MagicPairs.UI
         {
             if (_coinsText != null)
             {
-                _coinsText.text = $"🪙 {coins}";
-                _coinsText.color = new Color(0.8f, 0.6f, 0.1f);
+                _coinsText.text = $"{coins}";
+                _coinsText.color = new Color(0.9f, 0.75f, 0.1f);
             }
         }
 

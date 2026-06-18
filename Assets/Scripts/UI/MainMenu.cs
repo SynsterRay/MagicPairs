@@ -294,8 +294,8 @@ namespace MagicPairs.UI
             img.preserveAspect = true;
             img.raycastTarget = false;
             var rect = go.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(xMin, 0.3f);
-            rect.anchorMax = new Vector2(xMin + (xMax - xMin) * 0.5f, 1f);
+            rect.anchorMin = new Vector2(xMin, 0.35f);
+            rect.anchorMax = new Vector2(xMax, 1f);
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
 
@@ -303,14 +303,14 @@ namespace MagicPairs.UI
             txtObj.transform.SetParent(go.transform, false);
             var txt = txtObj.AddComponent<Text>();
             txt.text = "0";
-            txt.fontSize = 22;
+            txt.fontSize = 20;
             txt.fontStyle = FontStyle.Bold;
-            txt.alignment = TextAnchor.MiddleLeft;
+            txt.alignment = TextAnchor.UpperCenter;
             txt.color = new Color(0.3f, 0.15f, 0.5f);
             txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             var txtRect = txtObj.GetComponent<RectTransform>();
-            txtRect.anchorMin = new Vector2(1.1f, 0f);
-            txtRect.anchorMax = new Vector2(2.5f, 1f);
+            txtRect.anchorMin = new Vector2(0f, -0.6f);
+            txtRect.anchorMax = new Vector2(1f, 0f);
             txtRect.offsetMin = Vector2.zero;
             txtRect.offsetMax = Vector2.zero;
 
@@ -319,7 +319,7 @@ namespace MagicPairs.UI
 
         private void UpdateMenuStatusBar()
         {
-            int peek = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpPeek);
+            int peek = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpPeek) + 1;
             int shuffle = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpShuffle);
             int freeze = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpFreeze);
             if (_statusPeekText != null) _statusPeekText.text = peek.ToString();

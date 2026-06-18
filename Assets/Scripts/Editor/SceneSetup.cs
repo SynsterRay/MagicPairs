@@ -664,6 +664,17 @@ namespace MagicPairs.Editor
             var arcadeBtn = CreateIconBtn("ArcadeBtn", "arcade", gameTypePanel.transform,
                 new Vector2(0.05f, 0.30f), new Vector2(0.30f, 0.70f));
 
+            // Labels under buttons
+            var arcadeLabel = CreateUIText("ArcadeLabel", "Arcade", gameTypePanel.transform,
+                new Vector2(0.05f, 0.18f), new Vector2(0.30f, 0.30f), TextAnchor.MiddleCenter, 14);
+            arcadeLabel.color = new Color(0.3f, 0.1f, 0.5f);
+            var challengeLabel = CreateUIText("ChallengeLabel", "Challenge", gameTypePanel.transform,
+                new Vector2(0.35f, 0.18f), new Vector2(0.65f, 0.30f), TextAnchor.MiddleCenter, 14);
+            challengeLabel.color = new Color(0.3f, 0.1f, 0.5f);
+            var timeAttackLabel = CreateUIText("TimeAttackLabel", "Time Attack", gameTypePanel.transform,
+                new Vector2(0.70f, 0.18f), new Vector2(0.95f, 0.30f), TextAnchor.MiddleCenter, 14);
+            timeAttackLabel.color = new Color(0.3f, 0.1f, 0.5f);
+
             var gameTypeBackBtn = CreateIconBtn("GameTypeBackBtn", "back", gameTypePanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
 
