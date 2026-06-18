@@ -656,13 +656,13 @@ namespace MagicPairs.Editor
                 new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 30);
 
             var challengeBtn = CreateIconBtn("ChallengeBtn", "challenge", gameTypePanel.transform,
-                new Vector2(0.05f, 0.30f), new Vector2(0.30f, 0.70f));
-
-            var timeAttackBtn = CreateIconBtn("TimeAttackBtn", "time attack", gameTypePanel.transform,
                 new Vector2(0.35f, 0.30f), new Vector2(0.65f, 0.70f));
 
-            var arcadeBtn = CreateIconBtn("ArcadeBtn", "arcade", gameTypePanel.transform,
+            var timeAttackBtn = CreateIconBtn("TimeAttackBtn", "time attack", gameTypePanel.transform,
                 new Vector2(0.70f, 0.30f), new Vector2(0.95f, 0.70f));
+
+            var arcadeBtn = CreateIconBtn("ArcadeBtn", "arcade", gameTypePanel.transform,
+                new Vector2(0.05f, 0.30f), new Vector2(0.30f, 0.70f));
 
             var gameTypeBackBtn = CreateIconBtn("GameTypeBackBtn", "back", gameTypePanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
@@ -711,11 +711,9 @@ namespace MagicPairs.Editor
             // Row 2: Locked placeholders
             var chLockedCard1 = CreateIconBtn("ChLockedCard1", "animals", challengeThemePanel.transform,
                 new Vector2(0.02f, 0.10f), new Vector2(0.32f, 0.42f));
-            chLockedCard1.GetComponent<Button>().interactable = false;
             AddBlockedOverlay(chLockedCard1);
             var chLockedCard2 = CreateIconBtn("ChLockedCard2", "space", challengeThemePanel.transform,
                 new Vector2(0.35f, 0.10f), new Vector2(0.65f, 0.42f));
-            chLockedCard2.GetComponent<Button>().interactable = false;
             AddBlockedOverlay(chLockedCard2);
 
             var challengeThemeBackBtn = CreateIconBtn("ChallengeThemeBackBtn", "back", challengeThemePanel.transform,
@@ -802,11 +800,9 @@ namespace MagicPairs.Editor
             // Row 2: Locked placeholders (animals, space)
             var lockedCard1 = CreateIconBtn("LockedCard1", "animals", themePanel.transform,
                 new Vector2(0.02f, 0.10f), new Vector2(0.32f, 0.42f));
-            lockedCard1.GetComponent<Button>().interactable = false;
             AddBlockedOverlay(lockedCard1);
             var lockedCard2 = CreateIconBtn("LockedCard2", "space", themePanel.transform,
                 new Vector2(0.35f, 0.10f), new Vector2(0.65f, 0.42f));
-            lockedCard2.GetComponent<Button>().interactable = false;
             AddBlockedOverlay(lockedCard2);
 
             var themeBackBtn = CreateIconBtn("ThemeBackBtn", "back", themePanel.transform,

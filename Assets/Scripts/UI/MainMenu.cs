@@ -159,6 +159,8 @@ namespace MagicPairs.UI
             challengeCarsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Cars));
             challengeThemeBackButton?.onClick.AddListener(ShowGameTypePanel);
 
+            WireLockedThemeButtons();
+
             Core.GPGSManager.OnAuthChanged += OnGPGSAuthChanged;
             ShowStartPanel();
         }
@@ -206,6 +208,28 @@ namespace MagicPairs.UI
                 if (menuPanel != null) menuPanel.SetActive(false);
                 var shop = FindAnyObjectByType<ShopUI>();
                 shop?.Show(() => ShowStartPanel());
+            });
+        }
+
+        private void WireLockedThemeButtons()
+        {
+            WireLockedBtn(themePanel, "LockedCard1");
+            WireLockedBtn(themePanel, "LockedCard2");
+            WireLockedBtn(challengeThemePanel, "ChLockedCard1");
+            WireLockedBtn(challengeThemePanel, "ChLockedCard2");
+        }
+
+        private void WireLockedBtn(GameObject panel, string name)
+        {
+            if (panel == null) return;
+            var obj = panel.transform.Find(name);
+            if (obj == null) return;
+            var btn = obj.GetComponent<Button>();
+            btn?.onClick.AddListener(() =>
+            {
+                if (menuPanel != null) menuPanel.SetActive(false);
+                var shop = FindAnyObjectByType<ShopUI>();
+                shop?.Show(() => { ShowStartPanel(); ShowGameTypePanel(); });
             });
         }
 
