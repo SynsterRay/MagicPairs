@@ -160,6 +160,7 @@ namespace MagicPairs.UI
             challengeThemeBackButton?.onClick.AddListener(ShowGameTypePanel);
 
             WireLockedThemeButtons();
+            CreateMenuStatusBar();
 
             Core.GPGSManager.OnAuthChanged += OnGPGSAuthChanged;
             ShowStartPanel();
@@ -233,6 +234,115 @@ namespace MagicPairs.UI
             });
         }
 
+        private GameObject _menuStatusBar;
+        private Text _statusPeekText;
+        private Text _statusShuffleText;
+        private Text _statusFreezeText;
+        private Text _statusCoinText;
+        private GameObject _ponyLogo;
+        private GameObject _titleLogo;
+
+        private void CreateMenuStatusBar()
+        {
+            if (menuPanel == null) return;
+
+            // Find title logo reference
+            _titleLogo = menuPanel.transform.Find("TitleLogo")?.gameObject;
+
+            // Create pony logo (shown on non-start panels)
+            var ponySprite = UIIcons.Get("pony");
+            if (ponySprite != null)
+            {
+                _ponyLogo = new GameObject("PonyLogo");
+                _ponyLogo.transform.SetParent(menuPanel.transform, false);
+                var img = _ponyLogo.AddComponent<Image>();
+                img.sprite = ponySprite;
+                img.preserveAspect = true;
+                img.raycastTarget = false;
+                var rect = _ponyLogo.GetComponent<RectTransform>();
+                rect.anchorMin = new Vector2(0.25f, 0.72f);
+                rect.anchorMax = new Vector2(0.75f, 0.93f);
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+                _ponyLogo.SetActive(false);
+            }
+
+            // Status bar: power-ups + coins (top area, below logo)
+            _menuStatusBar = new GameObject("MenuStatusBar");
+            _menuStatusBar.transform.SetParent(menuPanel.transform, false);
+            var barRect = _menuStatusBar.AddComponent<RectTransform>();
+            barRect.anchorMin = new Vector2(0.05f, 0.93f);
+            barRect.anchorMax = new Vector2(0.95f, 1.0f);
+            barRect.offsetMin = Vector2.zero;
+            barRect.offsetMax = Vector2.zero;
+
+            _statusPeekText = CreateStatusIcon("peek_game", 0f, 0.22f);
+            _statusShuffleText = CreateStatusIcon("shuffle_game", 0.26f, 0.48f);
+            _statusFreezeText = CreateStatusIcon("freeze_game", 0.52f, 0.74f);
+            _statusCoinText = CreateStatusIcon("coin_icon", 0.78f, 1.0f);
+
+            _menuStatusBar.SetActive(false);
+            Core.PlayerWallet.OnCoinsChanged += _ => UpdateMenuStatusBar();
+        }
+
+        private Text CreateStatusIcon(string iconName, float xMin, float xMax)
+        {
+            var go = new GameObject(iconName);
+            go.transform.SetParent(_menuStatusBar.transform, false);
+            var img = go.AddComponent<Image>();
+            img.sprite = UIIcons.Get(iconName);
+            img.preserveAspect = true;
+            img.raycastTarget = false;
+            var rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(xMin, 0.3f);
+            rect.anchorMax = new Vector2(xMin + (xMax - xMin) * 0.5f, 1f);
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            var txtObj = new GameObject("Count");
+            txtObj.transform.SetParent(go.transform, false);
+            var txt = txtObj.AddComponent<Text>();
+            txt.text = "0";
+            txt.fontSize = 22;
+            txt.fontStyle = FontStyle.Bold;
+            txt.alignment = TextAnchor.MiddleLeft;
+            txt.color = new Color(0.3f, 0.15f, 0.5f);
+            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            var txtRect = txtObj.GetComponent<RectTransform>();
+            txtRect.anchorMin = new Vector2(1.1f, 0f);
+            txtRect.anchorMax = new Vector2(2.5f, 1f);
+            txtRect.offsetMin = Vector2.zero;
+            txtRect.offsetMax = Vector2.zero;
+
+            return txt;
+        }
+
+        private void UpdateMenuStatusBar()
+        {
+            int peek = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpPeek);
+            int shuffle = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpShuffle);
+            int freeze = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpFreeze);
+            if (_statusPeekText != null) _statusPeekText.text = peek.ToString();
+            if (_statusShuffleText != null) _statusShuffleText.text = shuffle.ToString();
+            if (_statusFreezeText != null) _statusFreezeText.text = freeze.ToString();
+            if (_statusCoinText != null) _statusCoinText.text = Core.PlayerWallet.Coins.ToString();
+        }
+
+        private void ShowMenuStatusBar(bool showPony)
+        {
+            if (_menuStatusBar != null) _menuStatusBar.SetActive(true);
+            if (_ponyLogo != null) _ponyLogo.SetActive(showPony);
+            if (_titleLogo != null) _titleLogo.SetActive(!showPony);
+            UpdateMenuStatusBar();
+        }
+
+        private void HideMenuStatusBar()
+        {
+            if (_menuStatusBar != null) _menuStatusBar.SetActive(false);
+            if (_ponyLogo != null) _ponyLogo.SetActive(false);
+            if (_titleLogo != null) _titleLogo.SetActive(true);
+        }
+
         private void ShowStartPanel()
         {
             if (menuPanel != null) menuPanel.SetActive(true);
@@ -240,6 +350,7 @@ namespace MagicPairs.UI
             if (startPanel != null) startPanel.SetActive(true);
             UpdateStartPanelTexts();
             UpdateAchievementsButton();
+            ShowMenuStatusBar(false);
 
             // Show scores button only if authenticated to GPGS
             var gpgs = Core.GPGSManager.Instance;
@@ -402,6 +513,7 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (optionsPanel != null) optionsPanel.SetActive(true);
+            ShowMenuStatusBar(true);
             if (optionsTitle != null) optionsTitle.text = Localization.Get("options");
             if (languageButtonText != null) languageButtonText.text = Localization.Get("languageOption");
             if (creditsButton != null)
@@ -469,6 +581,7 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (gameTypePanel != null) gameTypePanel.SetActive(true);
+            ShowMenuStatusBar(true);
             if (gameTypeTitle != null) gameTypeTitle.text = Localization.Get("chooseGameType");
             if (arcadeButtonText != null) arcadeButtonText.text = Localization.Get("arcade");
             if (challengeButtonText != null) challengeButtonText.text = Localization.Get("challenge");

@@ -88,9 +88,9 @@ namespace MagicPairs.UI
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
 
-            _peekBtn = CreatePowerUpButton("peek", 0f, 0.23f, _powerUpPanel.transform);
-            _shuffleBtn = CreatePowerUpButton("shuffle", 0.25f, 0.48f, _powerUpPanel.transform);
-            _freezeBtn = CreatePowerUpButton("freeze", 0.5f, 0.73f, _powerUpPanel.transform);
+            _peekBtn = CreatePowerUpButton("peek_game", 0f, 0.23f, _powerUpPanel.transform);
+            _shuffleBtn = CreatePowerUpButton("shuffle_game", 0.25f, 0.48f, _powerUpPanel.transform);
+            _freezeBtn = CreatePowerUpButton("freeze_game", 0.5f, 0.73f, _powerUpPanel.transform);
             _adPowerUpBtn = CreatePowerUpButton("add reward", 0.75f, 1f, _powerUpPanel.transform);
 
             _peekText = _peekBtn.GetComponentInChildren<Text>();

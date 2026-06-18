@@ -61,8 +61,21 @@ namespace MagicPairs.UI
 
             // Coins display
             _coinsText = UIFactory.CreateText("CoinsDisplay", $"🪙 {PlayerWallet.Coins}", _panel.transform,
-                new Vector2(0.5f, 0.88f), new Vector2(0.95f, 0.96f), TextAnchor.MiddleRight, 40);
+                new Vector2(0.55f, 0.88f), new Vector2(0.95f, 0.96f), TextAnchor.MiddleRight, 40);
             _coinsText.color = new Color(0.8f, 0.6f, 0.1f);
+
+            // Coin icon
+            var coinIcon = new GameObject("CoinIcon");
+            coinIcon.transform.SetParent(_panel.transform, false);
+            var ciImg = coinIcon.AddComponent<Image>();
+            ciImg.sprite = UIIcons.Get("coin_icon");
+            ciImg.preserveAspect = true;
+            ciImg.raycastTarget = false;
+            var ciRect = coinIcon.GetComponent<RectTransform>();
+            ciRect.anchorMin = new Vector2(0.46f, 0.88f);
+            ciRect.anchorMax = new Vector2(0.55f, 0.96f);
+            ciRect.offsetMin = Vector2.zero;
+            ciRect.offsetMax = Vector2.zero;
 
             // Scroll content area
             var scrollArea = new GameObject("ScrollArea", typeof(RectTransform));
