@@ -586,7 +586,7 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (languagePanel != null) languagePanel.SetActive(true);
-            if (languageTitle != null) languageTitle.text = "Choose Language / Wybierz język";
+            if (languageTitle != null) languageTitle.text = Localization.Get("chooseLanguage");
             CreateLanguageButtons();
         }
 
