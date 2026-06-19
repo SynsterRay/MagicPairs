@@ -126,6 +126,7 @@ namespace MagicPairs.Editor
             gm.AddComponent<Core.GPGSManager>();
             gm.AddComponent<Core.AchievementTracker>();
             gm.AddComponent<Core.IAPManager>();
+            gm.AddComponent<Core.NotificationManager>();
 
             var cardGrid = gm.AddComponent<Cards.CardGrid>();
             gm.AddComponent<Cards.PairCollector>();
