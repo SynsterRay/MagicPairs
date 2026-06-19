@@ -587,6 +587,63 @@ namespace MagicPairs.UI
             HideAllPanels();
             if (languagePanel != null) languagePanel.SetActive(true);
             if (languageTitle != null) languageTitle.text = "Choose Language / Wybierz język";
+            CreateLanguageButtons();
+        }
+
+        private GameObject _langButtonsContainer;
+        private static readonly (Language lang, string label)[] AllLanguages =
+        {
+            (Language.English, "English"),
+            (Language.Polish, "Polski"),
+            (Language.Spanish, "Español"),
+            (Language.Portuguese, "Português"),
+            (Language.German, "Deutsch"),
+            (Language.French, "Français"),
+            (Language.Hindi, "हिन्दी"),
+            (Language.Chinese, "中文"),
+            (Language.Japanese, "日本語"),
+        };
+
+        private void CreateLanguageButtons()
+        {
+            if (languagePanel == null) return;
+
+            // Hide old static buttons
+            if (polishButton != null) polishButton.gameObject.SetActive(false);
+            if (englishButton != null) englishButton.gameObject.SetActive(false);
+
+            if (_langButtonsContainer != null) { _langButtonsContainer.SetActive(true); return; }
+
+            _langButtonsContainer = new GameObject("LangButtons");
+            _langButtonsContainer.transform.SetParent(languagePanel.transform, false);
+            var cRect = _langButtonsContainer.AddComponent<RectTransform>();
+            cRect.anchorMin = new Vector2(0.05f, 0.05f);
+            cRect.anchorMax = new Vector2(0.95f, 0.82f);
+            cRect.offsetMin = Vector2.zero;
+            cRect.offsetMax = Vector2.zero;
+
+            int count = AllLanguages.Length;
+            int cols = 3;
+            int rows = (count + cols - 1) / cols;
+            float spacing = 0.03f;
+            float cellW = (1f - spacing * (cols + 1)) / cols;
+            float cellH = (1f - spacing * (rows + 1)) / rows;
+
+            for (int i = 0; i < count; i++)
+            {
+                int col = i % cols;
+                int row = i / cols;
+                float x = spacing + col * (cellW + spacing);
+                float y = 1f - spacing - (row + 1) * (cellH + spacing) + spacing;
+
+                var (lang, label) = AllLanguages[i];
+                var btn = UIFactory.CreateButton($"Lang_{lang}", label,
+                    _langButtonsContainer.transform,
+                    new Vector2(x, y), new Vector2(x + cellW, y + cellH),
+                    new Color(0.3f, 0.15f, 0.6f, 1f));
+                var capturedLang = lang;
+                btn.onClick.AddListener(() => SelectLanguage(capturedLang));
+            }
         }
 
         private void SelectLanguage(Language lang)
