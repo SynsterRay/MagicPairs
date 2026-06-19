@@ -709,7 +709,20 @@ namespace MagicPairs.Editor
             challengeThemePanelRect.offsetMax = Vector2.zero;
 
             var challengeThemeTitle = CreateUIText("ChallengeThemeTitle", "Wybierz typ kart", challengeThemePanel.transform,
-                new Vector2(0f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleCenter, 28);
+                new Vector2(0.35f, 0.82f), new Vector2(0.85f, 1f), TextAnchor.MiddleLeft, 28);
+
+            // Cards icon next to title
+            var chCardsIcon = new GameObject("CardsIcon");
+            chCardsIcon.transform.SetParent(challengeThemePanel.transform, false);
+            var chciImg = chCardsIcon.AddComponent<Image>();
+            chciImg.sprite = UI.UIIcons.Get("cards");
+            chciImg.preserveAspect = true;
+            chciImg.raycastTarget = false;
+            var chciRect = chCardsIcon.GetComponent<RectTransform>();
+            chciRect.anchorMin = new Vector2(0.18f, 0.82f);
+            chciRect.anchorMax = new Vector2(0.35f, 1f);
+            chciRect.offsetMin = Vector2.zero;
+            chciRect.offsetMax = Vector2.zero;
 
             // Row 1: Cars, Princess, Colors
             var chCarsBtn = CreateIconBtn("ChCarsBtn", "cars", challengeThemePanel.transform,
@@ -785,7 +798,7 @@ namespace MagicPairs.Editor
             themePanelRect.offsetMax = Vector2.zero;
 
             var themeTitle = CreateUIText("ThemeTitle", "Wybierz typ kart", themePanel.transform,
-                new Vector2(0.25f, 0.82f), new Vector2(1f, 1f), TextAnchor.MiddleLeft, 28);
+                new Vector2(0.35f, 0.82f), new Vector2(0.85f, 1f), TextAnchor.MiddleLeft, 28);
 
             // Cards icon next to title
             var themeCardsIcon = new GameObject("CardsIcon");
@@ -795,8 +808,8 @@ namespace MagicPairs.Editor
             tciImg.preserveAspect = true;
             tciImg.raycastTarget = false;
             var tciRect = themeCardsIcon.GetComponent<RectTransform>();
-            tciRect.anchorMin = new Vector2(0.02f, 0.82f);
-            tciRect.anchorMax = new Vector2(0.22f, 1f);
+            tciRect.anchorMin = new Vector2(0.18f, 0.82f);
+            tciRect.anchorMax = new Vector2(0.35f, 1f);
             tciRect.offsetMin = Vector2.zero;
             tciRect.offsetMax = Vector2.zero;
 

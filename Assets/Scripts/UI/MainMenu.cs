@@ -239,8 +239,11 @@ namespace MagicPairs.UI
         private Text _statusShuffleText;
         private Text _statusFreezeText;
         private Text _statusCoinText;
-        private GameObject _ponyLogo;
         private GameObject _titleLogo;
+        private GameObject[] _headerLogos;
+        private int _activeHeaderIndex = -1;
+
+        private static readonly string[] HeaderIcons = { "header_car", "header_dino", "header_monkey", "header_princess", "header_lion" };
 
         private void CreateMenuStatusBar()
         {
@@ -249,22 +252,25 @@ namespace MagicPairs.UI
             // Find title logo reference
             _titleLogo = menuPanel.transform.Find("TitleLogo")?.gameObject;
 
-            // Create pony logo (shown on non-start panels)
-            var ponySprite = UIIcons.Get("pony");
-            if (ponySprite != null)
+            // Create header logos (different character per panel)
+            _headerLogos = new GameObject[HeaderIcons.Length];
+            for (int i = 0; i < HeaderIcons.Length; i++)
             {
-                _ponyLogo = new GameObject("PonyLogo");
-                _ponyLogo.transform.SetParent(menuPanel.transform, false);
-                var img = _ponyLogo.AddComponent<Image>();
-                img.sprite = ponySprite;
+                var sprite = UIIcons.Get(HeaderIcons[i]);
+                if (sprite == null) continue;
+                var go = new GameObject($"HeaderLogo_{HeaderIcons[i]}");
+                go.transform.SetParent(menuPanel.transform, false);
+                var img = go.AddComponent<Image>();
+                img.sprite = sprite;
                 img.preserveAspect = true;
                 img.raycastTarget = false;
-                var rect = _ponyLogo.GetComponent<RectTransform>();
+                var rect = go.GetComponent<RectTransform>();
                 rect.anchorMin = new Vector2(0.25f, 0.72f);
                 rect.anchorMax = new Vector2(0.75f, 0.93f);
                 rect.offsetMin = Vector2.zero;
                 rect.offsetMax = Vector2.zero;
-                _ponyLogo.SetActive(false);
+                go.SetActive(false);
+                _headerLogos[i] = go;
             }
 
             // Status bar: power-ups + coins (top area, below logo)
@@ -331,15 +337,32 @@ namespace MagicPairs.UI
         private void ShowMenuStatusBar(bool showPony)
         {
             if (_menuStatusBar != null) _menuStatusBar.SetActive(true);
-            if (_ponyLogo != null) _ponyLogo.SetActive(showPony);
+            if (!showPony) HideAllHeaders();
             if (_titleLogo != null) _titleLogo.SetActive(!showPony);
             UpdateMenuStatusBar();
+        }
+
+        private void ShowHeaderLogo(int index)
+        {
+            if (_headerLogos == null) return;
+            for (int i = 0; i < _headerLogos.Length; i++)
+                if (_headerLogos[i] != null) _headerLogos[i].SetActive(i == index);
+            _activeHeaderIndex = index;
+            if (_titleLogo != null) _titleLogo.SetActive(false);
+        }
+
+        private void HideAllHeaders()
+        {
+            if (_headerLogos == null) return;
+            for (int i = 0; i < _headerLogos.Length; i++)
+                if (_headerLogos[i] != null) _headerLogos[i].SetActive(false);
+            _activeHeaderIndex = -1;
         }
 
         private void HideMenuStatusBar()
         {
             if (_menuStatusBar != null) _menuStatusBar.SetActive(false);
-            if (_ponyLogo != null) _ponyLogo.SetActive(false);
+            HideAllHeaders();
             if (_titleLogo != null) _titleLogo.SetActive(true);
         }
 
@@ -514,6 +537,7 @@ namespace MagicPairs.UI
             HideAllPanels();
             if (optionsPanel != null) optionsPanel.SetActive(true);
             ShowMenuStatusBar(true);
+            ShowHeaderLogo(3); // princess
             if (optionsTitle != null) optionsTitle.text = Localization.Get("options");
             if (languageButtonText != null) languageButtonText.text = Localization.Get("languageOption");
             if (creditsButton != null)
@@ -582,6 +606,7 @@ namespace MagicPairs.UI
             HideAllPanels();
             if (gameTypePanel != null) gameTypePanel.SetActive(true);
             ShowMenuStatusBar(true);
+            ShowHeaderLogo(1); // dino
             if (gameTypeTitle != null) gameTypeTitle.text = Localization.Get("chooseGameType");
             if (arcadeButtonText != null) arcadeButtonText.text = Localization.Get("arcade");
             if (challengeButtonText != null) challengeButtonText.text = Localization.Get("challenge");
@@ -617,6 +642,8 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (challengeThemePanel != null) challengeThemePanel.SetActive(true);
+            ShowMenuStatusBar(true);
+            ShowHeaderLogo(2); // monkey
             if (challengeThemeTitle != null)
                 challengeThemeTitle.text = Localization.Get("chooseTheme");
         }
@@ -666,6 +693,8 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (modePanel != null) modePanel.SetActive(true);
+            ShowMenuStatusBar(true);
+            ShowHeaderLogo(0); // car
             if (modeTitle != null) modeTitle.text = Localization.Get("chooseMode");
             if (twoPlayersText != null) twoPlayersText.text = Localization.Get("mode2P");
             if (singlePlayerText != null) singlePlayerText.text = Localization.Get("mode1P");
@@ -681,6 +710,8 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (difficultyPanel != null) difficultyPanel.SetActive(true);
+            ShowMenuStatusBar(true);
+            ShowHeaderLogo(4); // lion
             if (difficultyTitle != null) difficultyTitle.text = Localization.Get("chooseDifficulty");
         }
 
@@ -695,6 +726,8 @@ namespace MagicPairs.UI
         {
             HideAllPanels();
             if (themePanel != null) themePanel.SetActive(true);
+            ShowMenuStatusBar(true);
+            ShowHeaderLogo(2); // monkey
             if (themeTitle != null)
                 themeTitle.text = Localization.Get("chooseTheme");
         }
