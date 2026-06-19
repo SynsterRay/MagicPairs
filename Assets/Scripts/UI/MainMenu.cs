@@ -373,6 +373,7 @@ namespace MagicPairs.UI
             if (startPanel != null) startPanel.SetActive(true);
             UpdateStartPanelTexts();
             UpdateAchievementsButton();
+            UpdateInviteButton();
             ShowMenuStatusBar(false);
 
             // Show scores button only if authenticated to GPGS
@@ -415,6 +416,29 @@ namespace MagicPairs.UI
 
             if (_achievementsBtn != null)
                 _achievementsBtn.SetActive(show);
+        }
+
+        private GameObject _inviteBtn;
+
+        private void UpdateInviteButton()
+        {
+            if (_inviteBtn == null && startPanel != null)
+            {
+                var btn = UIFactory.CreateIconButton("InviteBtn", "invite",
+                    startPanel.transform, new Vector2(0.35f, 0.02f), new Vector2(0.65f, 0.34f));
+                _inviteBtn = btn.gameObject;
+                btn.onClick.AddListener(() =>
+                {
+                    if (menuPanel != null) menuPanel.SetActive(false);
+                    var invite = FindAnyObjectByType<InvitePanel>();
+                    if (invite == null)
+                    {
+                        var canvas = GetComponent<Canvas>() ?? GetComponentInParent<Canvas>();
+                        if (canvas != null) invite = canvas.gameObject.AddComponent<InvitePanel>();
+                    }
+                    invite?.Show(() => ShowStartPanel());
+                });
+            }
         }
 
         private void ShowStartLeaderboard()

@@ -220,6 +220,7 @@ namespace MagicPairs.GameFlow
 
             if (_pairsFound >= _totalPairs)
             {
+                LockRemainingCards();
                 if (CurrentPlayerIndex == 0)
                 {
                     // Player completed the level
@@ -370,6 +371,14 @@ namespace MagicPairs.GameFlow
         }
 
         public void ClearAIMemory() => _aiMemory.Clear();
+
+        private void LockRemainingCards()
+        {
+            if (_grid == null) return;
+            foreach (var card in _grid.Cards)
+                if (card != null && card.CanFlip)
+                    card.SetMatched();
+        }
 
         /// <summary>Called when player loses (AI finds last pair or player quits).</summary>
         public void EndChallenge()

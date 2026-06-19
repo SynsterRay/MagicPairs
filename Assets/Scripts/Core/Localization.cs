@@ -95,6 +95,11 @@ namespace MagicPairs.Core
             { "notEnough", new[] { "Za mało monet", "Not enough coins", "Monedas insuficientes", "Moedas insuficientes", "Nicht genug Münzen", "Pas assez de pièces", "पर्याप्त सिक्के नहीं", "金币不足", "コイン不足" } },
             { "purchased", new[] { "Kupiono!", "Purchased!", "¡Comprado!", "Comprado!", "Gekauft!", "Acheté!", "खरीदा!", "已购买！", "購入済み！" } },
             { "achievements", new[] { "🏆 Osiągnięcia", "🏆 Achievements", "🏆 Logros", "🏆 Conquistas", "🏆 Erfolge", "🏆 Succès", "🏆 उपलब्धियाँ", "🏆 成就", "🏆 実績" } },
+            { "invite", new[] { "Zaproś", "Invite", "Invitar", "Convidar", "Einladen", "Inviter", "आमंत्रित", "邀请", "招待" } },
+            { "inviteReward", new[] { "Zaproś znajomych i otrzymaj 50 monet!", "Invite friends and get 50 coins!", "¡Invita amigos y gana 50 monedas!", "Convide amigos e ganhe 50 moedas!", "Lade Freunde ein und erhalte 50 Münzen!", "Invitez des amis et gagnez 50 pièces!", "दोस्तों को आमंत्रित करें और 50 सिक्के पाएं!", "邀请好友获得50金币！", "友達を招待して50コインゲット！" } },
+            { "inviteMsg", new[] { "Zagraj ze mną w Magic Pairs! Dopasuj karty i wygraj!", "Play Magic Pairs with me! Match cards and win!", "¡Juega Magic Pairs conmigo! ¡Empareja cartas y gana!", "Jogue Magic Pairs comigo! Combine cartas e ganhe!", "Spiel Magic Pairs mit mir! Finde Paare und gewinne!", "Joue à Magic Pairs avec moi! Associe les cartes et gagne!", "मेरे साथ Magic Pairs खेलो! कार्ड मिलाओ और जीतो!", "和我一起玩Magic Pairs！配对卡片赢得胜利！", "Magic Pairsを一緒にプレイしよう！カードをマッチして勝とう！" } },
+            { "inviteShared", new[] { "Udostępniono! +50 monet", "Shared! +50 coins", "¡Compartido! +50 monedas", "Compartilhado! +50 moedas", "Geteilt! +50 Münzen", "Partagé! +50 pièces", "शेयर किया! +50 सिक्के", "已分享！+50金币", "シェア完了！+50コイン" } },
+            { "inviteCooldown", new[] { "Wróć jutro", "Come back tomorrow", "Vuelve mañana", "Volte amanhã", "Komm morgen wieder", "Reviens demain", "कल वापस आएं", "明天再来", "明日また来てね" } },
         };
 
         public static string Get(string key)
