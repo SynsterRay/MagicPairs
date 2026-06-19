@@ -366,6 +366,8 @@ namespace MagicPairs.UI
             if (_titleLogo != null) _titleLogo.SetActive(true);
         }
 
+        private Coroutine _startPulse;
+
         private void ShowStartPanel()
         {
             if (menuPanel != null) menuPanel.SetActive(true);
@@ -375,6 +377,7 @@ namespace MagicPairs.UI
             UpdateAchievementsButton();
             UpdateInviteButton();
             ShowMenuStatusBar(false);
+            StartAlternatingPulse();
 
             // Show scores button only if authenticated to GPGS
             var gpgs = Core.GPGSManager.Instance;
@@ -438,6 +441,33 @@ namespace MagicPairs.UI
                     }
                     invite?.Show(() => ShowStartPanel());
                 });
+            }
+        }
+
+        private void StartAlternatingPulse()
+        {
+            if (_startPulse != null) StopCoroutine(_startPulse);
+            _startPulse = StartCoroutine(AlternatingPulseRoutine());
+        }
+
+        private System.Collections.IEnumerator AlternatingPulseRoutine()
+        {
+            var playObj = playButton?.gameObject;
+            var shopObj = startPanel?.transform.Find("ShopBtn")?.gameObject;
+            if (playObj == null || shopObj == null) yield break;
+
+            Vector3 playBase = playObj.transform.localScale;
+            Vector3 shopBase = shopObj.transform.localScale;
+            float speed = 2f;
+            float min = 0.92f;
+            float max = 1.08f;
+
+            while (true)
+            {
+                float t = (Mathf.Sin(Time.time * speed) + 1f) * 0.5f;
+                playObj.transform.localScale = playBase * Mathf.Lerp(min, max, t);
+                shopObj.transform.localScale = shopBase * Mathf.Lerp(max, min, t);
+                yield return null;
             }
         }
 

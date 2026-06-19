@@ -208,7 +208,10 @@ namespace MagicPairs.UI
                 var capturedItem = item;
                 bool owned = item.type == ShopItemType.CardTheme && item.theme.HasValue && ShopCatalog.IsThemeUnlocked(item.theme.Value);
                 if (item.type == ShopItemType.CoinPack)
+                {
                     btn.onClick.AddListener(() => OnBuyCoinPack(capturedItem));
+                    iconObj.AddComponent<PulseAnimation>();
+                }
                 else if (!owned && item.type != ShopItemType.CardTheme)
                     btn.onClick.AddListener(() => OnBuy(capturedItem));
 

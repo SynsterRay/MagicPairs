@@ -657,6 +657,7 @@ namespace MagicPairs.Editor
 
             var challengeBtn = CreateIconBtn("ChallengeBtn", "challenge", gameTypePanel.transform,
                 new Vector2(0.35f, 0.30f), new Vector2(0.65f, 0.70f));
+            challengeBtn.AddComponent<UI.PulseAnimation>();
 
             var timeAttackBtn = CreateIconBtn("TimeAttackBtn", "time attack", gameTypePanel.transform,
                 new Vector2(0.70f, 0.30f), new Vector2(0.95f, 0.70f));
