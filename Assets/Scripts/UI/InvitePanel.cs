@@ -36,7 +36,7 @@ namespace MagicPairs.UI
 
             // Reward description
             var desc = UIFactory.CreateText("Desc", Localization.Get("inviteReward"), _panel.transform,
-                new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.75f), TextAnchor.MiddleCenter, 32);
+                new Vector2(0.1f, 0.65f), new Vector2(0.9f, 0.80f), TextAnchor.MiddleCenter, 32);
             desc.color = new Color(0.2f, 0.2f, 0.2f);
 
             // Coin icon + amount
@@ -47,23 +47,23 @@ namespace MagicPairs.UI
             ciImg.preserveAspect = true;
             ciImg.raycastTarget = false;
             var ciRect = coinIcon.GetComponent<RectTransform>();
-            ciRect.anchorMin = new Vector2(0.38f, 0.43f);
-            ciRect.anchorMax = new Vector2(0.50f, 0.55f);
+            ciRect.anchorMin = new Vector2(0.38f, 0.55f);
+            ciRect.anchorMax = new Vector2(0.50f, 0.64f);
             ciRect.offsetMin = Vector2.zero;
             ciRect.offsetMax = Vector2.zero;
 
             var coinText = UIFactory.CreateText("CoinAmount", $"+{ShareReward}", _panel.transform,
-                new Vector2(0.50f, 0.43f), new Vector2(0.65f, 0.55f), TextAnchor.MiddleLeft, 36);
+                new Vector2(0.50f, 0.55f), new Vector2(0.65f, 0.64f), TextAnchor.MiddleLeft, 36);
             coinText.color = new Color(0.85f, 0.65f, 0.1f);
 
             // Share button
-            var shareBtn = UIFactory.CreateIconButton("ShareBtn", "invite", _panel.transform,
-                new Vector2(0.25f, 0.22f), new Vector2(0.75f, 0.42f));
+            var shareBtn = UIFactory.CreateIconButton("ShareBtn", "referal_link", _panel.transform,
+                new Vector2(0.25f, 0.32f), new Vector2(0.75f, 0.54f));
             shareBtn.onClick.AddListener(OnShare);
 
             // Status text
             _statusText = UIFactory.CreateText("Status", "", _panel.transform,
-                new Vector2(0.1f, 0.14f), new Vector2(0.9f, 0.22f), TextAnchor.MiddleCenter, 22);
+                new Vector2(0.1f, 0.24f), new Vector2(0.9f, 0.32f), TextAnchor.MiddleCenter, 22);
             _statusText.color = new Color(0.4f, 0.4f, 0.4f);
 
             // Check cooldown
@@ -74,7 +74,7 @@ namespace MagicPairs.UI
 
             // Back button
             var backBtn = UIFactory.CreateIconButton("BackBtn", "back", _panel.transform,
-                new Vector2(0.30f, 0.05f), new Vector2(0.70f, 0.14f));
+                new Vector2(0.30f, 0.14f), new Vector2(0.70f, 0.23f));
             backBtn.onClick.AddListener(() => { Destroy(_panel); onBack?.Invoke(); });
         }
 

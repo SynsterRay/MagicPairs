@@ -758,9 +758,8 @@ namespace MagicPairs.Editor
 
             var twoPlayersBtn = CreateIconBtn("TwoPlayersBtn", "2 players", modePanel.transform,
                 new Vector2(0.2f, 0.52f), new Vector2(0.8f, 0.68f));
-            var singlePlayerBtn = CreateButton("SinglePlayerBtn", "1 Gracz (vs AI)", modePanel.transform,
+            var singlePlayerBtn = CreateIconBtn("SinglePlayerBtn", "vs_ai", modePanel.transform,
                 new Vector2(0.2f, 0.26f), new Vector2(0.8f, 0.42f));
-            singlePlayerBtn.GetComponent<Image>().color = new Color(0.6f, 0.3f, 0.8f, 1f);
 
             var modeBackBtn = CreateIconBtn("ModeBackBtn", "back", modePanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
