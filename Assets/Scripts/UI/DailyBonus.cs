@@ -87,10 +87,10 @@ namespace MagicPairs.UI
             // Power-up icon + name
             string puIconName = _todayReward switch
             {
-                PowerUpType.Peek => "peek",
-                PowerUpType.Shuffle => "shuffle",
-                PowerUpType.Freeze => "freeze",
-                _ => "peek"
+                PowerUpType.Peek => "peek_game",
+                PowerUpType.Shuffle => "shuffle_game",
+                PowerUpType.Freeze => "freeze_game",
+                _ => "peek_game"
             };
             string puName = _todayReward switch
             {
@@ -195,6 +195,9 @@ namespace MagicPairs.UI
             PlayerPrefs.Save();
 
             GPGSManager.Instance?.EventDailyBonus();
+
+            var sfx = FindAnyObjectByType<Audio.SFXManager>();
+            sfx?.PlayLevelComplete();
 
             if (_popup != null) Destroy(_popup);
         }

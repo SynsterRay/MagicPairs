@@ -374,15 +374,16 @@ namespace MagicPairs.UI
 
             string msg = Localization.CurrentLanguage == Language.Polish
                 ? $"Kupić za {cost} monet?" : $"Buy for {cost} coins?";
-            UIFactory.CreateText("Msg", msg, box.transform,
+            var msgText = UIFactory.CreateText("Msg", msg, box.transform,
                 new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.9f), TextAnchor.MiddleCenter, 28);
+            msgText.color = new Color(0.2f, 0.2f, 0.2f);
 
-            var yesBtn = UIFactory.CreateButton("YesBtn", Localization.Get("yes"), box.transform,
-                new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.45f), new Color(0.1f, 0.7f, 0.3f, 1f));
+            var yesBtn = UIFactory.CreateIconButton("YesBtn", "yes", box.transform,
+                new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.45f));
             yesBtn.onClick.AddListener(() => { Destroy(_confirmDialog); onConfirm(); });
 
-            var noBtn = UIFactory.CreateButton("NoBtn", Localization.Get("no"), box.transform,
-                new Vector2(0.55f, 0.1f), new Vector2(0.9f, 0.45f), new Color(0.7f, 0.2f, 0.2f, 1f));
+            var noBtn = UIFactory.CreateIconButton("NoBtn", "no", box.transform,
+                new Vector2(0.55f, 0.1f), new Vector2(0.9f, 0.45f));
             noBtn.onClick.AddListener(() => Destroy(_confirmDialog));
         }
 

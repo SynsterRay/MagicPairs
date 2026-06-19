@@ -63,6 +63,7 @@ namespace MagicPairs.Audio
 
         public void PlayFlip() => Play(cardFlip);
         public void PlayButton() => Play(buttonClick);
+        public void PlayLevelComplete() => Play(levelComplete);
 
         private void Play(AudioClip clip)
         {

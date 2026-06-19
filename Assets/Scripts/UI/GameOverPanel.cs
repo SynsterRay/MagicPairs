@@ -45,6 +45,9 @@ namespace MagicPairs.UI
             }
             if (resultText != null)
             {
+                resultText.resizeTextForBestFit = true;
+                resultText.resizeTextMinSize = 24;
+                resultText.resizeTextMaxSize = resultText.fontSize;
                 if (winnerIndex == -1)
                     resultText.text = Localization.Get("draw");
                 else
