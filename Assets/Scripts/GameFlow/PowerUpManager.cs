@@ -22,6 +22,10 @@ namespace MagicPairs.GameFlow
 
         public static event System.Action OnPowerUpsChanged;
 
+        private const string PeekKey = "MagicPairs_PU_Peek";
+        private const string ShuffleKey = "MagicPairs_PU_Shuffle";
+        private const string FreezeKey = "MagicPairs_PU_Freeze";
+
         private ChallengeMode _challenge;
         private CardGrid _grid;
 
@@ -46,15 +50,29 @@ namespace MagicPairs.GameFlow
             _grid = FindAnyObjectByType<CardGrid>();
             if (_challenge == null || !_challenge.enabled) return;
 
-            // Reset on new game (not on next level)
+            // On new game: load persisted counts + add any shop-stored power-ups
             if (_challenge.CurrentLevel == 1)
             {
-                _peekCount = 1 + ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpPeek);
-                _shuffleCount = ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpShuffle);
-                _freezeCount = ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpFreeze);
+                _peekCount = LoadCount(PeekKey, 1) + ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpPeek);
+                _shuffleCount = LoadCount(ShuffleKey, 0) + ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpShuffle);
+                _freezeCount = LoadCount(FreezeKey, 0) + ConsumeAllStoredPowerUps(Core.ShopItemType.PowerUpFreeze);
+                SaveCounts();
             }
             _freezeActive = false;
             OnPowerUpsChanged?.Invoke();
+        }
+
+        private int LoadCount(string key, int defaultValue)
+        {
+            return PlayerPrefs.GetInt(key, defaultValue);
+        }
+
+        private void SaveCounts()
+        {
+            PlayerPrefs.SetInt(PeekKey, _peekCount);
+            PlayerPrefs.SetInt(ShuffleKey, _shuffleCount);
+            PlayerPrefs.SetInt(FreezeKey, _freezeCount);
+            PlayerPrefs.Save();
         }
 
         private int ConsumeAllStoredPowerUps(Core.ShopItemType type)
@@ -80,6 +98,7 @@ namespace MagicPairs.GameFlow
                     case 1: _shuffleCount++; break;
                     case 2: _freezeCount++; break;
                 }
+                SaveCounts();
                 OnPowerUpsChanged?.Invoke();
             }
         }
@@ -97,6 +116,7 @@ namespace MagicPairs.GameFlow
                     case 1: _shuffleCount++; break;
                     case 2: _freezeCount++; break;
                 }
+                SaveCounts();
                 OnPowerUpsChanged?.Invoke();
             }
             _lastStreak = streak;
@@ -107,6 +127,7 @@ namespace MagicPairs.GameFlow
             if (_peekCount <= 0) return false;
             if (_challenge == null || _challenge.CurrentPlayerIndex != 0) return false;
             _peekCount--;
+            SaveCounts();
             OnPowerUpsChanged?.Invoke();
             Core.GPGSManager.Instance?.EventPowerUpUsed();
             StartCoroutine(PeekCoroutine());
@@ -118,6 +139,7 @@ namespace MagicPairs.GameFlow
             if (_shuffleCount <= 0) return false;
             if (_challenge == null || _challenge.CurrentPlayerIndex != 0) return false;
             _shuffleCount--;
+            SaveCounts();
             OnPowerUpsChanged?.Invoke();
             Core.GPGSManager.Instance?.EventPowerUpUsed();
             ShuffleCards();
@@ -130,6 +152,7 @@ namespace MagicPairs.GameFlow
             if (_challenge == null) return false;
             _freezeCount--;
             _freezeActive = true;
+            SaveCounts();
             OnPowerUpsChanged?.Invoke();
             Core.GPGSManager.Instance?.EventFreezeUsed();
             Core.GPGSManager.Instance?.EventPowerUpUsed();
@@ -152,6 +175,7 @@ namespace MagicPairs.GameFlow
                 case PowerUpType.Shuffle: _shuffleCount++; break;
                 case PowerUpType.Freeze: _freezeCount++; break;
             }
+            SaveCounts();
             OnPowerUpsChanged?.Invoke();
         }
 

@@ -325,9 +325,9 @@ namespace MagicPairs.UI
 
         private void UpdateMenuStatusBar()
         {
-            int peek = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpPeek) + 1;
-            int shuffle = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpShuffle);
-            int freeze = Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpFreeze);
+            int peek = PlayerPrefs.GetInt("MagicPairs_PU_Peek", 1) + Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpPeek);
+            int shuffle = PlayerPrefs.GetInt("MagicPairs_PU_Shuffle", 0) + Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpShuffle);
+            int freeze = PlayerPrefs.GetInt("MagicPairs_PU_Freeze", 0) + Core.ShopCatalog.GetStoredPowerUps(Core.ShopItemType.PowerUpFreeze);
             if (_statusPeekText != null) _statusPeekText.text = peek.ToString();
             if (_statusShuffleText != null) _statusShuffleText.text = shuffle.ToString();
             if (_statusFreezeText != null) _statusFreezeText.text = freeze.ToString();
