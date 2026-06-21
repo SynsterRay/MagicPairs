@@ -709,7 +709,27 @@ namespace MagicPairs.UI
         private void ShowCredits()
         {
             HideAllPanels();
-            if (creditsPanel != null) creditsPanel.SetActive(true);
+            if (creditsPanel != null)
+            {
+                creditsPanel.SetActive(true);
+                // Replace old author text with logo if not already done
+                if (creditsPanel.transform.Find("DeveloperLogo") == null)
+                {
+                    var old = creditsPanel.transform.Find("CreditsAuthor");
+                    if (old != null) old.gameObject.SetActive(false);
+                    var logo = new GameObject("DeveloperLogo");
+                    logo.transform.SetParent(creditsPanel.transform, false);
+                    var img = logo.AddComponent<Image>();
+                    img.sprite = Resources.Load<Sprite>("UIButtons/developer_logo");
+                    img.preserveAspect = true;
+                    img.raycastTarget = false;
+                    var rect = logo.GetComponent<RectTransform>();
+                    rect.anchorMin = new Vector2(0.2f, 0.25f);
+                    rect.anchorMax = new Vector2(0.8f, 0.7f);
+                    rect.offsetMin = Vector2.zero;
+                    rect.offsetMax = Vector2.zero;
+                }
+            }
         }
 
         private void ShowGameTypePanel()

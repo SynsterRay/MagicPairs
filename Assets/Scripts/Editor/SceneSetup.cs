@@ -638,8 +638,18 @@ namespace MagicPairs.Editor
 
             CreateUIText("CreditsTitle", "Credits", creditsPanel.transform,
                 new Vector2(0f, 0.7f), new Vector2(1f, 0.95f), TextAnchor.MiddleCenter, 32);
-            CreateUIText("CreditsAuthor", "Created by\nMateusz Bajak", creditsPanel.transform,
-                new Vector2(0.1f, 0.3f), new Vector2(0.9f, 0.65f), TextAnchor.MiddleCenter, 28);
+
+            var devLogo = new GameObject("DeveloperLogo");
+            devLogo.transform.SetParent(creditsPanel.transform, false);
+            var devLogoImg = devLogo.AddComponent<Image>();
+            devLogoImg.sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/UIButtons/developer_logo.png");
+            devLogoImg.preserveAspect = true;
+            devLogoImg.raycastTarget = false;
+            var devLogoRect = devLogo.GetComponent<RectTransform>();
+            devLogoRect.anchorMin = new Vector2(0.2f, 0.25f);
+            devLogoRect.anchorMax = new Vector2(0.8f, 0.7f);
+            devLogoRect.offsetMin = Vector2.zero;
+            devLogoRect.offsetMax = Vector2.zero;
 
             var creditsBackBtn = CreateIconBtn("CreditsBackBtn", "back", creditsPanel.transform,
                 new Vector2(0.35f, -0.08f), new Vector2(0.65f, 0.05f));
@@ -944,6 +954,7 @@ namespace MagicPairs.Editor
             // LoadingScreen
             canvas.AddComponent<UI.LoadingScreen>();
             canvas.AddComponent<UI.GameBackground>();
+            canvas.AddComponent<UI.SplashScreen>();
         }
 
 
