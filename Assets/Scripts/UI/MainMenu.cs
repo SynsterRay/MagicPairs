@@ -722,6 +722,16 @@ namespace MagicPairs.UI
             if (arcadeButtonText != null) arcadeButtonText.text = Localization.Get("arcade");
             if (challengeButtonText != null) challengeButtonText.text = Localization.Get("challenge");
             if (timeAttackButtonText != null) timeAttackButtonText.text = Localization.Get("timeAttack");
+            // Localize labels below buttons
+            if (gameTypePanel != null)
+            {
+                SetOrCreateLabel(gameTypePanel, "ArcadeLabel", Localization.Get("arcade"),
+                    new Vector2(0.05f, 0.18f), new Vector2(0.30f, 0.30f));
+                SetOrCreateLabel(gameTypePanel, "ChallengeLabel", Localization.Get("challenge"),
+                    new Vector2(0.35f, 0.18f), new Vector2(0.65f, 0.30f));
+                SetOrCreateLabel(gameTypePanel, "TimeAttackLabel", Localization.Get("timeAttack"),
+                    new Vector2(0.70f, 0.18f), new Vector2(0.95f, 0.30f));
+            }
         }
 
         private void SelectArcade()
@@ -848,6 +858,45 @@ namespace MagicPairs.UI
             var config = GameManager.Instance.Config;
             if (config != null) config.theme = theme;
             StartGameDirectly();
+        }
+
+        private void SetChildText(GameObject parent, string childName, string text)
+        {
+            var child = parent.transform.Find(childName);
+            if (child == null) return;
+            var txt = child.GetComponent<Text>();
+            if (txt != null) txt.text = text;
+        }
+
+        private void SetOrCreateLabel(GameObject parent, string name, string text,
+            Vector2 anchorMin, Vector2 anchorMax)
+        {
+            var child = parent.transform.Find(name);
+            Text txt;
+            if (child != null)
+            {
+                txt = child.GetComponent<Text>();
+            }
+            else
+            {
+                var go = new GameObject(name);
+                go.transform.SetParent(parent.transform, false);
+                txt = go.AddComponent<Text>();
+                txt.fontSize = 14;
+                txt.fontStyle = FontStyle.Bold;
+                txt.alignment = TextAnchor.MiddleCenter;
+                txt.color = new Color(0.3f, 0.1f, 0.5f);
+                txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                txt.resizeTextForBestFit = true;
+                txt.resizeTextMinSize = 10;
+                txt.resizeTextMaxSize = 14;
+                var rect = go.GetComponent<RectTransform>();
+                rect.anchorMin = anchorMin;
+                rect.anchorMax = anchorMax;
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+            }
+            if (txt != null) txt.text = text;
         }
 
         private void SetIconLabel(Button button, string label)
