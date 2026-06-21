@@ -8,7 +8,23 @@ namespace MagicPairs.Editor
         [MenuItem("MagicPairs/Fix UI Button Imports")]
         public static void FixImports()
         {
-            var guids = AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/Resources/UIButtons" });
+            int count = FixFolder("Assets/Resources/UIButtons");
+            Debug.Log($"[UIButtonsImporter] Fixed {count} UI button textures.");
+        }
+
+        [MenuItem("MagicPairs/Fix Card Imports")]
+        public static void FixCardImports()
+        {
+            int total = 0;
+            total += FixFolder("Assets/Resources/CarCards");
+            total += FixFolder("Assets/Resources/WaterWorldCards");
+            total += FixFolder("Assets/Resources/PrincessCards");
+            Debug.Log($"[CardImporter] Fixed {total} card textures.");
+        }
+
+        private static int FixFolder(string folder)
+        {
+            var guids = AssetDatabase.FindAssets("t:Texture2D", new[] { folder });
             int count = 0;
 
             foreach (var guid in guids)
@@ -24,7 +40,7 @@ namespace MagicPairs.Editor
                     importer.textureType = TextureImporterType.Sprite;
                     changed = true;
                 }
-                if (importer.spriteImportMode != SpriteImportMode.Single)
+                if (importer.spriteImportMode == SpriteImportMode.None)
                 {
                     importer.spriteImportMode = SpriteImportMode.Single;
                     changed = true;
@@ -34,8 +50,12 @@ namespace MagicPairs.Editor
                     importer.mipmapEnabled = false;
                     changed = true;
                 }
+                if (!importer.alphaIsTransparency)
+                {
+                    importer.alphaIsTransparency = true;
+                    changed = true;
+                }
 
-                // Full Rect prevents clipping transparent edges
                 var settings = new TextureImporterSettings();
                 importer.ReadTextureSettings(settings);
                 if (settings.spriteMeshType != SpriteMeshType.FullRect)
@@ -52,7 +72,7 @@ namespace MagicPairs.Editor
                 }
             }
 
-            Debug.Log($"[UIButtonsImporter] Fixed {count} textures as Sprite type.");
+            return count;
         }
     }
 }

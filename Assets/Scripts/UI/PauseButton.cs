@@ -46,6 +46,8 @@ namespace MagicPairs.UI
 
         private void ShowConfirm()
         {
+            // Immediately stop all game modes so AI/timers don't continue
+            StopGameModes();
             if (confirmPanel != null) confirmPanel.SetActive(true);
             var texts = confirmPanel.GetComponentsInChildren<Text>();
             foreach (var t in texts)
@@ -70,12 +72,8 @@ namespace MagicPairs.UI
             if (confirmPanel != null) confirmPanel.SetActive(false);
         }
 
-        private void BackToMenu()
+        private void StopGameModes()
         {
-            HideConfirm();
-            if (pauseButton != null) pauseButton.gameObject.SetActive(false);
-
-            // Stop all game mode coroutines first
             var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
             var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
             var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
@@ -84,6 +82,12 @@ namespace MagicPairs.UI
             if (single != null) { single.StopAllCoroutines(); single.enabled = false; }
             if (challenge != null) { challenge.StopAllCoroutines(); challenge.enabled = false; }
             if (timeAttack != null) { timeAttack.StopAllCoroutines(); timeAttack.enabled = false; }
+        }
+
+        private void BackToMenu()
+        {
+            HideConfirm();
+            if (pauseButton != null) pauseButton.gameObject.SetActive(false);
 
             // Clear cards
             var grid = FindAnyObjectByType<Cards.CardGrid>();
