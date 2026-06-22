@@ -208,10 +208,20 @@ namespace MagicPairs.Editor
             puRect.offsetMin = Vector2.zero;
             puRect.offsetMax = Vector2.zero;
 
-            // White-to-transparent gradient below TopBar (on main overlay canvas)
+            // White-to-transparent gradient below TopBar (on separate camera canvas so it renders BEHIND 3D cards)
+            var gradCanvas = new GameObject("GradientCanvas");
+            var gc = gradCanvas.AddComponent<Canvas>();
+            gc.renderMode = RenderMode.ScreenSpaceCamera;
+            gc.worldCamera = UnityEngine.Camera.main;
+            gc.planeDistance = 12f; // behind cards (at distance 10) but in front of bg (at distance 15)
+            gc.sortingOrder = -1;
+            var gcScaler = gradCanvas.AddComponent<CanvasScaler>();
+            gcScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            gcScaler.referenceResolution = new Vector2(1080f, 1920f);
+            gcScaler.matchWidthOrHeight = 1f;
+
             var gradBar = new GameObject("TopBarGradient");
-            gradBar.transform.SetParent(canvas.transform, false);
-            gradBar.transform.SetSiblingIndex(topBar.transform.GetSiblingIndex());
+            gradBar.transform.SetParent(gradCanvas.transform, false);
             var gradImg = gradBar.AddComponent<Image>();
             gradImg.raycastTarget = false;
             var gTex = new Texture2D(4, 32, TextureFormat.RGBA32, false);
@@ -224,7 +234,6 @@ namespace MagicPairs.Editor
             }
             gTex.Apply();
             gradImg.sprite = Sprite.Create(gTex, new Rect(0, 0, 4, 32), new Vector2(0.5f, 0.5f));
-            gradImg.type = Image.Type.Sliced;
             var gradRect = gradBar.GetComponent<RectTransform>();
             gradRect.anchorMin = new Vector2(0f, 0.70f);
             gradRect.anchorMax = new Vector2(1f, 0.82f);
