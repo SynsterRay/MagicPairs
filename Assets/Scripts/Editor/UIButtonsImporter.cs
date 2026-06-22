@@ -8,7 +8,7 @@ namespace MagicPairs.Editor
         [MenuItem("MagicPairs/Fix UI Button Imports")]
         public static void FixImports()
         {
-            int count = FixFolder("Assets/Resources/UIButtons");
+            int count = FixFolder("Assets/Resources/UIButtons", 256);
             Debug.Log($"[UIButtonsImporter] Fixed {count} UI button textures.");
         }
 
@@ -16,14 +16,15 @@ namespace MagicPairs.Editor
         public static void FixCardImports()
         {
             int total = 0;
-            total += FixFolder("Assets/Resources/CarCards");
-            total += FixFolder("Assets/Resources/WaterWorldCards");
-            total += FixFolder("Assets/Resources/PrincessCards");
-            total += FixFolder("Assets/Resources/AnimalCards");
+            total += FixFolder("Assets/Resources/CarCards", 512);
+            total += FixFolder("Assets/Resources/WaterWorldCards", 512);
+            total += FixFolder("Assets/Resources/PrincessCards", 512);
+            total += FixFolder("Assets/Resources/AnimalCards", 512);
+            total += FixFolder("Assets/Resources/Backgrounds", 1024);
             Debug.Log($"[CardImporter] Fixed {total} card textures.");
         }
 
-        private static int FixFolder(string folder)
+        private static int FixFolder(string folder, int maxSize = 2048)
         {
             var guids = AssetDatabase.FindAssets("t:Texture2D", new[] { folder });
             int count = 0;
@@ -63,6 +64,12 @@ namespace MagicPairs.Editor
                 {
                     settings.spriteMeshType = SpriteMeshType.FullRect;
                     importer.SetTextureSettings(settings);
+                    changed = true;
+                }
+
+                if (importer.maxTextureSize > maxSize)
+                {
+                    importer.maxTextureSize = maxSize;
                     changed = true;
                 }
 
