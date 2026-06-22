@@ -4,7 +4,7 @@
 
 A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS). Two players take turns flipping cards looking for matching pairs.
 
-## Project Status (2026-06-08)
+## Project Status (2026-06-21)
 
 ### Implemented
 
@@ -44,6 +44,11 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Time Attack | ✅ | Solo mode — find all pairs before time runs out, no Joker |
 | Player Name Persistence | ✅ | Names saved in PlayerPrefs, pre-filled on next game |
 | Google Play Games | ✅ | Sign-in, global leaderboard (Challenge + Time Attack) |
+| Splash Screen | ✅ | Wonder Minds Games logo with zoom animation on launch |
+| Push Notifications | ✅ | 24h/48h/72h reminders (com.unity.mobile.notifications) |
+| Invite Friends | ✅ | Share link panel, 50 coins/day reward |
+| 9 Languages | ✅ | PL, EN, ES, PT, DE, FR, HI, ZH, JA with dynamic picker |
+| IAP (In-App Purchases) | ✅ | Coin packs via Unity Purchasing |
 
 ### Not Yet Implemented
 
@@ -236,6 +241,20 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 | piotrusDelay | 1.5s | Time to show Joker |
 
 ## Changelog
+
+### 2026-06-21 (v1.7)
+- Splash screen: Wonder Minds Games logo with zoom-in animation on app launch
+- Developer branding: logo replaces text in Credits panel
+- Power-up persistence fix: all power-ups (shop, rewarded ads, daily bonus, level rewards) now save to PlayerPrefs and survive game exit
+- Pause/exit fix: tapping ✕ immediately stops all game modes (AI, timers) before showing confirm dialog
+- Localized game type labels: Arcade/Challenge/Time Attack labels translate dynamically (created at runtime if missing from scene)
+- Fix Card Imports editor tool: unifies texture import settings (Sprite type, alphaIsTransparency, FullRect) for Cars and WaterWorld cards
+- New icons: invite (referal_to_friend), referal_link button
+- Local push notifications: 24h daily bonus reminder, 48h comeback, 72h challenge (com.unity.mobile.notifications)
+- 9 languages with dynamic 3×3 language picker
+- Invite friends panel: share link to Google Play, 50 coins/day reward
+- Unique character headers per menu panel (car/dino/monkey/princess/lion)
+- Pulse animations: Challenge btn, Shop coin packs, Play/Shop counter-phase
 
 ### 2026-06-17 (v1.602)
 - Complete UI overhaul: all text buttons replaced with icon sprites

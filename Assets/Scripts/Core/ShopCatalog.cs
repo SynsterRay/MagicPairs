@@ -23,7 +23,7 @@ namespace MagicPairs.Core
         public static readonly List<ShopItem> Items = new()
         {
             // Card themes (expensive — encourage IAP)
-            new() { id = "theme_animals", type = ShopItemType.CardTheme, coinPrice = 500, theme = (CardTheme)3, quantity = 1 },
+            new() { id = "theme_animals", type = ShopItemType.CardTheme, coinPrice = 1000, theme = (CardTheme)3, quantity = 1 },
             new() { id = "theme_water_world", type = ShopItemType.CardTheme, coinPrice = 800, theme = (CardTheme)4, quantity = 1 },
             new() { id = "theme_space", type = ShopItemType.CardTheme, coinPrice = 1200, theme = (CardTheme)5, quantity = 1 },
 
@@ -41,7 +41,7 @@ namespace MagicPairs.Core
         public static bool IsThemeUnlocked(CardTheme theme)
         {
             // Base themes always unlocked
-            if (theme == CardTheme.Colors || theme == CardTheme.Princess || theme == CardTheme.Cars || theme == CardTheme.Dinos)
+            if (theme == CardTheme.Colors || theme == CardTheme.Princess || theme == CardTheme.Cars || theme == CardTheme.Dinos || theme == CardTheme.Animals)
                 return true;
             int unlocked = PlayerPrefs.GetInt(UnlockedKey, 0);
             return (unlocked & (1 << (int)theme)) != 0;

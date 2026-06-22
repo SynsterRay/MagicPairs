@@ -19,6 +19,7 @@ namespace MagicPairs.Editor
             total += FixFolder("Assets/Resources/CarCards");
             total += FixFolder("Assets/Resources/WaterWorldCards");
             total += FixFolder("Assets/Resources/PrincessCards");
+            total += FixFolder("Assets/Resources/AnimalCards");
             Debug.Log($"[CardImporter] Fixed {total} card textures.");
         }
 

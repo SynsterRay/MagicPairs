@@ -214,10 +214,25 @@ namespace MagicPairs.UI
 
         private void WireLockedThemeButtons()
         {
-            WireLockedBtn(themePanel, "LockedCard1");
+            WireUnlockedBtn(themePanel, "LockedCard1", Core.CardTheme.Animals);
             WireLockedBtn(themePanel, "LockedCard2");
-            WireLockedBtn(challengeThemePanel, "ChLockedCard1");
+            WireUnlockedBtn(challengeThemePanel, "ChLockedCard1", Core.CardTheme.Animals);
             WireLockedBtn(challengeThemePanel, "ChLockedCard2");
+        }
+
+        private void WireUnlockedBtn(GameObject panel, string name, Core.CardTheme theme)
+        {
+            if (panel == null) return;
+            var obj = panel.transform.Find(name);
+            if (obj == null) return;
+            // Remove blocked overlay
+            var overlay = obj.Find("BlockedOverlay");
+            if (overlay != null) Destroy(overlay.gameObject);
+            var btn = obj.GetComponent<Button>();
+            if (panel == challengeThemePanel)
+                btn?.onClick.AddListener(() => SelectChallengeTheme(theme));
+            else
+                btn?.onClick.AddListener(() => SelectTheme(theme));
         }
 
         private void WireLockedBtn(GameObject panel, string name)
