@@ -236,8 +236,8 @@ namespace MagicPairs.Editor
             gTex.Apply();
             gradImg.sprite = Sprite.Create(gTex, new Rect(0, 0, 4, 32), new Vector2(0.5f, 0.5f));
             var gradRect = gradBar.GetComponent<RectTransform>();
-            gradRect.anchorMin = new Vector2(0f, 0.70f);
-            gradRect.anchorMax = new Vector2(1f, 0.84f);
+            gradRect.anchorMin = new Vector2(0f, 0.68f);
+            gradRect.anchorMax = new Vector2(1f, 0.82f);
             gradRect.offsetMin = Vector2.zero;
             gradRect.offsetMax = Vector2.zero;
 
