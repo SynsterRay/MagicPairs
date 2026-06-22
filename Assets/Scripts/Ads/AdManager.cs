@@ -29,7 +29,6 @@ namespace MagicPairs.Ads
         private int _gamesPlayed;
 
         private System.Action _onRewardEarned;
-        private System.Action _onRewardFailed;
 
         public bool IsRewardedReady => _rewardedAd != null && _rewardedAd.CanShowAd();
 

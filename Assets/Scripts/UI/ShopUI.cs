@@ -288,42 +288,6 @@ namespace MagicPairs.UI
             return $"🪙 {item.coinPrice}";
         }
 
-        private Button CreateBuyButton(Transform parent, string label)
-        {
-            var go = new GameObject("BuyBtn");
-            go.transform.SetParent(parent, false);
-            var img = go.AddComponent<Image>();
-            img.color = new Color(0.1f, 0.7f, 0.3f, 1f);
-            img.sprite = RoundedButtonHelper.GetRoundedSprite();
-            img.type = Image.Type.Sliced;
-            var btn = go.AddComponent<Button>();
-            var rect = go.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.6f, 0.15f);
-            rect.anchorMax = new Vector2(0.95f, 0.85f);
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
-
-            var txtObj = new GameObject("Text");
-            txtObj.transform.SetParent(go.transform, false);
-            var txt = txtObj.AddComponent<Text>();
-            txt.text = label;
-            txt.fontSize = 22;
-            txt.fontStyle = FontStyle.Bold;
-            txt.alignment = TextAnchor.MiddleCenter;
-            txt.color = Color.white;
-            txt.font = UIFactory.GetFont();
-            txt.resizeTextForBestFit = true;
-            txt.resizeTextMinSize = 16;
-            txt.resizeTextMaxSize = 22;
-            var tr = txtObj.GetComponent<RectTransform>();
-            tr.anchorMin = Vector2.zero;
-            tr.anchorMax = Vector2.one;
-            tr.offsetMin = new Vector2(4f, 2f);
-            tr.offsetMax = new Vector2(-4f, -2f);
-
-            return btn;
-        }
-
         private void OnBuy(ShopItem item)
         {
             if (!PlayerWallet.CanAfford(item.coinPrice))

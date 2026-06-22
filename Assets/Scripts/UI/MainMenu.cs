@@ -499,73 +499,9 @@ namespace MagicPairs.UI
             ShowLocalLeaderboard();
         }
 
-        private GameObject _leaderChoicePanel;
         private GameObject _achievementsBtn;
 
-        private void ShowLeaderboardChoice()
-        {
-            if (_leaderChoicePanel != null) { _leaderChoicePanel.SetActive(true); return; }
 
-            _leaderChoicePanel = new GameObject("LeaderChoicePanel");
-            _leaderChoicePanel.transform.SetParent(startLeaderboardPanel.transform, false);
-            var rect = _leaderChoicePanel.AddComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.1f, 0.3f);
-            rect.anchorMax = new Vector2(0.9f, 0.7f);
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
-
-            var globalBtn = CreateChoiceButton("GlobalBtn", Localization.Get("globalScores"), _leaderChoicePanel.transform,
-                new Vector2(0.05f, 0.55f), new Vector2(0.95f, 0.95f), new Color(0.8f, 0.6f, 0.1f, 1f));
-            globalBtn.onClick.AddListener(() =>
-            {
-                _leaderChoicePanel.SetActive(false);
-                ShowStartPanel();
-                Core.GPGSManager.Instance?.ShowLeaderboard();
-            });
-
-            var localBtn = CreateChoiceButton("LocalBtn", Localization.Get("localScores"), _leaderChoicePanel.transform,
-                new Vector2(0.05f, 0.05f), new Vector2(0.95f, 0.45f), new Color(0.3f, 0.5f, 0.8f, 1f));
-            localBtn.onClick.AddListener(() =>
-            {
-                _leaderChoicePanel.SetActive(false);
-                ShowLocalLeaderboard();
-            });
-        }
-
-        private Button CreateChoiceButton(string name, string label, Transform parent, Vector2 anchorMin, Vector2 anchorMax, Color color)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, false);
-            var img = go.AddComponent<Image>();
-            img.color = color;
-            img.sprite = RoundedButtonHelper.GetRoundedSprite();
-            img.type = Image.Type.Sliced;
-            var btn = go.AddComponent<Button>();
-            var r = go.GetComponent<RectTransform>();
-            r.anchorMin = anchorMin;
-            r.anchorMax = anchorMax;
-            r.offsetMin = Vector2.zero;
-            r.offsetMax = Vector2.zero;
-
-            var txtObj = new GameObject("Text");
-            txtObj.transform.SetParent(go.transform, false);
-            var txt = txtObj.AddComponent<Text>();
-            txt.text = label;
-            txt.fontSize = 52;
-            txt.fontStyle = FontStyle.Bold;
-            txt.alignment = TextAnchor.MiddleCenter;
-            txt.color = Color.white;
-            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            txt.resizeTextForBestFit = true;
-            txt.resizeTextMinSize = 28;
-            txt.resizeTextMaxSize = 52;
-            var tr = txtObj.GetComponent<RectTransform>();
-            tr.anchorMin = Vector2.zero;
-            tr.anchorMax = Vector2.one;
-            tr.offsetMin = new Vector2(10f, 4f);
-            tr.offsetMax = new Vector2(-10f, -4f);
-            return btn;
-        }
 
         private void ShowLocalLeaderboard()
         {
@@ -829,17 +765,7 @@ namespace MagicPairs.UI
                 ? Localization.Get("player1") : challengeNameInput.text;
             Player2Name = Localization.Get("computer");
 
-            var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
-            var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
-            var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
-
-            if (local != null) local.enabled = false;
-            if (single != null) single.enabled = false;
-            if (challenge != null)
-            {
-                challenge.enabled = true;
-                challenge.StartGame(); // Apply level 1 config before grid builds
-            }
+            ActivateGameMode();
 
             if (menuPanel != null) menuPanel.SetActive(false);
             ShowLoadingAndStart();
@@ -895,14 +821,6 @@ namespace MagicPairs.UI
             StartGameDirectly();
         }
 
-        private void SetChildText(GameObject parent, string childName, string text)
-        {
-            var child = parent.transform.Find(childName);
-            if (child == null) return;
-            var txt = child.GetComponent<Text>();
-            if (txt != null) txt.text = text;
-        }
-
         private void SetOrCreateLabel(GameObject parent, string name, string text,
             Vector2 anchorMin, Vector2 anchorMax)
         {
@@ -934,126 +852,6 @@ namespace MagicPairs.UI
             if (txt != null) txt.text = text;
         }
 
-        private void SetIconLabel(Button button, string label)
-        {
-            if (button == null) return;
-            var existing = button.transform.Find("Label");
-            Text txt;
-            if (existing != null)
-            {
-                txt = existing.GetComponent<Text>();
-            }
-            else
-            {
-                var go = new GameObject("Label");
-                go.transform.SetParent(button.transform, false);
-                txt = go.AddComponent<Text>();
-                txt.fontSize = 28;
-                txt.fontStyle = FontStyle.Bold;
-                txt.alignment = TextAnchor.MiddleCenter;
-                txt.color = new Color(0.3f, 0.1f, 0.5f);
-                txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                txt.resizeTextForBestFit = true;
-                txt.resizeTextMinSize = 14;
-                txt.resizeTextMaxSize = 28;
-                var r = go.GetComponent<RectTransform>();
-                r.anchorMin = new Vector2(0f, -0.3f);
-                r.anchorMax = new Vector2(1f, 0f);
-                r.offsetMin = Vector2.zero;
-                r.offsetMax = Vector2.zero;
-            }
-            txt.text = label;
-        }
-
-        private void SetThemeButtonSprite(Button button, string folder)
-        {
-            if (button == null) return;
-            var sprites = Resources.LoadAll<Sprite>(folder);
-            Sprite card = null;
-            foreach (var s in sprites)
-            {
-                if (!s.name.Contains("joker") && !s.name.Contains("back"))
-                { card = s; break; }
-            }
-            if (card == null)
-            {
-                var textures = Resources.LoadAll<Texture2D>(folder);
-                foreach (var tex in textures)
-                {
-                    if (tex.name.Contains("joker") || tex.name.Contains("back")) continue;
-                    card = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
-                    break;
-                }
-            }
-            if (card == null) return;
-
-            var img = button.GetComponent<Image>();
-            img.sprite = card;
-            img.color = Color.white;
-            img.preserveAspect = true;
-            // Hide text
-            var txt = button.GetComponentInChildren<Text>();
-            if (txt != null) txt.text = "";
-        }
-
-        private void SetThemeButtonLabel(Button button, string label)
-        {
-            if (button == null) return;
-            var img = button.GetComponent<Image>();
-            img.sprite = RoundedButtonHelper.GetRoundedSprite();
-            img.type = Image.Type.Sliced;
-            img.preserveAspect = false;
-            img.color = new Color(0.1f, 0.4f, 0.9f, 1f); // Blue card for Colors theme
-            var txt = button.GetComponentInChildren<Text>();
-            if (txt != null) txt.text = label;
-        }
-
-        private void StyleAsCard(Button button, Vector2 anchorMin, Vector2 anchorMax)
-        {
-            if (button == null) return;
-            var rect = button.GetComponent<RectTransform>();
-            rect.anchorMin = anchorMin;
-            rect.anchorMax = anchorMax;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
-        }
-
-        private void EnsureLockedCards(Transform parent)
-        {
-            if (parent.Find("LockedCard1") != null) return;
-
-            for (int i = 1; i <= 2; i++)
-            {
-                var locked = new GameObject($"LockedCard{i}");
-                locked.transform.SetParent(parent, false);
-                var img = locked.AddComponent<Image>();
-                img.color = new Color(0.5f, 0.5f, 0.5f, 0.7f);
-                img.sprite = RoundedButtonHelper.GetRoundedSprite();
-                img.type = Image.Type.Sliced;
-                var rect = locked.GetComponent<RectTransform>();
-                float xStart = i == 1 ? 0.02f : 0.35f;
-                float xEnd = i == 1 ? 0.32f : 0.65f;
-                rect.anchorMin = new Vector2(xStart, 0.10f);
-                rect.anchorMax = new Vector2(xEnd, 0.42f);
-                rect.offsetMin = Vector2.zero;
-                rect.offsetMax = Vector2.zero;
-
-                var txtObj = new GameObject("Text");
-                txtObj.transform.SetParent(locked.transform, false);
-                var txt = txtObj.AddComponent<Text>();
-                txt.text = "?";
-                txt.fontSize = 72;
-                txt.fontStyle = FontStyle.Bold;
-                txt.alignment = TextAnchor.MiddleCenter;
-                txt.color = new Color(0.3f, 0.3f, 0.3f, 0.8f);
-                txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                var tr = txtObj.GetComponent<RectTransform>();
-                tr.anchorMin = Vector2.zero;
-                tr.anchorMax = Vector2.one;
-                tr.offsetMin = Vector2.zero;
-                tr.offsetMax = Vector2.zero;
-            }
-        }
 
 
         private void ApplyDifficulty(Difficulty diff)
@@ -1150,36 +948,7 @@ namespace MagicPairs.UI
             if (!_singlePlayer) PlayerPrefs.SetString("MagicPairs_Player2Name", Player2Name);
             PlayerPrefs.Save();
 
-            var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
-            var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
-            var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
-            var timeAttack = FindAnyObjectByType<GameFlow.TimeAttackMode>(FindObjectsInactive.Include);
-
-            if (IsTimeAttackMode)
-            {
-                if (local != null) local.enabled = false;
-                if (single != null) single.enabled = false;
-                if (challenge != null) challenge.enabled = false;
-                if (timeAttack != null) timeAttack.enabled = true;
-            }
-            else if (IsChallengeMode)
-            {
-                if (local != null) local.enabled = false;
-                if (single != null) single.enabled = false;
-                if (challenge != null)
-                {
-                    challenge.enabled = true;
-                    challenge.StartGame();
-                }
-                if (timeAttack != null) timeAttack.enabled = false;
-            }
-            else
-            {
-                if (local != null) local.enabled = !_singlePlayer;
-                if (single != null) single.enabled = _singlePlayer;
-                if (challenge != null) challenge.enabled = false;
-                if (timeAttack != null) timeAttack.enabled = false;
-            }
+            ActivateGameMode();
 
             if (menuPanel != null) menuPanel.SetActive(false);
             ShowLoadingAndStart();
@@ -1195,6 +964,14 @@ namespace MagicPairs.UI
                 Player1Name = Localization.Get("player1");
             Player2Name = _singlePlayer ? Localization.Get("computer") : Localization.Get("player2");
 
+            ActivateGameMode();
+
+            if (menuPanel != null) menuPanel.SetActive(false);
+            ShowLoadingAndStart();
+        }
+
+        private void ActivateGameMode()
+        {
             var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
             var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
             var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
@@ -1221,9 +998,6 @@ namespace MagicPairs.UI
                 if (challenge != null) challenge.enabled = false;
                 if (timeAttack != null) timeAttack.enabled = false;
             }
-
-            if (menuPanel != null) menuPanel.SetActive(false);
-            ShowLoadingAndStart();
         }
 
         private void ShowLoadingAndStart()

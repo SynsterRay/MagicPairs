@@ -59,6 +59,7 @@ namespace MagicPairs.GameFlow
                 SaveCounts();
             }
             _freezeActive = false;
+            _lastStreak = 0;
             OnPowerUpsChanged?.Invoke();
         }
 

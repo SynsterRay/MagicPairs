@@ -198,16 +198,8 @@ namespace MagicPairs.GameFlow
             if (CurrentPlayerIndex == 0)
             {
                 _streak++;
-                if (_streak > 0)
-                {
-                    int multiplier = Mathf.Min(_streak, 5); // x1 to x5
-                    _score += 100 * multiplier;
-                }
-                else
-                {
-                    // Recovering from negative streak — still award base points
-                    _score += 100;
-                }
+                int multiplier = Mathf.Min(_streak, 5);
+                _score += 100 * multiplier;
                 OnChallengeScoreChanged?.Invoke(_score, _streak, _currentLevel);
             }
 

@@ -9,7 +9,6 @@ namespace MagicPairs.Core
         private const string ThemesPlayedKey = "MagicPairs_ThemesPlayed";
 
         private int _jokerHitsThisGame;
-        private int _mismatchesThisLevel;
         private bool _hadMismatchThisLevel;
 
         private void OnEnable()
@@ -39,7 +38,6 @@ namespace MagicPairs.Core
         private void OnGameStarted()
         {
             _jokerHitsThisGame = 0;
-            _mismatchesThisLevel = 0;
             _hadMismatchThisLevel = false;
 
             // Collector: track themes played
@@ -74,7 +72,6 @@ namespace MagicPairs.Core
         private void OnMismatch()
         {
             _hadMismatchThisLevel = true;
-            _mismatchesThisLevel++;
 
             // Event
             GPGSManager.Instance?.EventMismatch();
@@ -131,7 +128,6 @@ namespace MagicPairs.Core
 
             // Reset for next level
             _hadMismatchThisLevel = false;
-            _mismatchesThisLevel = 0;
 
             // Level milestones
             if (level >= 5) GPGSManager.Instance?.UnlockLevel5();
