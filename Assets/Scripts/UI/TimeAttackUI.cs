@@ -81,13 +81,12 @@ namespace MagicPairs.UI
                 new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.9f), 30);
             _resultText.color = new Color(0.15f, 0.15f, 0.15f);
 
-            _menuButton = CreateButton("MenuBtn", "Menu", _resultPanel.transform,
+            _menuButton = UIFactory.CreateIconButton("MenuBtn", "back", _resultPanel.transform,
                 new Vector2(0.1f, 0.1f), new Vector2(0.45f, 0.4f));
             _menuButton.onClick.AddListener(OnMenu);
 
-            _retryButton = CreateButton("RetryBtn", Localization.Get("playAgain"), _resultPanel.transform,
+            _retryButton = UIFactory.CreateIconButton("RetryBtn", "play", _resultPanel.transform,
                 new Vector2(0.55f, 0.1f), new Vector2(0.9f, 0.4f));
-            _retryButton.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.3f, 1f);
             _retryButton.onClick.AddListener(OnRetry);
 
             _resultPanel.SetActive(false);
@@ -224,51 +223,5 @@ namespace MagicPairs.UI
             return txt;
         }
 
-        private Button CreateButton(string name, string label, Transform parent, Vector2 anchorMin, Vector2 anchorMax)
-        {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, false);
-            var img = go.AddComponent<Image>();
-            img.color = new Color(0.3f, 0.3f, 0.4f, 1f);
-            img.sprite = RoundedButtonHelper.GetRoundedSprite();
-            img.type = Image.Type.Sliced;
-            go.AddComponent<Button>();
-            var r = go.GetComponent<RectTransform>();
-            r.anchorMin = anchorMin;
-            r.anchorMax = anchorMax;
-            r.offsetMin = Vector2.zero;
-            r.offsetMax = Vector2.zero;
-
-            // Shine overlay
-            var shine = new GameObject("Shine");
-            shine.transform.SetParent(go.transform, false);
-            var shineImg = shine.AddComponent<Image>();
-            shineImg.sprite = RoundedButtonHelper.GetShineSprite();
-            shineImg.type = Image.Type.Sliced;
-            shineImg.color = Color.white;
-            shineImg.raycastTarget = false;
-            var shineRect = shine.GetComponent<RectTransform>();
-            shineRect.anchorMin = Vector2.zero;
-            shineRect.anchorMax = Vector2.one;
-            shineRect.offsetMin = Vector2.zero;
-            shineRect.offsetMax = Vector2.zero;
-
-            var txtObj = new GameObject("Text");
-            txtObj.transform.SetParent(go.transform, false);
-            var txt = txtObj.AddComponent<Text>();
-            txt.text = label;
-            txt.fontSize = 28;
-            txt.fontStyle = FontStyle.Bold;
-            txt.alignment = TextAnchor.MiddleCenter;
-            txt.color = Color.white;
-            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            var tr = txtObj.GetComponent<RectTransform>();
-            tr.anchorMin = Vector2.zero;
-            tr.anchorMax = Vector2.one;
-            tr.offsetMin = Vector2.zero;
-            tr.offsetMax = Vector2.zero;
-
-            return go.GetComponent<Button>();
-        }
     }
 }
