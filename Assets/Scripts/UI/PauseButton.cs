@@ -11,8 +11,24 @@ namespace MagicPairs.UI
         [SerializeField] private Button yesButton;
         [SerializeField] private Button noButton;
 
+        private GameFlow.LocalGameMode _local;
+        private GameFlow.SinglePlayerMode _single;
+        private GameFlow.ChallengeMode _challenge;
+        private GameFlow.TimeAttackMode _timeAttack;
+        private Cards.CardGrid _grid;
+        private ChallengeUI _challengeUI;
+        private MainMenu _menu;
+
         private void Start()
         {
+            _local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
+            _single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
+            _challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
+            _timeAttack = FindAnyObjectByType<GameFlow.TimeAttackMode>(FindObjectsInactive.Include);
+            _grid = FindAnyObjectByType<Cards.CardGrid>(FindObjectsInactive.Include);
+            _challengeUI = FindAnyObjectByType<ChallengeUI>(FindObjectsInactive.Include);
+            _menu = FindAnyObjectByType<MainMenu>(FindObjectsInactive.Include);
+
             pauseButton?.onClick.AddListener(ShowConfirm);
             yesButton?.onClick.AddListener(BackToMenu);
             noButton?.onClick.AddListener(HideConfirm);
@@ -74,14 +90,10 @@ namespace MagicPairs.UI
 
         private void StopGameModes()
         {
-            var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
-            var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
-            var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
-            var timeAttack = FindAnyObjectByType<GameFlow.TimeAttackMode>(FindObjectsInactive.Include);
-            if (local != null) { local.StopAllCoroutines(); local.enabled = false; }
-            if (single != null) { single.StopAllCoroutines(); single.enabled = false; }
-            if (challenge != null) { challenge.StopAllCoroutines(); challenge.enabled = false; }
-            if (timeAttack != null) { timeAttack.StopAllCoroutines(); timeAttack.enabled = false; }
+            if (_local != null) { _local.StopAllCoroutines(); _local.enabled = false; }
+            if (_single != null) { _single.StopAllCoroutines(); _single.enabled = false; }
+            if (_challenge != null) { _challenge.StopAllCoroutines(); _challenge.enabled = false; }
+            if (_timeAttack != null) { _timeAttack.StopAllCoroutines(); _timeAttack.enabled = false; }
         }
 
         private void BackToMenu()
@@ -90,22 +102,18 @@ namespace MagicPairs.UI
             if (pauseButton != null) pauseButton.gameObject.SetActive(false);
 
             // Clear cards
-            var grid = FindAnyObjectByType<Cards.CardGrid>();
-            if (grid != null)
+            if (_grid != null)
             {
                 var children = new System.Collections.Generic.List<GameObject>();
-                foreach (Transform child in grid.transform)
+                foreach (Transform child in _grid.transform)
                     if (child != null) children.Add(child.gameObject);
                 foreach (var go in children)
                     if (go != null) Destroy(go);
             }
 
             // Return to menu
-            var challengeUI = FindAnyObjectByType<ChallengeUI>(FindObjectsInactive.Include);
-            if (challengeUI != null) challengeUI.SendMessage("HideAll", SendMessageOptions.DontRequireReceiver);
-
-            var menu = FindAnyObjectByType<MainMenu>(FindObjectsInactive.Include);
-            if (menu != null) menu.ReturnToMenu();
+            if (_challengeUI != null) _challengeUI.SendMessage("HideAll", SendMessageOptions.DontRequireReceiver);
+            if (_menu != null) _menu.ReturnToMenu();
         }
     }
 }

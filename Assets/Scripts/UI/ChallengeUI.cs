@@ -134,7 +134,7 @@ namespace MagicPairs.UI
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.LowerCenter;
             txt.color = Color.white;
-            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = UIFactory.GetFont();
             var outline = txtObj.AddComponent<Outline>();
             outline.effectColor = new Color(0.2f, 0.1f, 0.4f, 0.8f);
             outline.effectDistance = new Vector2(1.5f, -1.5f);

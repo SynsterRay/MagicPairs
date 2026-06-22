@@ -14,6 +14,8 @@ namespace MagicPairs.UI
         private Text _resultText;
         private Button _menuButton;
         private Button _retryButton;
+        private Ads.AdManager _cachedAdManager;
+        private MainMenu _cachedMenu;
 
         private void Start()
         {
@@ -142,7 +144,7 @@ namespace MagicPairs.UI
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = color;
-            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = UIFactory.GetFont();
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(0.3f, 0.45f);
             rect.anchorMax = new Vector2(0.7f, 0.55f);
@@ -192,10 +194,10 @@ namespace MagicPairs.UI
         private void OnMenu()
         {
             HideAll();
-            var adManager = FindAnyObjectByType<Ads.AdManager>();
-            adManager?.TryShowInterstitialBetweenGames();
-            var menu = FindAnyObjectByType<MainMenu>();
-            menu?.ReturnToMenu();
+            if (_cachedAdManager == null) _cachedAdManager = FindAnyObjectByType<Ads.AdManager>();
+            _cachedAdManager?.TryShowInterstitialBetweenGames();
+            if (_cachedMenu == null) _cachedMenu = FindAnyObjectByType<MainMenu>();
+            _cachedMenu?.ReturnToMenu();
         }
 
         private void OnRetry()
@@ -214,7 +216,7 @@ namespace MagicPairs.UI
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
-            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = UIFactory.GetFont();
             var r = go.GetComponent<RectTransform>();
             r.anchorMin = anchorMin;
             r.anchorMax = anchorMax;

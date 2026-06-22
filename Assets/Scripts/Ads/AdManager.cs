@@ -86,7 +86,7 @@ namespace MagicPairs.Ads
 
             InterstitialAd.Load(InterstitialId, new AdRequest(), (ad, error) =>
             {
-                if (error != null) { Debug.LogWarning($"[AdManager] Interstitial load failed: {error}"); return; }
+                if (error != null) return;
                 _interstitialAd = ad;
                 ad.OnAdFullScreenContentClosed += () => LoadInterstitial();
                 ad.OnAdFullScreenContentFailed += (e) => LoadInterstitial();
@@ -110,7 +110,7 @@ namespace MagicPairs.Ads
 
             RewardedAd.Load(RewardedId, new AdRequest(), (ad, error) =>
             {
-                if (error != null) { Debug.LogWarning($"[AdManager] Rewarded load failed: {error}"); return; }
+                if (error != null) return;
                 _rewardedAd = ad;
                 ad.OnAdFullScreenContentClosed += () => LoadRewarded();
                 ad.OnAdFullScreenContentFailed += (e) => LoadRewarded();

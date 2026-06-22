@@ -114,8 +114,20 @@ namespace MagicPairs.UI
 
         private bool _singlePlayer;
 
+        // Cached references
+        private GameFlow.LocalGameMode _cachedLocal;
+        private GameFlow.SinglePlayerMode _cachedSingle;
+        private GameFlow.ChallengeMode _cachedChallenge;
+        private GameFlow.TimeAttackMode _cachedTimeAttack;
+        private ShopUI _cachedShop;
+        private LoadingScreen _cachedLoading;
+        private Audio.MusicManager _cachedMusic;
+        private Ads.AdManager _cachedAdManager;
+
         private void Start()
         {
+            CacheReferences();
+
             playButton?.onClick.AddListener(ShowGameTypePanel);
             optionsButton?.onClick.AddListener(ShowOptionsPanel);
             leaderboardButton?.onClick.AddListener(ShowStartLeaderboard);
@@ -183,6 +195,43 @@ namespace MagicPairs.UI
             }
         }
 
+        private void CacheReferences()
+        {
+            _cachedLocal = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
+            _cachedSingle = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
+            _cachedChallenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
+            _cachedTimeAttack = FindAnyObjectByType<GameFlow.TimeAttackMode>(FindObjectsInactive.Include);
+            _cachedShop = FindAnyObjectByType<ShopUI>(FindObjectsInactive.Include);
+            _cachedLoading = FindAnyObjectByType<LoadingScreen>(FindObjectsInactive.Include);
+            _cachedMusic = FindAnyObjectByType<Audio.MusicManager>(FindObjectsInactive.Include);
+            _cachedAdManager = FindAnyObjectByType<Ads.AdManager>(FindObjectsInactive.Include);
+        }
+
+        private void SetActiveGameMode()
+        {
+            if (IsTimeAttackMode)
+            {
+                if (_cachedLocal != null) _cachedLocal.enabled = false;
+                if (_cachedSingle != null) _cachedSingle.enabled = false;
+                if (_cachedChallenge != null) _cachedChallenge.enabled = false;
+                if (_cachedTimeAttack != null) _cachedTimeAttack.enabled = true;
+            }
+            else if (IsChallengeMode)
+            {
+                if (_cachedLocal != null) _cachedLocal.enabled = false;
+                if (_cachedSingle != null) _cachedSingle.enabled = false;
+                if (_cachedChallenge != null) { _cachedChallenge.enabled = true; _cachedChallenge.StartGame(); }
+                if (_cachedTimeAttack != null) _cachedTimeAttack.enabled = false;
+            }
+            else
+            {
+                if (_cachedLocal != null) _cachedLocal.enabled = !_singlePlayer;
+                if (_cachedSingle != null) _cachedSingle.enabled = _singlePlayer;
+                if (_cachedChallenge != null) _cachedChallenge.enabled = false;
+                if (_cachedTimeAttack != null) _cachedTimeAttack.enabled = false;
+            }
+        }
+
         private void HideAllPanels()
         {
             if (startPanel != null) startPanel.SetActive(false);
@@ -207,8 +256,7 @@ namespace MagicPairs.UI
             btn?.onClick.AddListener(() =>
             {
                 if (menuPanel != null) menuPanel.SetActive(false);
-                var shop = FindAnyObjectByType<ShopUI>();
-                shop?.Show(() => ShowStartPanel());
+                _cachedShop?.Show(() => ShowStartPanel());
             });
         }
 
@@ -244,8 +292,7 @@ namespace MagicPairs.UI
             btn?.onClick.AddListener(() =>
             {
                 if (menuPanel != null) menuPanel.SetActive(false);
-                var shop = FindAnyObjectByType<ShopUI>();
-                shop?.Show(() => { ShowStartPanel(); ShowGameTypePanel(); });
+                _cachedShop?.Show(() => { ShowStartPanel(); ShowGameTypePanel(); });
             });
         }
 
@@ -328,7 +375,7 @@ namespace MagicPairs.UI
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.UpperCenter;
             txt.color = new Color(0.3f, 0.15f, 0.5f);
-            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = UIFactory.GetFont();
             var txtRect = txtObj.GetComponent<RectTransform>();
             txtRect.anchorMin = new Vector2(0f, -0.6f);
             txtRect.anchorMax = new Vector2(1f, 0f);
@@ -500,8 +547,6 @@ namespace MagicPairs.UI
         }
 
         private GameObject _achievementsBtn;
-
-
 
         private void ShowLocalLeaderboard()
         {
@@ -748,16 +793,6 @@ namespace MagicPairs.UI
             StartGameDirectly();
         }
 
-        private void ShowChallengeNamesPanel()
-        {
-            HideAllPanels();
-            if (challengeNamesPanel != null) challengeNamesPanel.SetActive(true);
-            if (challengeNameLabel != null) challengeNameLabel.text = Localization.Get("yourName");
-            if (challengeNameInput != null)
-                challengeNameInput.placeholder.GetComponent<Text>().text = Localization.Get("player1");
-            if (challengeStartText != null) challengeStartText.text = Localization.Get("start");
-        }
-
         private void OnChallengeStart()
         {
             IsSinglePlayer = true;
@@ -765,7 +800,13 @@ namespace MagicPairs.UI
                 ? Localization.Get("player1") : challengeNameInput.text;
             Player2Name = Localization.Get("computer");
 
-            ActivateGameMode();
+            if (_cachedLocal != null) _cachedLocal.enabled = false;
+            if (_cachedSingle != null) _cachedSingle.enabled = false;
+            if (_cachedChallenge != null)
+            {
+                _cachedChallenge.enabled = true;
+                _cachedChallenge.StartGame();
+            }
 
             if (menuPanel != null) menuPanel.SetActive(false);
             ShowLoadingAndStart();
@@ -839,7 +880,7 @@ namespace MagicPairs.UI
                 txt.fontStyle = FontStyle.Bold;
                 txt.alignment = TextAnchor.MiddleCenter;
                 txt.color = new Color(0.3f, 0.1f, 0.5f);
-                txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                txt.font = UIFactory.GetFont();
                 txt.resizeTextForBestFit = true;
                 txt.resizeTextMinSize = 10;
                 txt.resizeTextMaxSize = 14;
@@ -851,8 +892,6 @@ namespace MagicPairs.UI
             }
             if (txt != null) txt.text = text;
         }
-
-
 
         private void ApplyDifficulty(Difficulty diff)
         {
@@ -873,53 +912,6 @@ namespace MagicPairs.UI
                     config.gridCols = 6;
                     break;
             }
-        }
-
-        private void ShowNamesPanel()
-        {
-            HideAllPanels();
-            if (namesPanel != null) namesPanel.SetActive(true);
-
-            // Load saved names
-            string saved1 = PlayerPrefs.GetString("MagicPairs_Player1Name", "");
-            string saved2 = PlayerPrefs.GetString("MagicPairs_Player2Name", "");
-
-            if (player1Label != null)
-                player1Label.text = _singlePlayer ? Localization.Get("yourName") : Localization.Get("player1Name");
-            if (player1Input != null)
-            {
-                player1Input.placeholder.GetComponent<Text>().text = Localization.Get("player1");
-                if (!string.IsNullOrEmpty(saved1)) player1Input.text = saved1;
-            }
-
-            if (player2Label != null) player2Label.gameObject.SetActive(!_singlePlayer);
-            if (player2Input != null) player2Input.gameObject.SetActive(!_singlePlayer);
-
-            if (!_singlePlayer && player2Label != null)
-                player2Label.text = Localization.Get("player2Name");
-            if (!_singlePlayer && player2Input != null)
-            {
-                player2Input.placeholder.GetComponent<Text>().text = Localization.Get("player2");
-                if (!string.IsNullOrEmpty(saved2)) player2Input.text = saved2;
-            }
-
-            // Reposition start button: center between last input and back button
-            if (startButton != null)
-            {
-                var rect = startButton.GetComponent<RectTransform>();
-                if (_singlePlayer)
-                {
-                    rect.anchorMin = new Vector2(0.2f, 0.23f);
-                    rect.anchorMax = new Vector2(0.8f, 0.43f);
-                }
-                else
-                {
-                    rect.anchorMin = new Vector2(0.2f, 0.06f);
-                    rect.anchorMax = new Vector2(0.8f, 0.26f);
-                }
-            }
-
-            if (startButtonText != null) startButtonText.text = Localization.Get("start");
         }
 
         private void OnNamesBack()
@@ -948,7 +940,7 @@ namespace MagicPairs.UI
             if (!_singlePlayer) PlayerPrefs.SetString("MagicPairs_Player2Name", Player2Name);
             PlayerPrefs.Save();
 
-            ActivateGameMode();
+            SetActiveGameMode();
 
             if (menuPanel != null) menuPanel.SetActive(false);
             ShowLoadingAndStart();
@@ -964,47 +956,16 @@ namespace MagicPairs.UI
                 Player1Name = Localization.Get("player1");
             Player2Name = _singlePlayer ? Localization.Get("computer") : Localization.Get("player2");
 
-            ActivateGameMode();
+            SetActiveGameMode();
 
             if (menuPanel != null) menuPanel.SetActive(false);
             ShowLoadingAndStart();
         }
 
-        private void ActivateGameMode()
-        {
-            var local = FindAnyObjectByType<GameFlow.LocalGameMode>(FindObjectsInactive.Include);
-            var single = FindAnyObjectByType<GameFlow.SinglePlayerMode>(FindObjectsInactive.Include);
-            var challenge = FindAnyObjectByType<GameFlow.ChallengeMode>(FindObjectsInactive.Include);
-            var timeAttack = FindAnyObjectByType<GameFlow.TimeAttackMode>(FindObjectsInactive.Include);
-
-            if (IsTimeAttackMode)
-            {
-                if (local != null) local.enabled = false;
-                if (single != null) single.enabled = false;
-                if (challenge != null) challenge.enabled = false;
-                if (timeAttack != null) timeAttack.enabled = true;
-            }
-            else if (IsChallengeMode)
-            {
-                if (local != null) local.enabled = false;
-                if (single != null) single.enabled = false;
-                if (challenge != null) { challenge.enabled = true; challenge.StartGame(); }
-                if (timeAttack != null) timeAttack.enabled = false;
-            }
-            else
-            {
-                if (local != null) local.enabled = !_singlePlayer;
-                if (single != null) single.enabled = _singlePlayer;
-                if (challenge != null) challenge.enabled = false;
-                if (timeAttack != null) timeAttack.enabled = false;
-            }
-        }
-
         private void ShowLoadingAndStart()
         {
-            var loading = FindAnyObjectByType<LoadingScreen>();
-            if (loading != null)
-                loading.Show(0.6f, () => GameManager.Instance.StartGame());
+            if (_cachedLoading != null)
+                _cachedLoading.Show(0.6f, () => GameManager.Instance.StartGame());
             else
                 GameManager.Instance.StartGame();
         }
@@ -1012,8 +973,7 @@ namespace MagicPairs.UI
         public void ReturnToMenu()
         {
             ShowStartPanel();
-            var music = FindAnyObjectByType<Audio.MusicManager>();
-            music?.PlayMenuMusic();
+            _cachedMusic?.PlayMenuMusic();
         }
     }
 }

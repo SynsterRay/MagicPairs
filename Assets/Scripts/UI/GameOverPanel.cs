@@ -12,6 +12,9 @@ namespace MagicPairs.UI
         [SerializeField] private Text playAgainText;
         [SerializeField] private Button menuButton;
 
+        private Ads.AdManager _cachedAdManager;
+        private MainMenu _cachedMenu;
+
         private void OnEnable()
         {
             GameEvents.OnGameStarted += Hide;
@@ -65,18 +68,18 @@ namespace MagicPairs.UI
 
         private void OnPlayAgain()
         {
-            var adManager = FindAnyObjectByType<Ads.AdManager>();
-            adManager?.TryShowInterstitialBetweenGames();
+            if (_cachedAdManager == null) _cachedAdManager = FindAnyObjectByType<Ads.AdManager>();
+            _cachedAdManager?.TryShowInterstitialBetweenGames();
             GameManager.Instance.StartGame();
         }
 
         private void OnMenu()
         {
             Hide();
-            var adManager = FindAnyObjectByType<Ads.AdManager>();
-            adManager?.TryShowInterstitialAfterGame();
-            var menu = FindAnyObjectByType<MainMenu>();
-            menu?.ReturnToMenu();
+            if (_cachedAdManager == null) _cachedAdManager = FindAnyObjectByType<Ads.AdManager>();
+            _cachedAdManager?.TryShowInterstitialAfterGame();
+            if (_cachedMenu == null) _cachedMenu = FindAnyObjectByType<MainMenu>();
+            _cachedMenu?.ReturnToMenu();
         }
     }
 }

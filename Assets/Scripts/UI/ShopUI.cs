@@ -358,10 +358,7 @@ namespace MagicPairs.UI
         {
             var iap = Core.IAPManager.Instance;
             if (iap == null || !iap.IsInitialized || string.IsNullOrEmpty(item.iapProductId))
-            {
-                Debug.LogWarning("[Shop] IAP not ready");
                 return;
-            }
 
             iap.BuyProduct(item.iapProductId, success =>
             {

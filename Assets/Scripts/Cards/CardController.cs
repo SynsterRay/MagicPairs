@@ -13,7 +13,6 @@ namespace MagicPairs.Cards
         public event Action<CardController> OnFlipComplete;
 
         private CardAnimator _animator;
-        private Color _backColor;
         private Sprite _backSprite;
         private static Audio.SFXManager _sfxCache;
 
@@ -23,7 +22,6 @@ namespace MagicPairs.Cards
         public void Initialize(CardData data, Color backColor)
         {
             Data = data;
-            _backColor = backColor;
             _animator = GetComponent<CardAnimator>();
             if (_sfxCache == null) _sfxCache = FindAnyObjectByType<Audio.SFXManager>();
 

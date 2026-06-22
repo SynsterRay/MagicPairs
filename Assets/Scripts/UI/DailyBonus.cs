@@ -212,7 +212,7 @@ namespace MagicPairs.UI
             txt.fontStyle = FontStyle.Bold;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
-            txt.font = Resources.Load<Font>("Fonts/FredokaOne-Regular") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            txt.font = UIFactory.GetFont();
             var r = go.GetComponent<RectTransform>();
             r.anchorMin = anchorMin;
             r.anchorMax = anchorMax;
