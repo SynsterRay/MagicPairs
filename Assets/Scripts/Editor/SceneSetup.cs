@@ -219,6 +219,7 @@ namespace MagicPairs.Editor
             gcScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             gcScaler.referenceResolution = new Vector2(1080f, 1920f);
             gcScaler.matchWidthOrHeight = 1f;
+            gradCanvas.AddComponent<UI.GradientSync>();
 
             var gradBar = new GameObject("TopBarGradient");
             gradBar.transform.SetParent(gradCanvas.transform, false);
