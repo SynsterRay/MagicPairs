@@ -954,6 +954,7 @@ namespace MagicPairs.Editor
             // LoadingScreen
             canvas.AddComponent<UI.LoadingScreen>();
             canvas.AddComponent<UI.GameBackground>();
+            canvas.AddComponent<UI.RateUsManager>();
             canvas.AddComponent<UI.SplashScreen>();
         }
 
