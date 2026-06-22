@@ -67,9 +67,13 @@ namespace MagicPairs.Editor
                     changed = true;
                 }
 
-                if (importer.maxTextureSize > maxSize)
+                // Keep developer logo at full resolution
+                bool isLogo = path.Contains("developer_logo");
+                int effectiveMax = isLogo ? 2048 : maxSize;
+
+                if (importer.maxTextureSize > effectiveMax)
                 {
-                    importer.maxTextureSize = maxSize;
+                    importer.maxTextureSize = effectiveMax;
                     changed = true;
                 }
 
