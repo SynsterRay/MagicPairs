@@ -4,7 +4,7 @@
 
 A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS). Two players take turns flipping cards looking for matching pairs.
 
-## Project Status (2026-06-21)
+## Project Status (2026-06-22)
 
 ### Implemented
 
@@ -28,7 +28,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Main Menu | ✅ | Start screen → Options/Play → Arcade/Challenge → ... |
 | Options | ✅ | Panel with language selection and credits |
 | Localization | ✅ | Full PL/EN system — all buttons, panels, messages |
-| Card Themes | ✅ | Colors (classic), Princesses (PNG), Cars (PNG) |
+| Card Themes | ✅ | Colors (classic), Princesses (PNG), Cars (PNG), Water World (PNG), Animals (PNG) |
 | Difficulty Levels | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
 | Color Palette | ✅ | 15 distinct colors — supports Hard mode (14 pairs) |
 | Menu Navigation | ✅ | Back buttons ← on every step |
@@ -49,11 +49,12 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Invite Friends | ✅ | Share link panel, 50 coins/day reward |
 | 9 Languages | ✅ | PL, EN, ES, PT, DE, FR, HI, ZH, JA with dynamic picker |
 | IAP (In-App Purchases) | ✅ | Coin packs via Unity Purchasing |
+| Rate Us | ✅ | Google Play review prompt after 5 wins |
 
 ### Not Yet Implemented
 
 - [ ] Online multiplayer (placeholder `OnlineGameMode` exists)
-- [ ] More card themes (animals, vehicles, etc.)
+- [ ] More card themes (space)
 - [ ] Daily Challenge
 
 ## Releases
@@ -241,6 +242,19 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 | piotrusDelay | 1.5s | Time to show Joker |
 
 ## Changelog
+
+### 2026-06-22
+- Animals card theme: 14 PNG cards + joker + back_card (Assets/Resources/AnimalCards/)
+- Animals unlocked in menu (removed BLOCKED overlay, buttons active in both Arcade and Challenge theme panels)
+- Animals in-game background (background_animals.png, 1024x1536)
+- Shop pricing updated: Water World 800, Animals 1000, Space 1200 coins
+- Rate Us popup: Google Play review prompt after 5 completed games (wins/levels)
+- Image compression: all cards 512x768, backgrounds 720x1080, headers 384px, icons 256px (87MB → 55MB, -37%)
+- UIButtonsImporter: Fix Card Imports now enforces maxTextureSize per folder + includes Backgrounds
+- Refactor: removed ~200 lines of dead code (MainMenu, ShopUI, AdManager, AchievementTracker)
+- Refactor: extracted ActivateGameMode() from 3 duplicate blocks in MainMenu
+- Refactor: simplified ChallengeMode streak scoring (unreachable else removed)
+- Refactor: PowerUpManager._lastStreak now resets on game start
 
 ### 2026-06-21 (v1.7)
 - Splash screen: Wonder Minds Games logo with zoom-in animation on app launch
