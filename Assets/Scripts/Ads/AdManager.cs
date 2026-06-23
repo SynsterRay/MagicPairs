@@ -60,7 +60,13 @@ namespace MagicPairs.Ads
                 LoadRewarded();
                 ShowBanner();
             });
+
+            Core.GameEvents.OnGameStarted += OnGameStarted;
+            Core.GameEvents.OnGameOver += OnGameOver;
         }
+
+        private void OnGameStarted() => HideBanner();
+        private void OnGameOver(int _) => ShowBanner();
 
         // --- Banner ---
 

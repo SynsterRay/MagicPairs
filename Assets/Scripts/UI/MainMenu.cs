@@ -974,6 +974,7 @@ namespace MagicPairs.UI
         {
             ShowStartPanel();
             _cachedMusic?.PlayMenuMusic();
+            _cachedAdManager?.ShowBanner();
         }
     }
 }
