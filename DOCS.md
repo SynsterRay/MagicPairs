@@ -4,7 +4,7 @@
 
 A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS). Two players take turns flipping cards looking for matching pairs.
 
-## Project Status (2026-06-22)
+## Project Status (2026-06-23)
 
 ### Implemented
 
@@ -28,7 +28,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | Main Menu | ✅ | Start screen → Options/Play → Arcade/Challenge → ... |
 | Options | ✅ | Panel with language selection and credits |
 | Localization | ✅ | Full PL/EN system — all buttons, panels, messages |
-| Card Themes | ✅ | Colors (classic), Princesses (PNG), Cars (PNG), Water World (PNG), Animals (PNG) |
+| Card Themes | ✅ | Colors (classic), Princesses (PNG), Cars (PNG), Water World (PNG), Animals (PNG), Space Animals (PNG) |
 | Difficulty Levels | ✅ | ★ Easy (3×4), ★★ Medium (4×5), ★★★ Hard (5×6) |
 | Color Palette | ✅ | 15 distinct colors — supports Hard mode (14 pairs) |
 | Menu Navigation | ✅ | Back buttons ← on every step |
@@ -54,7 +54,6 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 ### Not Yet Implemented
 
 - [ ] Online multiplayer (placeholder `OnlineGameMode` exists)
-- [ ] More card themes (space)
 - [ ] Daily Challenge
 
 ## Releases
@@ -242,6 +241,18 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 | piotrusDelay | 1.5s | Time to show Joker |
 
 ## Changelog
+
+### 2026-06-23
+- Space Animals card theme: 14 PNG cards + joker + back_card + background (Assets/Resources/SpaceAnimalsCards/)
+- Space Animals unlocked for free (no coin cost, BLOCKED overlay removed)
+- TopBar gradient fix: aligned gradient top with TopBar bottom edge (seamless white transition)
+- RectMask2D on TopBar: prevents child text from visually overflowing panel
+- Score text auto-scales (resizeTextForBestFit) for long player names
+- Turn indicator text auto-scales for long names
+- Game background scaled to full screen (no cutoff edge visible under TopBar)
+- Portrait orientation locked at runtime via GameManager.Awake
+- UIButtonsImporter: added SpaceAnimalsCards folder to Fix Card Imports
+- Logo compression exception: developer_logo, logo_unicorn, logo_white stay at full 2048px
 
 ### 2026-06-22
 - Animals card theme: 14 PNG cards + joker + back_card (Assets/Resources/AnimalCards/)

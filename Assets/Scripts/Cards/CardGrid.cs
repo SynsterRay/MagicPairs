@@ -212,15 +212,20 @@ namespace MagicPairs.Cards
         {
             bestRows = 1;
             bestCols = cardCount;
-            float bestScore = 0f;
+            float bestCardArea = 0f;
             float cardAspect = 1f / 1.4f;
 
             for (int r = 1; r <= cardCount; r++)
             {
                 int c = Mathf.CeilToInt((float)cardCount / r);
+                if (r * c - cardCount > c) continue; // skip if more than 1 empty row
 
-                float maxW = 1f / c;
-                float maxH = 1f / r;
+                // Calculate max card size that fits in normalized 1×1 area with this aspect
+                float availW = areaAspect; // normalized width
+                float availH = 1f;          // normalized height
+
+                float maxW = availW / c;
+                float maxH = availH / r;
 
                 float w, h;
                 if (maxW / cardAspect <= maxH)
@@ -228,14 +233,15 @@ namespace MagicPairs.Cards
                 else
                 { h = maxH; w = h * cardAspect; }
 
-                float gridAspect = (c * w) / (r * h);
-                float aspectFit = 1f - Mathf.Abs(gridAspect - areaAspect) / Mathf.Max(gridAspect, areaAspect);
+                float cardArea = w * h;
                 float waste = 1f - (float)cardCount / (r * c);
-                float score = w * h * aspectFit * (1f - waste * 0.5f);
 
-                if (score > bestScore)
+                // Penalize waste but prioritize card size
+                float score = cardArea * (1f - waste * 0.3f);
+
+                if (score > bestCardArea)
                 {
-                    bestScore = score;
+                    bestCardArea = score;
                     bestRows = r;
                     bestCols = c;
                 }
