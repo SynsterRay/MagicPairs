@@ -967,6 +967,7 @@ namespace MagicPairs.Editor
             canvas.AddComponent<UI.GameBackground>();
             canvas.AddComponent<UI.RateUsManager>();
             canvas.AddComponent<UI.SplashScreen>();
+            canvas.AddComponent<UI.TutorialOverlay>();
         }
 
 
@@ -1160,6 +1161,14 @@ namespace MagicPairs.Editor
             input.placeholder = phText;
 
             return go;
+        }
+
+        [MenuItem("MagicPairs/Reset Tutorial")]
+        public static void ResetTutorial()
+        {
+            UnityEngine.PlayerPrefs.DeleteKey("MagicPairs_TutorialShown");
+            UnityEngine.PlayerPrefs.Save();
+            Debug.Log("[MagicPairs] Tutorial reset — will show on next Play.");
         }
     }
 }
