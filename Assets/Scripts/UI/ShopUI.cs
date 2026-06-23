@@ -410,7 +410,7 @@ namespace MagicPairs.UI
                 {
                     "theme_animals" => Localization.CurrentLanguage == Language.Polish ? "Zwierzęta" : "Animals",
                     "theme_water_world" => Localization.CurrentLanguage == Language.Polish ? "Wodny Świat" : "Water World",
-                    "theme_space" => Localization.CurrentLanguage == Language.Polish ? "Kosmos" : "Space",
+                    "theme_space" => Localization.CurrentLanguage == Language.Polish ? "Kosmiczne Zwierzęta" : "Space Animals",
                     _ => item.id
                 },
                 ShopItemType.PowerUpPeek => $"{Localization.Get("peek")} x{item.quantity}",

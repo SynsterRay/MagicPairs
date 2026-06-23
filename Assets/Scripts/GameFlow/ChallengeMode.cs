@@ -103,7 +103,7 @@ namespace MagicPairs.GameFlow
         private void ApplyLevelConfig()
         {
             _config = GameManager.Instance.Config;
-            int maxPairs = _config.theme == CardTheme.Princess || _config.theme == CardTheme.Cars || _config.theme == CardTheme.Dinos || _config.theme == CardTheme.Animals ? 14 : 8;
+            int maxPairs = _config.theme == CardTheme.Princess || _config.theme == CardTheme.Cars || _config.theme == CardTheme.Dinos || _config.theme == CardTheme.Animals || _config.theme == CardTheme.SpaceAnimals ? 14 : 8;
             int levelsPerCycle = maxPairs - 1; // levels before cycling back (2 pairs to max)
 
             // Determine which cycle (iteration) and position within cycle

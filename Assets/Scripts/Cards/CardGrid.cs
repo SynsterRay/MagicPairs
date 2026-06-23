@@ -37,12 +37,13 @@ namespace MagicPairs.Cards
             bool skipJoker = GameFlow.TimeAttackMode.IsTimeAttackMode;
             int pairsNeeded = skipJoker ? _config.TotalSlots / 2 : _config.PairCount;
 
-            bool useSpriteTheme = _config.theme == Core.CardTheme.Princess || _config.theme == Core.CardTheme.Cars || _config.theme == Core.CardTheme.Dinos || _config.theme == Core.CardTheme.Animals;
+            bool useSpriteTheme = _config.theme == Core.CardTheme.Princess || _config.theme == Core.CardTheme.Cars || _config.theme == Core.CardTheme.Dinos || _config.theme == Core.CardTheme.Animals || _config.theme == Core.CardTheme.SpaceAnimals;
             string folder = _config.theme switch
             {
                 Core.CardTheme.Cars => "CarCards",
                 Core.CardTheme.Dinos => "WaterWorldCards",
                 Core.CardTheme.Animals => "AnimalCards",
+                Core.CardTheme.SpaceAnimals => "SpaceAnimalsCards",
                 _ => "PrincessCards"
             };
             Sprite[] sprites = null;

@@ -23,6 +23,7 @@ namespace MagicPairs.UI
                 CardTheme.Princess => "Backgrounds/background_princess",
                 CardTheme.Dinos => "Backgrounds/background_waterworld",
                 CardTheme.Animals => "Backgrounds/background_animals",
+                CardTheme.SpaceAnimals => "Backgrounds/background_space",
                 _ => null
             };
 

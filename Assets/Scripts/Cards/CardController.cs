@@ -33,6 +33,7 @@ namespace MagicPairs.Cards
                     Core.CardTheme.Cars => "CarCards",
                     Core.CardTheme.Dinos => "WaterWorldCards",
                     Core.CardTheme.Animals => "AnimalCards",
+                    Core.CardTheme.SpaceAnimals => "SpaceAnimalsCards",
                     _ => "PrincessCards"
                 };
 
