@@ -251,8 +251,14 @@ namespace MagicPairs.Editor
 
             var p1Score = CreateUIText("Player1Score", "Gracz 1: 0", scorePanel.transform,
                 new Vector2(0.15f, 0f), new Vector2(0.5f, 1f), TextAnchor.MiddleCenter, 18);
+            p1Score.resizeTextForBestFit = true;
+            p1Score.resizeTextMinSize = 14;
+            p1Score.resizeTextMaxSize = 36;
             var p2Score = CreateUIText("Player2Score", "Gracz 2: 0", scorePanel.transform,
                 new Vector2(0.5f, 0f), new Vector2(0.85f, 1f), TextAnchor.MiddleCenter, 18);
+            p2Score.resizeTextForBestFit = true;
+            p2Score.resizeTextMinSize = 14;
+            p2Score.resizeTextMaxSize = 36;
 
             var scoreDisplay = canvas.AddComponent<UI.ScoreDisplay>();
             var sdSo = new SerializedObject(scoreDisplay);
@@ -273,6 +279,9 @@ namespace MagicPairs.Editor
 
             var turnText = CreateUIText("TurnIndicator", "Tura: Gracz 1", topBar.transform,
                 new Vector2(0.2f, 0f), new Vector2(0.8f, 0.3f), TextAnchor.MiddleCenter, 18);
+            turnText.resizeTextForBestFit = true;
+            turnText.resizeTextMinSize = 14;
+            turnText.resizeTextMaxSize = 36;
 
             // Pause Button
             var pauseBtn = CreateIconBtn("PauseBtn", "close", canvas.transform,
