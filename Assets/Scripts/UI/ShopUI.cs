@@ -212,7 +212,9 @@ namespace MagicPairs.UI
                     btn.onClick.AddListener(() => OnBuyCoinPack(capturedItem));
                     iconObj.AddComponent<PulseAnimation>();
                 }
-                else if (!owned && item.type != ShopItemType.CardTheme)
+                else if (item.type == ShopItemType.CardTheme)
+                    btn.onClick.AddListener(() => ShowThemePreview(capturedItem));
+                else if (!owned)
                     btn.onClick.AddListener(() => OnBuy(capturedItem));
 
                 // Name label
@@ -286,6 +288,95 @@ namespace MagicPairs.UI
                 return price + discount;
             }
             return $"🪙 {item.coinPrice}";
+        }
+
+        private void ShowThemePreview(ShopItem item)
+        {
+            if (!item.theme.HasValue) return;
+            string folder = item.theme.Value switch
+            {
+                Core.CardTheme.Animals => "AnimalCards",
+                Core.CardTheme.Dinos => "WaterWorldCards",
+                Core.CardTheme.SpaceAnimals => "SpaceAnimalsCards",
+                _ => null
+            };
+            if (folder == null) return;
+
+            // Load 2 face cards + back card
+            var allSprites = Resources.LoadAll<Sprite>(folder);
+            var faces = new System.Collections.Generic.List<Sprite>();
+            Sprite backSprite = null;
+            foreach (var s in allSprites)
+            {
+                if (s.name.Contains("back_card") || s.name == "back") backSprite = s;
+                else if (!s.name.Contains("joker") && !s.name.Contains("back")) faces.Add(s);
+            }
+            // Fallback: load as Texture2D if no sprites found
+            if (faces.Count == 0)
+            {
+                var textures = Resources.LoadAll<Texture2D>(folder);
+                foreach (var tex in textures)
+                {
+                    if (tex.name.Contains("back_card") || tex.name == "back")
+                        backSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                    else if (!tex.name.Contains("joker") && !tex.name.Contains("back"))
+                        faces.Add(Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f));
+                }
+            }
+            if (backSprite == null)
+            {
+                var tex = Resources.Load<Texture2D>($"{folder}/back_card");
+                if (tex != null) backSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+            }
+            if (faces.Count < 2) return;
+
+            // Pick 2 face cards with most similar aspect ratio to back card
+            float targetAspect = backSprite != null ? backSprite.rect.height / backSprite.rect.width : 1.5f;
+            faces.Sort((a, b) =>
+            {
+                float da = Mathf.Abs(a.rect.height / a.rect.width - targetAspect);
+                float db = Mathf.Abs(b.rect.height / b.rect.width - targetAspect);
+                return da.CompareTo(db);
+            });
+
+            // Create preview overlay
+            var preview = new GameObject("ThemePreview");
+            preview.transform.SetParent(_panel.transform, false);
+            var bgImg = preview.AddComponent<Image>();
+            bgImg.color = new Color(0f, 0f, 0f, 0.8f);
+            var bgRect = preview.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.offsetMin = Vector2.zero;
+            bgRect.offsetMax = Vector2.zero;
+
+            // 3 cards side by side (fixed 2:3 aspect slots)
+            Sprite[] cards;
+            if (item.theme.Value == Core.CardTheme.Dinos)
+                cards = new[] { faces[0], faces[1], faces.Count > 2 ? faces[2] : faces[0] };
+            else
+                cards = new[] { faces[0], faces[1], backSprite };
+            for (int i = 0; i < 3; i++)
+            {
+                if (cards[i] == null) continue;
+                var cardObj = new GameObject($"Card_{i}");
+                cardObj.transform.SetParent(preview.transform, false);
+                var cardImg = cardObj.AddComponent<Image>();
+                cardImg.sprite = cards[i];
+                cardImg.preserveAspect = true;
+                cardImg.raycastTarget = false;
+                var cardRect = cardObj.GetComponent<RectTransform>();
+                float x = 0.05f + i * 0.32f;
+                cardRect.anchorMin = new Vector2(x, 0.30f);
+                cardRect.anchorMax = new Vector2(x + 0.28f, 0.70f);
+                cardRect.offsetMin = Vector2.zero;
+                cardRect.offsetMax = Vector2.zero;
+            }
+
+            // Close on tap
+            var closeBtn = preview.AddComponent<Button>();
+            closeBtn.transition = Selectable.Transition.None;
+            closeBtn.onClick.AddListener(() => Destroy(preview));
         }
 
         private void OnBuy(ShopItem item)
