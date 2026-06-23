@@ -64,8 +64,8 @@ namespace MagicPairs.UI
                     float ortho = cam.orthographicSize;
                     float aspect = cam.aspect;
                     _bgPanel.transform.position = new Vector3(0f, -ortho * 0.18f, 5f);
-                    // Scale to fill card area (82% - 8% = 74% of screen height)
-                    float worldH = ortho * 2f * 0.74f;
+                    // Scale to fill full screen (gradient covers the top edge)
+                    float worldH = ortho * 2f;
                     float worldW = ortho * 2f * aspect;
                     float sprH = spr.bounds.size.y;
                     float sprW = spr.bounds.size.x;
