@@ -190,6 +190,7 @@ namespace MagicPairs.Editor
             topBar.transform.SetParent(canvas.transform, false);
             var topBarImg = topBar.AddComponent<Image>();
             topBarImg.color = Color.white;
+            topBar.AddComponent<RectMask2D>();
             var topBarRect = topBar.GetComponent<RectTransform>();
             topBarRect.anchorMin = new Vector2(0f, 0.82f);
             topBarRect.anchorMax = new Vector2(1f, 0.93f);
