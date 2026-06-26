@@ -23,9 +23,9 @@ namespace MagicPairs.Core
         public static readonly List<ShopItem> Items = new()
         {
             // Card themes (paid — encourage IAP)
-            new() { id = "theme_water_world", type = ShopItemType.CardTheme, coinPrice = 800, theme = CardTheme.Dinos, quantity = 1 },
-            new() { id = "theme_animals", type = ShopItemType.CardTheme, coinPrice = 1000, theme = CardTheme.Animals, quantity = 1 },
-            new() { id = "theme_space", type = ShopItemType.CardTheme, coinPrice = 1200, theme = CardTheme.SpaceAnimals, quantity = 1 },
+            new() { id = "theme_water_world", type = ShopItemType.CardTheme, coinPrice = 2, theme = CardTheme.Dinos, quantity = 1 },
+            new() { id = "theme_animals", type = ShopItemType.CardTheme, coinPrice = 2, theme = CardTheme.Animals, quantity = 1 },
+            new() { id = "theme_space", type = ShopItemType.CardTheme, coinPrice = 2, theme = CardTheme.SpaceAnimals, quantity = 1 },
 
             // Power-ups (moderate)
             new() { id = "peek_3", type = ShopItemType.PowerUpPeek, coinPrice = 80, quantity = 3 },

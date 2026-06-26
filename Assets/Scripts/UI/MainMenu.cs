@@ -817,6 +817,7 @@ namespace MagicPairs.UI
             ShowHeaderLogo(2); // monkey
             if (challengeThemeTitle != null)
                 challengeThemeTitle.text = Localization.Get("chooseTheme");
+            RefreshThemeOverlays();
         }
 
         private void SelectChallengeTheme(Core.CardTheme theme)
@@ -887,6 +888,29 @@ namespace MagicPairs.UI
             ShowHeaderLogo(2); // monkey
             if (themeTitle != null)
                 themeTitle.text = Localization.Get("chooseTheme");
+            RefreshThemeOverlays();
+        }
+
+        private void RefreshThemeOverlays()
+        {
+            RefreshOverlay(themePanel, "ColorsBtn", Core.CardTheme.Dinos);
+            RefreshOverlay(themePanel, "LockedCard1", Core.CardTheme.Animals);
+            RefreshOverlay(themePanel, "LockedCard2", Core.CardTheme.SpaceAnimals);
+            RefreshOverlay(challengeThemePanel, "ChColorsBtn", Core.CardTheme.Dinos);
+            RefreshOverlay(challengeThemePanel, "ChLockedCard1", Core.CardTheme.Animals);
+            RefreshOverlay(challengeThemePanel, "ChLockedCard2", Core.CardTheme.SpaceAnimals);
+        }
+
+        private void RefreshOverlay(GameObject panel, string name, Core.CardTheme theme)
+        {
+            if (panel == null) return;
+            var obj = panel.transform.Find(name);
+            if (obj == null) return;
+            var overlay = obj.Find("BlockedOverlay");
+            if (Core.ShopCatalog.IsThemeUnlocked(theme))
+            {
+                if (overlay != null) Destroy(overlay.gameObject);
+            }
         }
 
         private void TrySelectTheme(Core.CardTheme theme, bool isChallenge)
