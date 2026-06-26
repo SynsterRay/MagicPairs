@@ -22,20 +22,20 @@ namespace MagicPairs.Core
 
         public static readonly List<ShopItem> Items = new()
         {
-            // Card themes (paid — encourage IAP)
-            new() { id = "theme_water_world", type = ShopItemType.CardTheme, coinPrice = 2, theme = CardTheme.Dinos, quantity = 1 },
-            new() { id = "theme_animals", type = ShopItemType.CardTheme, coinPrice = 2, theme = CardTheme.Animals, quantity = 1 },
-            new() { id = "theme_space", type = ShopItemType.CardTheme, coinPrice = 2, theme = CardTheme.SpaceAnimals, quantity = 1 },
+            // Card themes (paid)
+            new() { id = "theme_water_world", type = ShopItemType.CardTheme, coinPrice = 300, theme = CardTheme.Dinos, quantity = 1 },
+            new() { id = "theme_animals", type = ShopItemType.CardTheme, coinPrice = 500, theme = CardTheme.Animals, quantity = 1 },
+            new() { id = "theme_space", type = ShopItemType.CardTheme, coinPrice = 800, theme = CardTheme.SpaceAnimals, quantity = 1 },
 
-            // Power-ups (moderate)
-            new() { id = "peek_3", type = ShopItemType.PowerUpPeek, coinPrice = 80, quantity = 3 },
-            new() { id = "shuffle_3", type = ShopItemType.PowerUpShuffle, coinPrice = 100, quantity = 3 },
-            new() { id = "freeze_3", type = ShopItemType.PowerUpFreeze, coinPrice = 120, quantity = 3 },
+            // Power-ups
+            new() { id = "peek_3", type = ShopItemType.PowerUpPeek, coinPrice = 60, quantity = 3 },
+            new() { id = "shuffle_3", type = ShopItemType.PowerUpShuffle, coinPrice = 80, quantity = 3 },
+            new() { id = "freeze_3", type = ShopItemType.PowerUpFreeze, coinPrice = 100, quantity = 3 },
 
-            // Coin packs (IAP — prices in coins represent value, purchase via real money)
-            new() { id = "coins_100", type = ShopItemType.CoinPack, coinPrice = 0, iapProductId = "com.magicpairs.coins100", quantity = 100 },
-            new() { id = "coins_500", type = ShopItemType.CoinPack, coinPrice = 0, iapProductId = "com.magicpairs.coins500", quantity = 500 },
-            new() { id = "coins_1500", type = ShopItemType.CoinPack, coinPrice = 0, iapProductId = "com.magicpairs.coins1500", quantity = 1500 },
+            // Coin packs (IAP)
+            new() { id = "coins_300", type = ShopItemType.CoinPack, coinPrice = 0, iapProductId = "com.magicpairs.coins100", quantity = 300 },
+            new() { id = "coins_800", type = ShopItemType.CoinPack, coinPrice = 0, iapProductId = "com.magicpairs.coins500", quantity = 800 },
+            new() { id = "coins_2000", type = ShopItemType.CoinPack, coinPrice = 0, iapProductId = "com.magicpairs.coins1500", quantity = 2000 },
         };
 
         public static bool IsThemeUnlocked(CardTheme theme)

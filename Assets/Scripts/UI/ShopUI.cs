@@ -292,8 +292,8 @@ namespace MagicPairs.UI
                 string price = GetCoinPackPrice(item);
                 string discount = item.quantity switch
                 {
-                    500 => " • 20% OFF",
-                    1500 => " • 40% OFF",
+                    800 => " • 20% OFF",
+                    2000 => " • 40% OFF",
                     _ => ""
                 };
                 return price + discount;
@@ -533,9 +533,9 @@ namespace MagicPairs.UI
             }
             return item.quantity switch
             {
-                100 => "$0.99",
-                500 => "$3.99",
-                1500 => "$8.99",
+                300 => "$0.99",
+                800 => "$2.99",
+                2000 => "$5.99",
                 _ => Localization.Get("buy")
             };
         }

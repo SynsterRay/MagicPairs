@@ -276,25 +276,8 @@ namespace MagicPairs.UI
             var obj = panel.transform.Find(name);
             if (obj == null) return;
 
-            if (Core.ShopCatalog.IsThemeUnlocked(theme))
-            {
-                var overlay = obj.Find("BlockedOverlay");
-                if (overlay != null) Destroy(overlay.gameObject);
-                var btn = obj.GetComponent<Button>();
-                if (isChallenge)
-                    btn?.onClick.AddListener(() => SelectChallengeTheme(theme));
-                else
-                    btn?.onClick.AddListener(() => SelectTheme(theme));
-            }
-            else
-            {
-                var btn = obj.GetComponent<Button>();
-                btn?.onClick.AddListener(() =>
-                {
-                    if (menuPanel != null) menuPanel.SetActive(false);
-                    _cachedShop?.Show(() => { ShowStartPanel(); ShowGameTypePanel(); });
-                });
-            }
+            var btn = obj.GetComponent<Button>();
+            btn?.onClick.AddListener(() => TrySelectTheme(theme, isChallenge));
         }
 
         private void WireLockedBtn(GameObject panel, string name)

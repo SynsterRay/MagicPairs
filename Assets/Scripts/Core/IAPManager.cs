@@ -64,9 +64,9 @@ namespace MagicPairs.Core
             string id = args.purchasedProduct.definition.id;
             int coins = id switch
             {
-                "com.magicpairs.coins100" => 100,
-                "com.magicpairs.coins500" => 500,
-                "com.magicpairs.coins1500" => 1500,
+                "com.magicpairs.coins100" => 300,
+                "com.magicpairs.coins500" => 800,
+                "com.magicpairs.coins1500" => 2000,
                 _ => 0
             };
 

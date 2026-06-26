@@ -1172,5 +1172,13 @@ namespace MagicPairs.Editor
             UnityEngine.PlayerPrefs.Save();
             Debug.Log("[MagicPairs] Tutorial reset — will show on next Play.");
         }
+
+        [MenuItem("MagicPairs/Reset Shop Purchases")]
+        public static void ResetShopPurchases()
+        {
+            UnityEngine.PlayerPrefs.DeleteKey("MagicPairs_UnlockedThemes");
+            UnityEngine.PlayerPrefs.Save();
+            Debug.Log("[MagicPairs] Theme purchases reset — all themes locked again.");
+        }
     }
 }
