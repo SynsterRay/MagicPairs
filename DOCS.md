@@ -253,6 +253,10 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 - Portrait orientation locked at runtime via GameManager.Awake
 - UIButtonsImporter: added SpaceAnimalsCards folder to Fix Card Imports
 - Logo compression exception: developer_logo, logo_unicorn, logo_white stay at full 2048px
+- Card grid optimization: FindBestGrid maximizes card size for portrait mobile screens
+- Shop: card theme preview panel (tap icon → 3 cards side by side, aspect-matched)
+- Tutorial overlay: 4-page first-run guide with real card sprites (pair, joker), white panel, Skip button
+- Editor: MagicPairs → Reset Tutorial menu item
 
 ### 2026-06-22
 - Animals card theme: 14 PNG cards + joker + back_card (Assets/Resources/AnimalCards/)

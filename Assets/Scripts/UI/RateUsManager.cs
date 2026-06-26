@@ -92,12 +92,12 @@ namespace MagicPairs.UI
             msgText.color = new Color(0.2f, 0.2f, 0.2f);
 
             // Rate button
-            var rateBtn = UIFactory.CreateIconButton("RateBtn", "scores", panel.transform,
+            var rateBtn = UIFactory.CreateIconButton("RateBtn", "yes", panel.transform,
                 new Vector2(0.55f, 0.08f), new Vector2(0.9f, 0.38f));
             rateBtn.onClick.AddListener(OnRate);
 
             // Later button
-            var laterBtn = UIFactory.CreateIconButton("LaterBtn", "close", panel.transform,
+            var laterBtn = UIFactory.CreateIconButton("LaterBtn", "no", panel.transform,
                 new Vector2(0.1f, 0.08f), new Vector2(0.45f, 0.38f));
             laterBtn.onClick.AddListener(OnLater);
         }

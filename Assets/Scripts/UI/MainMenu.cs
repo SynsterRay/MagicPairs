@@ -152,7 +152,7 @@ namespace MagicPairs.UI
             easyButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Easy));
             mediumButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Medium));
             hardButton?.onClick.AddListener(() => SelectDifficulty(Difficulty.Hard));
-            colorsThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Dinos));
+            colorsThemeButton?.onClick.AddListener(() => TrySelectTheme(Core.CardTheme.Dinos, false));
             princessThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Princess));
             carsThemeButton?.onClick.AddListener(() => SelectTheme(Core.CardTheme.Cars));
             startButton?.onClick.AddListener(OnStart);
@@ -166,7 +166,7 @@ namespace MagicPairs.UI
             namesBackButton?.onClick.AddListener(OnNamesBack);
             challengeStartButton?.onClick.AddListener(OnChallengeStart);
             challengeNamesBackButton?.onClick.AddListener(ShowChallengeThemePanel);
-            challengeColorsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Dinos));
+            challengeColorsButton?.onClick.AddListener(() => TrySelectTheme(Core.CardTheme.Dinos, true));
             challengePrincessButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Princess));
             challengeCarsButton?.onClick.AddListener(() => SelectChallengeTheme(Core.CardTheme.Cars));
             challengeThemeBackButton?.onClick.AddListener(ShowGameTypePanel);
@@ -262,25 +262,37 @@ namespace MagicPairs.UI
 
         private void WireLockedThemeButtons()
         {
-            WireUnlockedBtn(themePanel, "LockedCard1", Core.CardTheme.Animals);
-            WireUnlockedBtn(themePanel, "LockedCard2", Core.CardTheme.SpaceAnimals);
-            WireUnlockedBtn(challengeThemePanel, "ChLockedCard1", Core.CardTheme.Animals);
-            WireUnlockedBtn(challengeThemePanel, "ChLockedCard2", Core.CardTheme.SpaceAnimals);
+            WireThemeBtn(themePanel, "LockedCard1", Core.CardTheme.Animals, false);
+            WireThemeBtn(themePanel, "LockedCard2", Core.CardTheme.SpaceAnimals, false);
+            WireThemeBtn(challengeThemePanel, "ChLockedCard1", Core.CardTheme.Animals, true);
+            WireThemeBtn(challengeThemePanel, "ChLockedCard2", Core.CardTheme.SpaceAnimals, true);
         }
 
-        private void WireUnlockedBtn(GameObject panel, string name, Core.CardTheme theme)
+        private void WireThemeBtn(GameObject panel, string name, Core.CardTheme theme, bool isChallenge)
         {
             if (panel == null) return;
             var obj = panel.transform.Find(name);
             if (obj == null) return;
-            // Remove blocked overlay
-            var overlay = obj.Find("BlockedOverlay");
-            if (overlay != null) Destroy(overlay.gameObject);
-            var btn = obj.GetComponent<Button>();
-            if (panel == challengeThemePanel)
-                btn?.onClick.AddListener(() => SelectChallengeTheme(theme));
+
+            if (Core.ShopCatalog.IsThemeUnlocked(theme))
+            {
+                var overlay = obj.Find("BlockedOverlay");
+                if (overlay != null) Destroy(overlay.gameObject);
+                var btn = obj.GetComponent<Button>();
+                if (isChallenge)
+                    btn?.onClick.AddListener(() => SelectChallengeTheme(theme));
+                else
+                    btn?.onClick.AddListener(() => SelectTheme(theme));
+            }
             else
-                btn?.onClick.AddListener(() => SelectTheme(theme));
+            {
+                var btn = obj.GetComponent<Button>();
+                btn?.onClick.AddListener(() =>
+                {
+                    if (menuPanel != null) menuPanel.SetActive(false);
+                    _cachedShop?.Show(() => { ShowStartPanel(); ShowGameTypePanel(); });
+                });
+            }
         }
 
         private void WireLockedBtn(GameObject panel, string name)
@@ -490,7 +502,7 @@ namespace MagicPairs.UI
             if (_inviteBtn == null && startPanel != null)
             {
                 var btn = UIFactory.CreateIconButton("InviteBtn", "invite",
-                    startPanel.transform, new Vector2(0.35f, 0.02f), new Vector2(0.65f, 0.34f));
+                    startPanel.transform, new Vector2(0.02f, 0.02f), new Vector2(0.32f, 0.34f));
                 _inviteBtn = btn.gameObject;
                 btn.onClick.AddListener(() =>
                 {
@@ -503,6 +515,26 @@ namespace MagicPairs.UI
                     }
                     invite?.Show(() => ShowStartPanel());
                 });
+            }
+
+            // Reposition based on GPGS auth
+            if (_inviteBtn != null)
+            {
+                var gpgs = Core.GPGSManager.Instance;
+                bool authenticated = gpgs != null && gpgs.IsAuthenticated;
+                var rect = _inviteBtn.GetComponent<RectTransform>();
+                if (authenticated)
+                {
+                    // Middle position (achievements left, invite center, quit right)
+                    rect.anchorMin = new Vector2(0.35f, 0.02f);
+                    rect.anchorMax = new Vector2(0.65f, 0.34f);
+                }
+                else
+                {
+                    // Under Shop (symmetric: invite left, quit right)
+                    rect.anchorMin = new Vector2(0.02f, 0.02f);
+                    rect.anchorMax = new Vector2(0.32f, 0.34f);
+                }
             }
         }
 
@@ -853,6 +885,20 @@ namespace MagicPairs.UI
             ShowHeaderLogo(2); // monkey
             if (themeTitle != null)
                 themeTitle.text = Localization.Get("chooseTheme");
+        }
+
+        private void TrySelectTheme(Core.CardTheme theme, bool isChallenge)
+        {
+            if (Core.ShopCatalog.IsThemeUnlocked(theme))
+            {
+                if (isChallenge) SelectChallengeTheme(theme);
+                else SelectTheme(theme);
+            }
+            else
+            {
+                if (menuPanel != null) menuPanel.SetActive(false);
+                _cachedShop?.Show(() => { ShowStartPanel(); ShowGameTypePanel(); });
+            }
         }
 
         private void SelectTheme(Core.CardTheme theme)

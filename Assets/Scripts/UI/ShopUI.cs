@@ -245,11 +245,22 @@ namespace MagicPairs.UI
                 priceBg.color = new Color(0.1f, 0.7f, 0.3f, 1f);
                 priceBg.sprite = RoundedButtonHelper.GetRoundedSprite();
                 priceBg.type = Image.Type.Sliced;
+                var priceBtn = priceObj.AddComponent<Button>();
+                priceBtn.transition = Selectable.Transition.None;
                 var priceRect = priceObj.GetComponent<RectTransform>();
                 priceRect.anchorMin = new Vector2(xMin + 0.01f, 0.0f);
                 priceRect.anchorMax = new Vector2(xMax - 0.01f, 0.18f);
                 priceRect.offsetMin = Vector2.zero;
                 priceRect.offsetMax = Vector2.zero;
+
+                // Wire price button action
+                if (!owned)
+                {
+                    if (capturedItem.type == ShopItemType.CoinPack)
+                        priceBtn.onClick.AddListener(() => OnBuyCoinPack(capturedItem));
+                    else
+                        priceBtn.onClick.AddListener(() => OnBuy(capturedItem));
+                }
 
                 var priceTxtObj = new GameObject("PriceText");
                 priceTxtObj.transform.SetParent(priceObj.transform, false);
@@ -275,7 +286,7 @@ namespace MagicPairs.UI
         {
             bool owned = item.type == ShopItemType.CardTheme && item.theme.HasValue && ShopCatalog.IsThemeUnlocked(item.theme.Value);
             if (owned) return "✓";
-            if (item.type == ShopItemType.CardTheme) return "🔒";
+            if (item.type == ShopItemType.CardTheme) return $"🪙 {item.coinPrice}";
             if (item.type == ShopItemType.CoinPack)
             {
                 string price = GetCoinPackPrice(item);
