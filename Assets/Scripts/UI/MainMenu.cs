@@ -262,8 +262,10 @@ namespace MagicPairs.UI
 
         private void WireLockedThemeButtons()
         {
+            WireThemeBtn(themePanel, "ColorsBtn", Core.CardTheme.Dinos, false);
             WireThemeBtn(themePanel, "LockedCard1", Core.CardTheme.Animals, false);
             WireThemeBtn(themePanel, "LockedCard2", Core.CardTheme.SpaceAnimals, false);
+            WireThemeBtn(challengeThemePanel, "ChColorsBtn", Core.CardTheme.Dinos, true);
             WireThemeBtn(challengeThemePanel, "ChLockedCard1", Core.CardTheme.Animals, true);
             WireThemeBtn(challengeThemePanel, "ChLockedCard2", Core.CardTheme.SpaceAnimals, true);
         }
