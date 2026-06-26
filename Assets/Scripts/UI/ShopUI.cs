@@ -384,10 +384,52 @@ namespace MagicPairs.UI
                 cardRect.offsetMax = Vector2.zero;
             }
 
-            // Close on tap
+            // Close on tap background
             var closeBtn = preview.AddComponent<Button>();
             closeBtn.transition = Selectable.Transition.None;
             closeBtn.onClick.AddListener(() => Destroy(preview));
+
+            // Green buy button if not owned
+            bool owned = item.theme.HasValue && ShopCatalog.IsThemeUnlocked(item.theme.Value);
+            if (!owned)
+            {
+                var buyObj = new GameObject("BuyBtn");
+                buyObj.transform.SetParent(preview.transform, false);
+                var buyImg = buyObj.AddComponent<Image>();
+                buyImg.color = new Color(0.1f, 0.7f, 0.3f, 1f);
+                buyImg.sprite = RoundedButtonHelper.GetRoundedSprite();
+                buyImg.type = Image.Type.Sliced;
+                var buyBtn = buyObj.AddComponent<Button>();
+                buyBtn.transition = Selectable.Transition.None;
+                var buyRect = buyObj.GetComponent<RectTransform>();
+                buyRect.anchorMin = new Vector2(0.3f, 0.12f);
+                buyRect.anchorMax = new Vector2(0.7f, 0.22f);
+                buyRect.offsetMin = Vector2.zero;
+                buyRect.offsetMax = Vector2.zero;
+
+                var txtObj = new GameObject("Text");
+                txtObj.transform.SetParent(buyObj.transform, false);
+                var txt = txtObj.AddComponent<Text>();
+                txt.text = $"🪙 {item.coinPrice}";
+                txt.fontSize = 36;
+                txt.fontStyle = FontStyle.Bold;
+                txt.alignment = TextAnchor.MiddleCenter;
+                txt.color = Color.white;
+                txt.font = UIFactory.GetFont();
+                var txtRect = txtObj.GetComponent<RectTransform>();
+                txtRect.anchorMin = Vector2.zero;
+                txtRect.anchorMax = Vector2.one;
+                txtRect.offsetMin = Vector2.zero;
+                txtRect.offsetMax = Vector2.zero;
+
+                var capturedItem = item;
+                var capturedPreview = preview;
+                buyBtn.onClick.AddListener(() =>
+                {
+                    Destroy(capturedPreview);
+                    OnBuy(capturedItem);
+                });
+            }
         }
 
         private void OnBuy(ShopItem item)
