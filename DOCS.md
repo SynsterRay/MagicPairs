@@ -4,7 +4,7 @@
 
 A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS). Two players take turns flipping cards looking for matching pairs.
 
-## Project Status (2026-06-23)
+## Project Status (2026-06-26)
 
 ### Implemented
 
@@ -73,6 +73,7 @@ A memory card game for kids — Unity 6 with URP, targeting mobile (Android/iOS)
 | v1.402 | 2026-06-08 | Fix button text not vertically centered on mobile |
 | v1.403 | 2026-06-09 | Reorder menu (Challenge>TimeAttack>Arcade, Cars>Princess>Colors), fix text overflow on mobile |
 | v1.406 | 2026-06-11 | Google Play Games Services — global leaderboard, global/local scores choice |
+| v1.9 | 2026-06-26 | Production release — shop economy rebalance, theme locking, Google Play approved |
 
 ## Architecture
 
@@ -241,6 +242,19 @@ File: `Assets/ScriptableObjects/GameConfig.asset`
 | piotrusDelay | 1.5s | Time to show Joker |
 
 ## Changelog
+
+### 2026-06-26 (v1.9 — Production)
+- Google Play Production approval — app published
+- Shop economy rebalance: themes 300/500/800 coins, power-ups 60/80/100, IAP packs 300/800/2000 coins
+- Theme locking: Water World, Animals, Space Animals require coin purchase (BLOCKED overlay)
+- Shop: green buy button in theme card preview (tap icon → preview → buy)
+- Shop: price tag buttons now trigger purchase (coin themes + IAP coin packs)
+- Shop: shows coin price (🪙 300) instead of lock icon for unpurchased themes
+- Theme unlock refresh: BLOCKED overlay removed dynamically after purchase (no restart needed)
+- Rate Us popup: yes/no icons (green confirm / red decline)
+- Invite button: symmetric layout when not signed in to Google Play Games
+- Editor: MagicPairs → Reset Shop Purchases menu item
+- IAP coin amounts: $0.99→300, $2.99→800 (+20%), $5.99→2000 (+40%)
 
 ### 2026-06-23
 - Space Animals card theme: 14 PNG cards + joker + back_card + background (Assets/Resources/SpaceAnimalsCards/)
